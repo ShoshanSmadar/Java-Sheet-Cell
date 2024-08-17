@@ -1,3 +1,5 @@
+package coordinate;
+
 public class CoordinateImpl {
     private int column;
     private int row;

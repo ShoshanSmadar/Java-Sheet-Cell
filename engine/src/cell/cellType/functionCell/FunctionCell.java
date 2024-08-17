@@ -1,4 +1,6 @@
 package cell.cellType.functionCell;
 
-public interface FunctionCell {
+import cell.cellType.CellType;
+
+public interface FunctionCell extends CellType {
 }

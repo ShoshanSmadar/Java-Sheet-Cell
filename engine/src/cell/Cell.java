@@ -1,11 +1,5 @@
 package cell;
 
-import cell.cellType.CellType;
+public interface Cell {
 
-abstract class Cell{
-    CellType value;
-    int lastVersionChanged = 0;
-    String originalValue;
-    // List<point> afectedBy;
-    // List<point> afecting;
 }

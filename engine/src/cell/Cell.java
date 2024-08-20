@@ -14,5 +14,6 @@ public interface Cell {
     void calculateEffectiveValue();
     List<Cell> getDependsOn();
     List<Cell> getAffecting ();
+    void setCellOriginalValue(String value);
 
 }

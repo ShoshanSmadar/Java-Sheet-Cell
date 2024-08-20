@@ -9,7 +9,7 @@ public class ConcatExpression implements Expression {
     Expression left;
     Expression right;
 
-    ConcatExpression(Expression left, Expression right) {
+    public ConcatExpression(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }

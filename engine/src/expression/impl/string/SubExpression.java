@@ -11,7 +11,7 @@ public class SubExpression implements Expression {
     Expression startIndex;
     Expression endIndex;
 
-    SubExpression(Expression source, Expression startIndex, Expression endIndex) {
+    public SubExpression(Expression source, Expression startIndex, Expression endIndex) {
         this.source = source;
         this.startIndex = startIndex;
         this.endIndex = endIndex;

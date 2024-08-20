@@ -1,8 +1,8 @@
-package expression.impl;
+package expression.impl.mathematical;
 
-import expression.Expression;
+import expression.MathematicalExpression;
 
-public class Number implements Expression {
+public class Number implements MathematicalExpression {
     private double number;
 
     public Number(double num) {

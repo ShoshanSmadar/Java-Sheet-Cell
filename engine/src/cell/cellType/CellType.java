@@ -11,7 +11,7 @@ public enum CellType {
         this.type = type;
     }
 
-    public boolean isAssinableForm(Class<?> aType) {
+    public boolean isAssignableFrom(Class<?> aType) {
         return type.isAssignableFrom(aType);
     }
 

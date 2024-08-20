@@ -1,18 +1,31 @@
 package expression.impl.mathematical;
 
-import expression.MathematicalExpression;
+import cell.cellType.CellType;
+import cell.cellType.EffectiveValue;
+import cell.cellType.EffectiveValueImpl;
+import expression.Expression;
 
-public class PlusMathematicalExpression implements MathematicalExpression {
-    private MathematicalExpression left;
-    private MathematicalExpression right;
+public class PlusMathematicalExpression implements Expression {
+    private Expression left;
+    private Expression right;
 
-    public PlusMathematicalExpression(MathematicalExpression left, MathematicalExpression right) {
+    public PlusMathematicalExpression(Expression left, Expression right) {
         this.left = left;
         this.right = right;
     }
 
     @Override
-    public double evaluate() {
-        return left.evaluate() + right.evaluate();
+    public EffectiveValue eval() {
+        EffectiveValue leftValue = left.eval();
+        EffectiveValue rightValue = right.eval();
+
+        double result = leftValue.extractValueWithExpectation(Double.class) + rightValue.extractValueWithExpectation(Double.class);
+
+        return new EffectiveValueImpl(CellType.NUMERIC, result);
+    }
+
+    @Override
+    public CellType getFunctionResultType() {
+        return CellType.NUMERIC;
     }
 }

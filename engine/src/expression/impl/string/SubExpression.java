@@ -1,30 +1,31 @@
 package expression.impl.string;
 
+import cell.cellType.CellType;
+import cell.cellType.EffectiveValue;
 import exception.NumberIsNotAnIntException;
-import expression.StringExpression;
-import expression.MathematicalExpression;
 
-public class SubExpression implements StringExpression {
-    StringExpression source;
-    MathematicalExpression startIndex;
-    MathematicalExpression endIndex;
+import expression.Expression;
 
-    SubExpression(StringExpression source, MathematicalExpression startIndex, MathematicalExpression endIndex) {
+public class SubExpression implements Expression {
+    Expression source;
+    Expression startIndex;
+    Expression endIndex;
+
+    SubExpression(Expression source, Expression startIndex, Expression endIndex) {
         this.source = source;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
 
+
     @Override
-    public String evaluate() {
-        if (startIndex.evaluate() % 1 == 0 ) {
-            throw new NumberIsNotAnIntException(startIndex.evaluate());
-        }
-        if (endIndex.evaluate() % 1 == 0) {
-            throw new NumberIsNotAnIntException(endIndex.evaluate());
-        }
-        return source.evaluate().substring((int)startIndex.evaluate(), (int)endIndex.evaluate());
+    public EffectiveValue eval() {
+        return null;
     }
 
+    @Override
+    public CellType getFunctionResultType() {
+        return CellType.STRING;
+    }
 }
 

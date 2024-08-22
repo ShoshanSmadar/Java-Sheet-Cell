@@ -36,12 +36,23 @@ public class SheetImpel implements Sheet {
         Optional
                 .ofNullable(cellMap.get(coordinate))
                 .or(() -> {
-                    Cell newCell = new CellImpl(row, column, value, 1);
+                    Cell newCell = new CellImpl(this, row, column, value, 1);
                     cellMap.put(coordinate, newCell);
                     return Optional.of(newCell);
                 })
                 .ifPresent(cell -> cell.setCellOriginalValue(value));
-        }
+    }
 
+    @Override
+    public int getSizeOfColumns()
+    {
+        return sizeOfColumns;
+    }
+
+    @Override
+    public int getSizeOfRows()
+    {
+        return sizeOfRows;
+    }
 
 }

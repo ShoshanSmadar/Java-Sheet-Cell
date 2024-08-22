@@ -4,6 +4,7 @@ import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
 import expression.Expression;
+import sheet.Sheet;
 
 public class DevideMathematicalExpression implements Expression {
     private Expression left;
@@ -15,9 +16,9 @@ public class DevideMathematicalExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval() {
-        EffectiveValue leftValue = left.eval();
-        EffectiveValue rightValue = right.eval();
+    public EffectiveValue eval(Sheet sheet) {
+        EffectiveValue leftValue = left.eval(sheet);
+        EffectiveValue rightValue = right.eval(sheet);
 
         double result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
 

@@ -2,9 +2,10 @@ package expression.impl.string;
 
 import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
-import exception.NumberIsNotAnIntException;
 
+import cell.cellType.EffectiveValueImpl;
 import expression.Expression;
+import sheet.Sheet;
 
 public class SubExpression implements Expression {
     Expression source;
@@ -19,8 +20,14 @@ public class SubExpression implements Expression {
 
 
     @Override
-    public EffectiveValue eval() {
-        return null;
+    public EffectiveValue eval(Sheet sheet) {
+        EffectiveValue sourceValue = source.eval(sheet);
+        EffectiveValue startValue = startIndex.eval(sheet);
+        EffectiveValue endValue = endIndex.eval(sheet);
+
+        String subString = sourceValue.extractValueWithExpectation(String.class).substring(startValue.extractValueWithExpectation(Integer.class), endValue.extractValueWithExpectation(Integer.class));
+
+        return new EffectiveValueImpl(CellType.STRING, subString);
     }
 
     @Override

@@ -4,6 +4,7 @@ import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
 import expression.Expression;
+import sheet.Sheet;
 
 public class AbsMathematicalExpression implements Expression {
     private Expression expression;
@@ -13,8 +14,8 @@ public class AbsMathematicalExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval() {
-        EffectiveValue value = expression.eval();
+    public EffectiveValue eval(Sheet sheet) {
+        EffectiveValue value = expression.eval(sheet);
 
         double result = Math.abs(value.extractValueWithExpectation(Double.class));
 

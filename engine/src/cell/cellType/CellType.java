@@ -6,7 +6,7 @@ public enum CellType {
     NUMERIC(Double.class),
     STRING(String.class),
     BOOLEAN(Boolean.class),
-    COORDINATE(Coordinate.class);
+    UNKNOWN(Object.class);
 
     private Class<?> type;
 

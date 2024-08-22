@@ -1,30 +1,27 @@
 package expression.impl;
 
-import cell.Cell;
 import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
-import coordinate.Coordinate;
 import expression.Expression;
-import sheet.SheetImpel;
+import sheet.Sheet;
 
 public class RefExpression implements Expression {
-    private final Cell cell;
-    private final CellType cellType;
+    private final int row;
+    private final int col;
 
-    public RefExpression(int row, int col, CellType cellType) {
-        //TODO!!!!!!!!!!!!!!!
-        this.cell = null;
-        this.cellType = cellType;
+    public RefExpression(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     @Override
-    public EffectiveValue eval() {
-        return new EffectiveValueImpl(cell.getCellType(), cell.getEffectiveValue());
+    public EffectiveValue eval(Sheet sheet) {
+        return new EffectiveValueImpl(CellType.UNKNOWN, sheet.getCell(row, col).getEffectiveValue());
     }
 
     @Override
     public CellType getFunctionResultType() {
-        return cellType;
+        return CellType.UNKNOWN;
     }
 }

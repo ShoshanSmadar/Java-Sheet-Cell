@@ -3,6 +3,7 @@ package expression.parser;
 import cell.cellType.CellType;
 import expression.Expression;
 import expression.impl.BaseExpression;
+import expression.impl.RefExpression;
 import expression.impl.mathematical.*;
 import expression.impl.string.ConcatExpression;
 import expression.impl.string.SubExpression;
@@ -176,10 +177,26 @@ public enum Parser {
         public Expression parse(List<String> arguments) {
             checkNumberOfArguments(1, arguments.size(), "REF");
 
-            Expression source = parseExpression(arguments.get(0).trim());
+            String input = arguments.get(0).trim();
+            input = input.replace(" ", "");
+            if(input.length() !=2)
+            {
+                throw new IllegalArgumentException("Invalid argument for cell name, expected size 2 but got " + input.length());
+            }
+            char uppercaseLetter = input.charAt(0);
+            if(!Character.isUpperCase(uppercaseLetter)) {
+                throw new IllegalArgumentException("Invalid argument for cell name, expected an upper case letter but got" + uppercaseLetter);
 
-            return null;
-            //TODO!!!!!!!!!!!!!!
+            }
+            char number = input.charAt(1);
+            if(!Character.isDigit(number)) {
+                throw new IllegalArgumentException("Invalid argument for cell name, expected a number but got " + number);
+            }
+
+            int col = uppercaseLetter - 'A';
+            int row = Integer.parseInt(String.valueOf(number));
+
+            return new RefExpression(row, col);
         }
     }
     ;

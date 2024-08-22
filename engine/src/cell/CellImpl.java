@@ -4,11 +4,13 @@ import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import coordinate.Coordinate;
 import coordinate.CoordinateImpl;
+import sheet.Sheet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CellImpl implements Cell{
+    private Sheet fatherSheet;
     private Coordinate coordinate;
     private CellType cellType;
     private EffectiveValue value;
@@ -17,7 +19,8 @@ public class CellImpl implements Cell{
     private List<Cell> dependsOn;
     private List<Cell> affecting;
 
-    public CellImpl(int row, int column, String originalValue, int version)  {
+    public CellImpl(Sheet sheet, int row, int column, String originalValue, int version)  {
+        this.fatherSheet = sheet;
         this.coordinate = new CoordinateImpl(row, column);
         this.originalValue = originalValue;
         this.lastVersionChanged = version;

@@ -4,6 +4,7 @@ import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
 import expression.Expression;
+import sheet.Sheet;
 
 public class BaseExpression implements Expression {
     private final Object value;
@@ -15,7 +16,7 @@ public class BaseExpression implements Expression {
     }
 
     @Override
-    public EffectiveValue eval() {
+    public EffectiveValue eval(Sheet sheet) {
         return new EffectiveValueImpl(cellType, value);
     }
 

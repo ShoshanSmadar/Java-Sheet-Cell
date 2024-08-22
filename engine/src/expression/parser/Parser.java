@@ -50,7 +50,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for PLUS function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
 
@@ -63,7 +64,7 @@ public enum Parser {
             checkNumberOfArguments(1, arguments.size(), "ABS");
 
             Expression value = parseExpression(arguments.get(0).trim());
-            if(!value.getFunctionResultType().equals(CellType.NUMERIC)){
+            if(!value.getFunctionResultType().equals(CellType.NUMERIC) && !value.getFunctionResultType().equals(CellType.UNKNOWN)){
                 throw new IllegalArgumentException("Invalid argument types for ABS function, Expected NUMERIC but got " + value.getFunctionResultType());
             }
             return new AbsMathematicalExpression(value);
@@ -77,7 +78,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for DIVIDE function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new DevideMathematicalExpression(left, right);
@@ -91,7 +93,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for MINUS function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new MinusMathematicalExpression(left, right);
@@ -105,7 +108,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for MOD function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new ModMathematicalExpression(left, right);
@@ -119,7 +123,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for POW function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new PowMathematicalExpression(left, right);
@@ -133,7 +138,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.NUMERIC) || !right.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for TIMES function, Expected NUMERIC but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new TimesMathematicalExpression(left, right);
@@ -147,7 +153,8 @@ public enum Parser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if (!left.getFunctionResultType().equals(CellType.STRING) || !right.getFunctionResultType().equals(CellType.STRING)) {
+            if ((!left.getFunctionResultType().equals(CellType.STRING) && left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || !right.getFunctionResultType().equals(CellType.STRING) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for CONCAT function, Expected STRING but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }
             return new ConcatExpression(left, right);
@@ -162,11 +169,12 @@ public enum Parser {
             Expression startIndex = parseExpression(arguments.get(1).trim());
             Expression endIndex = parseExpression(arguments.get(2).trim());
 
-            if (!source.getFunctionResultType().equals(CellType.STRING))
+            if (!source.getFunctionResultType().equals(CellType.STRING) && !source.getFunctionResultType().equals(CellType.UNKNOWN))
             {
                 throw new IllegalArgumentException("Invalid argument types for SUB function, Expected STRING but got " + source.getFunctionResultType() + "as source.");
             }
-            if (!startIndex.getFunctionResultType().equals(CellType.NUMERIC) || !endIndex.getFunctionResultType().equals(CellType.NUMERIC)) {
+            if ((!startIndex.getFunctionResultType().equals(CellType.NUMERIC) && !startIndex.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!endIndex.getFunctionResultType().equals(CellType.NUMERIC) && !endIndex.getFunctionResultType().equals(CellType.UNKNOWN))) {
                 throw new IllegalArgumentException("Invalid argument types for SUB function, Expected NUMERIC but got " + startIndex.getFunctionResultType() + "as start index and " + endIndex.getFunctionResultType() + "as end index.");
             }
             return new SubExpression(source, startIndex, endIndex);
@@ -198,8 +206,7 @@ public enum Parser {
 
             return new RefExpression(row, col);
         }
-    }
-    ;
+    };
 
     abstract public Expression parse(List<String> arguments);
 

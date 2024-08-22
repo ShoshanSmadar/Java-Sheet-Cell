@@ -25,6 +25,7 @@ public class SubExpression implements Expression {
         EffectiveValue startValue = startIndex.eval(sheet);
         EffectiveValue endValue = endIndex.eval(sheet);
 
+
         String subString = sourceValue.extractValueWithExpectation(String.class).substring(startValue.extractValueWithExpectation(Integer.class), endValue.extractValueWithExpectation(Integer.class));
 
         return new EffectiveValueImpl(CellType.STRING, subString);

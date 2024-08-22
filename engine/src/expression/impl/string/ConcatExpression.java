@@ -21,6 +21,7 @@ public class ConcatExpression implements Expression {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
 
+
         String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
 
         return new EffectiveValueImpl(CellType.STRING, result);

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public enum Parser {
+public enum FunctionParser {
     Base {
         @Override
         public Expression parse(List<String> arguments) {
@@ -186,23 +186,20 @@ public enum Parser {
             checkNumberOfArguments(1, arguments.size(), "REF");
 
             String input = arguments.get(0).trim();
-            input = input.replace(" ", "");
-            if(input.length() !=2)
-            {
-                throw new IllegalArgumentException("Invalid argument for cell name, expected size 2 but got " + input.length());
-            }
             char uppercaseLetter = input.charAt(0);
             if(!Character.isUpperCase(uppercaseLetter)) {
                 throw new IllegalArgumentException("Invalid argument for cell name, expected an upper case letter but got" + uppercaseLetter);
-
             }
-            char number = input.charAt(1);
-            if(!Character.isDigit(number)) {
-                throw new IllegalArgumentException("Invalid argument for cell name, expected a number but got " + number);
-            }
+            String number = input.substring(1);
 
+            int row;
+            try{
+                row = Integer.parseInt(number);
+            }
+            catch(NumberFormatException e){
+                throw new IllegalArgumentException("Invalid argument for cell name, expected a number but got" + number);
+            }
             int col = uppercaseLetter - 'A';
-            int row = Integer.parseInt(String.valueOf(number));
 
             return new RefExpression(row, col);
         }
@@ -228,11 +225,11 @@ public enum Parser {
 
             //remove the first element from the array
             topLevelParts.remove(0);
-            return Parser.valueOf(functionName).parse(topLevelParts);
+            return FunctionParser.valueOf(functionName).parse(topLevelParts);
         }
 
         // handle identity expression
-        return Parser.Base.parse(List.of(input.trim()));
+        return FunctionParser.Base.parse(List.of(input.trim()));
     }
 
     private static List<String> parseMainParts(String input) {

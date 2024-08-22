@@ -11,9 +11,10 @@ public interface Cell {
     CellType getCellType();
     EffectiveValue getEffectiveValue();
     int getLastVersionChanged();
-    void calculateEffectiveValue();
-    List<Cell> getDependsOn();
-    List<Cell> getAffecting ();
+    boolean calculateEffectiveValue();
+    List<Coordinate> getDependsOn();
+    List<Coordinate> getAffecting ();
     void setCellOriginalValue(String value);
+    void updateVersion(int version);
 
 }

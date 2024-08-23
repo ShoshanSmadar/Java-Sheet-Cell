@@ -14,7 +14,7 @@ public interface Sheet {
     public int getSizeOfRows();
     public void increaseVersion();
     public Sheet UpdateCellValueAndSheet(int row, int col, String value) throws Exception;
-    public sheetDTO convertToSheetDTO();
+    public SheetDTO convertToSheetDTO();
     public List<CoordinateDTO> getCellDependingCoordinatesDTO(Coordinate cellCoordinate);
     public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate);
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate);

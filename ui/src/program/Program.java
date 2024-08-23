@@ -1,7 +1,5 @@
 package program;
 
-
-public class Program {
-
-
+public interface Program {
+    public void start();
 }

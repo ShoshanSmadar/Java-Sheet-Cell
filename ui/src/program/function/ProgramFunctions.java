@@ -7,4 +7,5 @@ public interface ProgramFunctions {
     public boolean updateCell();
     public void showVersion();
     public void exitProgram();
+    public void explainFunctions();
 }

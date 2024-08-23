@@ -69,7 +69,7 @@ public class SheetImpl implements Sheet {
     }
 
     @Override
-    public sheetDTO convertToSheetDTO() {
+    public SheetDTO convertToSheetDTO() {
         Map<Coordinate, CellDTO> cellDTOMap = new HashMap<>();
         for (Map.Entry<Coordinate, Cell> entry : cellMap.entrySet()) {
             Coordinate coord = entry.getKey();
@@ -78,7 +78,7 @@ public class SheetImpl implements Sheet {
             cellDTOMap.put(coord, cellDTO);
         }
 
-        return new sheetDTO(this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
+        return new SheetDTO(this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
     }
 
     @Override

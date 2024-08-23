@@ -1,12 +1,13 @@
 package program.outpot;
 
 public class Output {
-    public void printWelcome(){
+    public static void printWelcome(){
         System.out.println("Welcome to Java Sheet Cell!\nPlease Enter XML file to start.");
     }
 
-    public void printMenu(){
+    public static void printMenu(){
         System.out.println("Please choose one of the following options:");
+        System.out.println("*******************************************");
         System.out.println("1. upload new XML file");
         System.out.println("2. Show Sheet");
         System.out.println("3. Show a Cell");
@@ -16,11 +17,11 @@ public class Output {
         System.out.println("7. HELP - Function explantion");
     }
 
-    public void printCellChoose(){
+    public static void printCellChoose(){
         System.out.println("Please enter wanted Cell\n(enter capital letter and then number for example A4):");
     }
 
-    public void printAskForCellFunction(){
+    public static void printAskForCellFunction(){
         System.out.println("A function should be written in the following order: {<function name>,<first argument>,...,<last argument>}" +
                 "\nFor example: {PLUS,1,2} or {MINUS,{PLUS,1,2},1}");
         System.out.println("following functions are posible:" +
@@ -29,5 +30,13 @@ public class Output {
                 "\nRefrence another cell: REF");
         System.out.println("for more information on each function please choose option 7 on main menu.");
         System.out.println("\nPlease enter new Cell value:");
+    }
+
+    public static void printTryAgain(){
+        System.out.println("Please try again.");
+    }
+
+    public static void printExeptionMessage(Exception e){
+        System.out.println(e.getMessage());
     }
 }

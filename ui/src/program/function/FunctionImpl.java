@@ -1,6 +1,7 @@
 package program.function;
 
 public class FunctionImpl implements ProgramFunctions{
+    public FunctionImpl() {}
 
     @Override
     public boolean addFile() {
@@ -84,6 +85,11 @@ public class FunctionImpl implements ProgramFunctions{
 
     @Override
     public void exitProgram() {
+
+    }
+
+    @Override
+    public void explainFunctions() {
 
     }
 }

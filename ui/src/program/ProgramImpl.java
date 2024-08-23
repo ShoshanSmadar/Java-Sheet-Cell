@@ -7,7 +7,6 @@ import program.function.FunctionImpl;
 import program.function.ProgramFunctions;
 import program.outpot.Output;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class ProgramImpl implements Program{
@@ -39,7 +38,7 @@ public class ProgramImpl implements Program{
         if(userChoice == ProgramOption.ADD_FILE.ordinal())
             functions.addFile();
         else if (userChoice == ProgramOption.SHOW_SHEET.ordinal())
-            functions.showSheet();
+            functions.showSheet(sheetProgram.getSheetDTO());
         else if (userChoice == ProgramOption.SHOW_CELL.ordinal())
             functions.showCell();
         else if (userChoice == ProgramOption.UPDATE_CELL.ordinal())

@@ -39,4 +39,15 @@ public class Output {
     public static void printExeptionMessage(Exception e){
         System.out.println(e.getMessage());
     }
+
+    public static void printSheetRow(String sheetRow){
+        System.out.println(sheetRow);
+    }
+
+    public static void printSheetStatments(int currentVersion, String sheetName)
+    {
+        System.out.println("\n*******************************************\n");
+        System.out.println("Current version: " + currentVersion);
+        System.out.println("Sheet name: " + sheetName);
+    }
 }

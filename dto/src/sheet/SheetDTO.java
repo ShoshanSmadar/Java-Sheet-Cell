@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 public class SheetDTO {
+    protected String SheetName;
     protected int sheetVersion;
     protected String sheetName;
     protected Map<Coordinate, CellDTO> cellMap;
@@ -15,13 +16,18 @@ public class SheetDTO {
     protected int sizeOfRows;
     protected int heightOfRow;
 
-    public SheetDTO(int sheetVersion, Map<Coordinate, CellDTO> cellMap, int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
+    public SheetDTO(String sheetName, int sheetVersion, Map<Coordinate, CellDTO> cellMap, int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
+        this.SheetName = sheetName;
         this.sheetVersion = sheetVersion;
         this.cellMap = cellMap;
         this.sizeOfColumns = sizeOfColumns;
         this.lengthOfCol = lengthOfCol;
         this.sizeOfRows = sizeOfRows;
         this.heightOfRow = heightOfRow;
+    }
+
+    public String getSheetName() {
+        return SheetName;
     }
 
     public int getSheetVersion() {

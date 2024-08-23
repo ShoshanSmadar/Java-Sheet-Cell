@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 
 public class SheetImpl implements Sheet {
+    private String sheetName;
     private Map<Coordinate, Cell> cellMap;
     private int version;
     private final int sizeOfColumns;
@@ -21,7 +22,8 @@ public class SheetImpl implements Sheet {
     private final int sizeOfRows;
     private DependencyGraph coordinateGraph;
 
-    public SheetImpl(int sizeOfColumns, int sizeOfRows, int hightOfRows, int lengthOfColumns) {
+    public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows, int hightOfRows, int lengthOfColumns) {
+        sheetName = sheetName;
         cellMap = new HashMap<>();
         version = 0;
         this.sizeOfColumns = sizeOfColumns;
@@ -78,7 +80,7 @@ public class SheetImpl implements Sheet {
             cellDTOMap.put(coord, cellDTO);
         }
 
-        return new SheetDTO(this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
+        return new SheetDTO(this.sheetName, this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
     }
 
     @Override

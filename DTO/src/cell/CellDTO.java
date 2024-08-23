@@ -1,18 +1,19 @@
 package cell;
 
 import coordinate.Coordinate;
+import coordinate.CoordinateDTO;
 
 import java.util.List;
 
 public class CellDTO {
-    protected Coordinate coordinate;
+    protected CoordinateDTO coordinate;
     protected String originalValue;
     protected Object effectiveValue;
     protected int lastVersionChanged;
-    protected List<Coordinate> affectedBy;
-    protected List<Coordinate> affecting;
+    protected List<CoordinateDTO> affectedBy;
+    protected List<CoordinateDTO> affecting;
 
-    public CellDTO(Coordinate coordinate, String originalValue, Object effectiveValue, int lastVersionChanged, List<Coordinate> affectedBy, List<Coordinate> affecting) {
+    public CellDTO(CoordinateDTO coordinate, String originalValue, Object effectiveValue, int lastVersionChanged, List<CoordinateDTO> affectedBy, List<CoordinateDTO> affecting) {
         this.coordinate = coordinate;
         this.originalValue = originalValue;
         this.effectiveValue = effectiveValue;
@@ -21,7 +22,7 @@ public class CellDTO {
         this.affecting = affecting;
     }
 
-    public Coordinate getCoordinate() {
+    public CoordinateDTO getCoordinate() {
         return coordinate;
     }
     public String getOriginalValue() {
@@ -33,14 +34,14 @@ public class CellDTO {
     public int getLastVersionChanged() {
         return lastVersionChanged;
     }
-    public List<Coordinate> getAffectedBy() {
+    public List<CoordinateDTO> getAffectedBy() {
         return affectedBy;
     }
-    public List<Coordinate> getAffecting() {
+    public List<CoordinateDTO> getAffecting() {
         return affecting;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
+    public void setCoordinate(CoordinateDTO coordinate) {
         this.coordinate = coordinate;
     }
     public void setOriginalValue(String originalValue) {
@@ -52,10 +53,10 @@ public class CellDTO {
     public void setLastVersionChanged(int lastVersionChanged) {
         this.lastVersionChanged = lastVersionChanged;
     }
-    public void setAffectedBy(List<Coordinate> affectedBy) {
+    public void setAffectedBy(List<CoordinateDTO> affectedBy) {
         this.affectedBy = affectedBy;
     }
-    public void setAffecting(List<Coordinate> affecting) {
+    public void setAffecting(List<CoordinateDTO> affecting) {
         this.affecting = affecting;
     }
 

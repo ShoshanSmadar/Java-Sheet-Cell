@@ -6,7 +6,6 @@ import coordinate.CoordinateFactory;
 import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
 import cell.CellDTO;
-import sheet.sheetDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -83,12 +82,12 @@ public class SheetImpl implements Sheet {
 
     @Override
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate) {
-        return List.of();
+        return this.coordinateGraph.getIncomingEdges(cellCoordinate);
     }
 
     @Override
     public List<Coordinate> getCellAfctingCoordinates(Coordinate cellCoordinate) {
-        return List.of();
+        return this.coordinateGraph.getIncomingEdges(cellCoordinate);
     }
 
     @Override

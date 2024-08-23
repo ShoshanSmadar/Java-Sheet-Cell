@@ -75,9 +75,9 @@ public class CellImpl implements Cell{
 
     @Override
     public CellDTO getConvertToCellDTO() {
-        return new CellDTO(this.coordinate, this.originalValue,
+        return new CellDTO(this.coordinate.convertToDTO(), this.originalValue,
                 this.effectiveValue, this.lastVersionChanged,
-                this.fatherSheet.getCellDependingCoordinates(this.coordinate),
+                this.fatherSheet.getCellDependingCoordinates(this.coordinate)),
                 this.fatherSheet.getCellAfctingCoordinates(this.coordinate));
     }
 

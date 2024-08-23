@@ -1,8 +1,10 @@
 package graph;
 
 import coordinate.Coordinate;
+import coordinate.CoordinateDTO;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DependencyGraphImpl implements DependencyGraph {
     private Map<Coordinate, List<Coordinate>> adjList;
@@ -58,14 +60,25 @@ public class DependencyGraphImpl implements DependencyGraph {
     }
 
     @Override
-    public List<Coordinate> getIncomingEdges(Coordinate coord) {
+    public List<CoordinateDTO> getIncomingEdgesDTO(Coordinate coord) {
         List<Coordinate> incomingEdges = new ArrayList<>();
         for (Map.Entry<Coordinate, List<Coordinate>> entry : adjList.entrySet()) {
             if (entry.getValue().contains(coord)) {
                 incomingEdges.add(entry.getKey());
             }
         }
-        return incomingEdges;
+
+        return incomingEdges.stream().map(Coordinate::convertToDTO).toList();
+    }
+
+    public List<CoordinateDTO> getOutgoingEdgesDTO(Coordinate coord)
+    {
+        return this.adjList.get(coord).stream().map(Coordinate::convertToDTO).toList();
+    }
+
+    @Override
+    public List<Coordinate> getOutgoingEdges(Coordinate coord) {
+        return this.adjList.get(coord);
     }
 
     private void topologicalSortUtil(Coordinate coord, Map<Coordinate, Boolean> visited,

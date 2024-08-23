@@ -9,4 +9,5 @@ public interface DependencyGraph {
     public void removeEdge(Coordinate from, Coordinate to);
     public List<Coordinate> topologicalSort() throws Exception;
     public void ExpandGraph(Coordinate coordinate);
+    public List<Coordinate> getIncomingEdges(Coordinate coord);
 }

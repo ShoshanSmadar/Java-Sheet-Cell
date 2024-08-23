@@ -43,7 +43,7 @@ public class SheetImpl implements Sheet {
     public Sheet UpdateCellValueAndSheet(int row, int col, String value) throws Exception {
         Coordinate coordinate = CoordinateFactory.createCoordinate(row, col);
 
-        SheetImpl newSheetVersion = copySheet();
+        SheetImpl newSheetVersion = (SheetImpl) this.clone();
         Cell newCell = new CellImpl(newSheetVersion, row, col, value, newSheetVersion.getVersion() + 1);
         newSheetVersion.cellMap.remove(coordinate);
         newSheetVersion.cellMap.put(coordinate, newCell);

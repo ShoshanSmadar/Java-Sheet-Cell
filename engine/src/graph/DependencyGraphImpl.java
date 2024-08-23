@@ -55,7 +55,17 @@ public class DependencyGraphImpl implements DependencyGraph {
 
     public void removeCoordinate(Coordinate coordinate) {
         adjList.remove(coordinate);
+    }
 
+    @Override
+    public List<Coordinate> getIncomingEdges(Coordinate coord) {
+        List<Coordinate> incomingEdges = new ArrayList<>();
+        for (Map.Entry<Coordinate, List<Coordinate>> entry : adjList.entrySet()) {
+            if (entry.getValue().contains(coord)) {
+                incomingEdges.add(entry.getKey());
+            }
+        }
+        return incomingEdges;
     }
 
     private void topologicalSortUtil(Coordinate coord, Map<Coordinate, Boolean> visited,

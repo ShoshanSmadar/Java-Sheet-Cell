@@ -18,15 +18,12 @@ public class CellImpl implements Cell{
     private int lastVersionChanged;
     private String originalValue;
     private List<Coordinate> dependsOn;
-    private List<Coordinate> affecting;
 
     public CellImpl(Sheet sheet, int row, int column, String originalValue, int version)  {
         this.fatherSheet = sheet;
         this.coordinate = new CoordinateImpl(row, column);
         this.originalValue = originalValue;
         this.lastVersionChanged = version;
-        this.dependsOn = new ArrayList<>();
-        this.affecting = new ArrayList<>();
         calculateDependenciesFromString();;
     }
 
@@ -66,16 +63,6 @@ public class CellImpl implements Cell{
     }
 
     @Override
-    public List<Coordinate> getDependsOn() {
-        return dependsOn;
-    }
-
-    @Override
-    public List<Coordinate> getAffecting() {
-        return affecting;
-    }
-
-    @Override
     public void setCellOriginalValue(String value)
     {
         this.originalValue = value;
@@ -84,6 +71,14 @@ public class CellImpl implements Cell{
     @Override
     public void updateVersion(int version) {
         this.lastVersionChanged = version;
+    }
+
+    @Override
+    public CellDTO getConvertToCellDTO() {
+        return new CellDTO(this.coordinate, this.originalValue,
+                this.effectiveValue, this.lastVersionChanged,
+                this.fatherSheet.getCellDependingCoordinates(this.coordinate),
+                this.fatherSheet.getCellAfctingCoordinates(this.coordinate));
     }
 
     private void calculateDependenciesFromString() {

@@ -5,6 +5,8 @@ import coordinate.Coordinate;
 import coordinate.CoordinateFactory;
 import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
+import cell.CellDTO;
+import sheet.sheetDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,15 +16,19 @@ public class SheetImpl implements Sheet {
     private Map<Coordinate, Cell> cellMap;
     private int version;
     private final int sizeOfColumns;
+    private final int lengthOfColumns;
+    private final int hightOfRows;
     private final int sizeOfRows;
     private DependencyGraph coordinateGraph;
 
-    public SheetImpl(int sizeOfColumns, int sizeOfRows) {
+    public SheetImpl(int sizeOfColumns, int sizeOfRows, int hightOfRows, int lengthOfColumns) {
         cellMap = new HashMap<>();
         version = 0;
         this.sizeOfColumns = sizeOfColumns;
         this.sizeOfRows = sizeOfRows;
         coordinateGraph = new DependencyGraphImpl();
+        this.hightOfRows = hightOfRows;
+        this.lengthOfColumns = lengthOfColumns;
     }
 
     @Override
@@ -60,6 +66,29 @@ public class SheetImpl implements Sheet {
         cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
 
         return newSheetVersion;
+    }
+
+    @Override
+    public sheetDTO convertToSheetDTO() {
+        Map<Coordinate, CellDTO> cellDTOMap = new HashMap<>();
+        for (Map.Entry<Coordinate, Cell> entry : cellMap.entrySet()) {
+            Coordinate coord = entry.getKey();
+            Cell cell = entry.getValue();
+            CellDTO cellDTO = cell.getConvertToCellDTO();
+            cellDTOMap.put(coord, cellDTO);
+        }
+
+        return new sheetDTO(this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
+    }
+
+    @Override
+    public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate) {
+        return List.of();
+    }
+
+    @Override
+    public List<Coordinate> getCellAfctingCoordinates(Coordinate cellCoordinate) {
+        return List.of();
     }
 
     @Override

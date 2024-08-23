@@ -2,6 +2,7 @@ package sheet;
 import cell.Cell;
 import cell.CellImpl;
 import coordinate.Coordinate;
+import coordinate.CoordinateDTO;
 import coordinate.CoordinateFactory;
 import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
@@ -81,12 +82,17 @@ public class SheetImpl implements Sheet {
     }
 
     @Override
-    public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate) {
-        return this.coordinateGraph.getIncomingEdges(cellCoordinate);
+    public List<CoordinateDTO> getCellDependingCoordinatesDTO(Coordinate cellCoordinate) {
+        return this.coordinateGraph.getIncomingEdgesDTO(cellCoordinate);
     }
 
     @Override
-    public List<Coordinate> getCellAfctingCoordinates(Coordinate cellCoordinate) {
+    public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate) {
+        return this.coordinateGraph.getIncomingEdgesDTO(cellCoordinate);
+    }
+
+    @Override
+    public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate) {
         return this.coordinateGraph.getIncomingEdges(cellCoordinate);
     }
 

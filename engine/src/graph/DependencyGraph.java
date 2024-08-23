@@ -12,5 +12,5 @@ public interface DependencyGraph {
     public void ExpandGraph(Coordinate coordinate);
     public List<CoordinateDTO> getIncomingEdgesDTO(Coordinate coord);
     public List<CoordinateDTO> getOutgoingEdgesDTO(Coordinate coord);
-    public List<Coordinate> getOutgoingEdges(Coordinate coord);
+    public List<Coordinate> getIncomingEdges(Coordinate coord);
 }

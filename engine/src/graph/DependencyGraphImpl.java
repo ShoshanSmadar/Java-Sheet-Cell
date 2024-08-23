@@ -77,7 +77,7 @@ public class DependencyGraphImpl implements DependencyGraph {
     }
 
     @Override
-    public List<Coordinate> getOutgoingEdges(Coordinate coord) {
+    public List<Coordinate> getIncomingEdges(Coordinate coord) {
         return this.adjList.get(coord);
     }
 

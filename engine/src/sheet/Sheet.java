@@ -1,6 +1,7 @@
 package sheet;
 import cell.Cell;
 import coordinate.Coordinate;
+import coordinate.CoordinateDTO;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ public interface Sheet {
     public void increaseVersion();
     public Sheet UpdateCellValueAndSheet(int row, int col, String value) throws Exception;
     public sheetDTO convertToSheetDTO();
+    public List<CoordinateDTO> getCellDependingCoordinatesDTO(Coordinate cellCoordinate);
+    public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate);
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate);
-    public List<Coordinate> getCellAfctingCoordinates(Coordinate cellCoordinate);
-
 
 
 

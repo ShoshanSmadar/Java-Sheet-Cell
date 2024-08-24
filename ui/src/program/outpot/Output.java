@@ -22,7 +22,7 @@ public class Output {
     }
 
     public static void printChooseCell(int row, int col){
-        System.out.println("Please enter wanted Cell, columns between A-"+String.valueOf('A'+ col)+"rows between 1-"+row+"\n(enter capital letter and then number for example A4):");
+        System.out.println("Please enter wanted Cell, columns between A-"+(char)('A'+ col -1)+" rows between 1-"+row+"\n(enter capital letter and then number for example A4):");
     }
 
     public static void printCellIsEmpty(CoordinateDTO coordinate)
@@ -67,6 +67,11 @@ public class Output {
 
     public static void printExeptionMessage(Exception e){
         System.out.println(e.getMessage());
+    }
+
+    public static void printWrongInput()
+    {
+        System.out.println("Wrong Input! Please try again.");
     }
 
     public static void printSheetRow(String sheetRow){

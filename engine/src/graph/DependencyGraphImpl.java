@@ -3,14 +3,34 @@ package graph;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DependencyGraphImpl implements DependencyGraph {
+public class DependencyGraphImpl implements DependencyGraph, Serializable {
     private Map<Coordinate, List<Coordinate>> adjList;
 
     public DependencyGraphImpl() {
         this.adjList = new HashMap<>();
+    }
+
+    @Override
+    public DependencyGraph clone()
+    {
+        try{
+            DependencyGraphImpl newGraph = (DependencyGraphImpl) super.clone();
+            newGraph.adjList = new HashMap<>();
+            for(Map.Entry<Coordinate, List<Coordinate>> entry : this.adjList.entrySet()) {
+               Coordinate from = entry.getKey();
+               List<Coordinate> to = new ArrayList<>();
+               to.add(entry.getKey().clone());
+               newGraph.adjList.put(from, to);
+            }
+            return newGraph;
+        }
+        catch(CloneNotSupportedException e){
+            return null;
+        }
     }
 
 

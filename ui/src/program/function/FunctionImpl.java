@@ -162,22 +162,31 @@ public class FunctionImpl implements ProgramFunctions{
 
         int number;
         try {
-            number = Integer.parseInt(numberPart) + 1;
+            number = Integer.parseInt(numberPart);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Part after capital letter must be a number, but gut " + numberPart);
         }
 
-        int letterAsNumber = letter - 'A' + 1;
+        int letterAsNumber = letter - 'A';
 
-        return new CoordinateDTO(number, letterAsNumber);
+        return new CoordinateDTO(number - 1, letterAsNumber);
     }
 
     @Override
-    public boolean updateCell(Engine sheetProgram) {
+    public void updateCell(Engine sheetProgram) {
         CoordinateDTO CellCoordinates = getCellCoordinates(sheetProgram.getSheetDTO().getSizeOfRows(),
                 sheetProgram.getSheetDTO().getSizeOfColumns());
-        //TODO!
-        return false;
+        try{
+            sheetProgram.changeCell(CellCoordinates, getExpression());
+        }
+        catch (Exception e) {
+            Output.printExeptionMessage(e);
+        }
+    }
+
+    public String getExpression(){
+        Output.printAskForCellFunction();
+        return scanner.next();
     }
 
     @Override

@@ -7,7 +7,7 @@ import coordinate.Coordinate;
 
 import java.util.List;
 
-public interface Cell {
+public interface Cell extends Cloneable{
     Coordinate getCoordinate();
     CellType getCellType();
     EffectiveValue getEffectiveValue();
@@ -16,5 +16,5 @@ public interface Cell {
     void setCellOriginalValue(String value);
     void updateVersion(int version);
     CellDTO getConvertToCellDTO();
-
+    Cell clone();
 }

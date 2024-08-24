@@ -23,6 +23,6 @@ public class CoordinateDTO {
 
     @Override
     public String toString() {
-        return String.valueOf('A' + col) + row;
+        return (char)('A' + col) + String.valueOf(row + 1);
     }
 }

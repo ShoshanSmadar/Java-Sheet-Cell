@@ -1,14 +1,25 @@
 package coordinate;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CoordinateImpl implements Coordinate {
+public class CoordinateImpl implements Coordinate, Cloneable {
     private final int row;
     private final int column;
 
     public CoordinateImpl(int row, int column) {
         this.row = row;
         this.column = column;
+    }
+
+    @Override
+    public CoordinateImpl clone() {
+        try{
+            return (CoordinateImpl) super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     @Override

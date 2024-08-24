@@ -19,7 +19,9 @@ public class ProgramImpl implements Program{
     private ProgramFunctions functions = new FunctionImpl();
 
     public ProgramImpl() {
-        sheetProgram = new EngineImpl(new SheetDTO("first try", 0, new HashMap<>(), 10, 5, 15, 2 ), "first try");
+        sheetProgram = new EngineImpl(new SheetDTO("first try", 0
+                , new HashMap<>(), 10, 5, 15, 2 )
+                , "first try");
     }
 
     @Override
@@ -30,9 +32,13 @@ public class ProgramImpl implements Program{
         while(true)
         {
             Output.printMenu();
-            userChoice = scanner.nextInt();
             try {
+                userChoice = scanner.nextInt();
                 optionSelect(userChoice - 1);
+            }
+            catch (InputMismatchException e) {
+                Output.printWrongInput();
+                scanner.nextLine(); // clear wrong input
             }
             catch (Exception e)
             {
@@ -58,7 +64,8 @@ public class ProgramImpl implements Program{
         else if (userChoice == ProgramOption.EXPLAIN_FUNCTIONS.ordinal())
             functions.explainFunctions();
         else
-            throw new IllegalArgumentException("Expected a number between 1 to " + ProgramOption.values().length + ". but got" + userChoice);
+            throw new IllegalArgumentException("Expected a number between 1 to "
+                    + ProgramOption.values().length + ". but got " + (userChoice + 1));
     }
 
 

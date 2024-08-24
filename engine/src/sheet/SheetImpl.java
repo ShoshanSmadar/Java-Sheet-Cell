@@ -8,11 +8,12 @@ import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
 import cell.CellDTO;
 
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class SheetImpl implements Sheet {
+public class SheetImpl implements Sheet, Cloneable {
     private String sheetName;
     private Map<Coordinate, Cell> cellMap;
     private int version;
@@ -23,14 +24,33 @@ public class SheetImpl implements Sheet {
     private DependencyGraph coordinateGraph;
 
     public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows, int hightOfRows, int lengthOfColumns) {
-        sheetName = sheetName;
-        cellMap = new HashMap<>();
-        version = 0;
+        this.sheetName = sheetName;
+        this.cellMap = new HashMap<>();
+        this.version = 0;
         this.sizeOfColumns = sizeOfColumns;
         this.sizeOfRows = sizeOfRows;
-        coordinateGraph = new DependencyGraphImpl();
+        this.coordinateGraph = new DependencyGraphImpl();
         this.hightOfRows = hightOfRows;
         this.lengthOfColumns = lengthOfColumns;
+    }
+
+    @Override
+    public SheetImpl clone(){
+        try{
+            SheetImpl newSheet = (SheetImpl) super.clone();
+            newSheet.cellMap = new HashMap<>();
+            for(Map.Entry<Coordinate, Cell> entry : this.cellMap.entrySet()){
+                Coordinate coordinate = entry.getKey();
+                Cell cell = entry.getValue().clone();
+                newSheet.cellMap.put(coordinate, cell);
+            }
+            newSheet.coordinateGraph = this.coordinateGraph.clone();
+
+            return newSheet;
+        }
+        catch(CloneNotSupportedException e){
+            return null;
+        }
     }
 
     @Override
@@ -99,8 +119,7 @@ public class SheetImpl implements Sheet {
     }
 
     @Override
-    public void increaseVersion()
-    {
+    public void increaseVersion() {
         this.version++;
     }
 
@@ -118,8 +137,7 @@ public class SheetImpl implements Sheet {
     }
 
     private SheetImpl copySheet() {
-        //TODO!!
-        return null;
+        return this.clone();
     }
 
     @Override

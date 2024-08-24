@@ -3,16 +3,19 @@ package cell;
 import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import coordinate.Coordinate;
+import coordinate.CoordinateFactory;
 import coordinate.CoordinateImpl;
 import expression.Expression;
 import expression.parser.FunctionParser;
 import sheet.Sheet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class CellImpl implements Cell{
-    private Sheet fatherSheet;
+public class CellImpl implements Cell, Cloneable {
+    private final Sheet fatherSheet;
     private Coordinate coordinate;
     private EffectiveValue effectiveValue;
     private int lastVersionChanged;
@@ -24,7 +27,24 @@ public class CellImpl implements Cell{
         this.coordinate = new CoordinateImpl(row, column);
         this.originalValue = originalValue;
         this.lastVersionChanged = version;
-        calculateDependenciesFromString();;
+        this.dependsOn = new ArrayList<>();
+        calculateDependenciesFromString();
+    }
+
+    @Override
+    public CellImpl clone(){
+        try{
+            CellImpl newCell = (CellImpl) super.clone();
+            newCell.coordinate = CoordinateFactory.createCoordinate(this.coordinate.getRow(), this.coordinate.getColumn());
+            newCell.dependsOn = new ArrayList<>();
+            for (Coordinate coord :  this.dependsOn) {
+                newCell.dependsOn.add(CoordinateFactory.createCoordinate(coord.getRow(), coord.getColumn()));
+            }
+            return newCell;
+        }
+        catch (CloneNotSupportedException e){
+            return null;
+        }
     }
 
     @Override
@@ -105,7 +125,7 @@ public class CellImpl implements Cell{
                 }
                 int col = uppercaseLetter - 'A';
 
-                dependsOn.add(new CoordinateImpl(row, col));
+                this.dependsOn.add(new CoordinateImpl(row, col));
                 index = endIndex + 1;
             } else {
                 break; // No more closing braces found

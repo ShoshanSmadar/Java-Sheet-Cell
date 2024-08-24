@@ -3,6 +3,7 @@ import cell.Cell;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface Sheet {

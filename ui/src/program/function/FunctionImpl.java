@@ -80,7 +80,7 @@ public class FunctionImpl implements ProgramFunctions{
 
         // Iterate through the number of columns
         for (int i = 0; i < numberOfCols; i++) {
-            CoordinateDTO coordinate = new CoordinateDTO(i, rowNumber);
+            CoordinateDTO coordinate = new CoordinateDTO(rowNumber, i);
             if (sheet.getCellMap().containsKey(coordinate))
             {
                 String cellValue = getStringValue(sheet.getCellMap().get(coordinate));

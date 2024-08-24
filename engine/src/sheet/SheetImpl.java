@@ -92,9 +92,9 @@ public class SheetImpl implements Sheet, Cloneable {
 
     @Override
     public SheetDTO convertToSheetDTO() {
-        Map<Coordinate, CellDTO> cellDTOMap = new HashMap<>();
+        Map<CoordinateDTO, CellDTO> cellDTOMap = new HashMap<>();
         for (Map.Entry<Coordinate, Cell> entry : cellMap.entrySet()) {
-            Coordinate coord = entry.getKey();
+            CoordinateDTO coord = entry.getKey().convertToDTO();
             Cell cell = entry.getValue();
             CellDTO cellDTO = cell.getConvertToCellDTO();
             cellDTOMap.put(coord, cellDTO);

@@ -11,13 +11,13 @@ public class SheetDTO {
     protected String SheetName;
     protected int sheetVersion;
     protected String sheetName;
-    protected Map<Coordinate, CellDTO> cellMap;
+    protected Map<CoordinateDTO, CellDTO> cellMap;
     protected int sizeOfColumns;
     protected int lengthOfCol;
     protected int sizeOfRows;
     protected int heightOfRow;
 
-    public SheetDTO(String sheetName, int sheetVersion, Map<Coordinate, CellDTO> cellMap, int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
+    public SheetDTO(String sheetName, int sheetVersion, Map<CoordinateDTO, CellDTO> cellMap, int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
         this.SheetName = sheetName;
         this.sheetVersion = sheetVersion;
         this.cellMap = cellMap;
@@ -32,10 +32,10 @@ public class SheetDTO {
     }
 
     public int getSheetVersion() {
-        return sheetVersion;
+        return sheetVersion + 1;
     }
 
-    public Map<Coordinate, CellDTO> getCellMap() {
+    public Map<CoordinateDTO, CellDTO> getCellMap() {
         return cellMap;
     }
 
@@ -55,7 +55,7 @@ public class SheetDTO {
         return heightOfRow;
     }
 
-    public void setCellMap(Map<Coordinate, CellDTO> cellMap) {
+    public void setCellMap(Map<CoordinateDTO, CellDTO> cellMap) {
         this.cellMap = cellMap;
     }
 

@@ -32,7 +32,7 @@ public class CellDTO {
         return effectiveValue;
     }
     public int getLastVersionChanged() {
-        return lastVersionChanged;
+        return lastVersionChanged + 1;
     }
     public List<CoordinateDTO> getAffectedBy() {
         return affectedBy;

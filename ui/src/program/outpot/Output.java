@@ -1,5 +1,9 @@
 package program.outpot;
 
+import cell.Cell;
+import cell.CellDTO;
+import coordinate.CoordinateDTO;
+
 public class Output {
     public static void printWelcome(){
         System.out.println("Welcome to Java Sheet Cell!\nPlease Enter XML file to start.");
@@ -17,8 +21,33 @@ public class Output {
         System.out.println("7. HELP - Function explantion");
     }
 
-    public static void printCellChoose(){
-        System.out.println("Please enter wanted Cell\n(enter capital letter and then number for example A4):");
+    public static void printChooseCell(int row, int col){
+        System.out.println("Please enter wanted Cell, columns between A-"+String.valueOf('A'+ col)+"rows between 1-"+row+"\n(enter capital letter and then number for example A4):");
+    }
+
+    public static void printCellIsEmpty(CoordinateDTO coordinate)
+    {
+        System.out.println("Cell " + coordinate.toString() + " is empty.");
+    }
+
+    public static void printCell(CellDTO cell){
+        System.out.println("showing cell information:");
+        System.out.println("Cell coordinates: "+cell.getCoordinate().toString());
+        System.out.println("Original value: "+cell.getOriginalValue());
+        System.out.println("Effective value: " + cell.getEffectiveValue());
+        System.out.println("Last version this cell was changes in " + cell.getLastVersionChanged());
+        if (cell.getAffectedBy().size() == 0) {
+            System.out.println("Cell is not depending on any other cells");
+        }
+        else{
+            System.out.println("Cell is depending on this Cells: "+ cell.getAffectedBy().stream().toString());
+        }
+        if (cell.getAffecting().size() == 0) {
+            System.out.println("Cell is not affecting any other cells\n");
+        }
+        else{
+            System.out.println("Cell is affecting this Cells: "+ cell.getAffectedBy().stream().toString() + "\n");
+        }
     }
 
     public static void printAskForCellFunction(){

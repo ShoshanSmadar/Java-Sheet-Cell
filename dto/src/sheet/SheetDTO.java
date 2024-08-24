@@ -2,6 +2,7 @@ package sheet;
 
 import coordinate.Coordinate;
 import cell.CellDTO;
+import coordinate.CoordinateDTO;
 
 import java.util.Map;
 
@@ -79,7 +80,11 @@ public class SheetDTO {
     }
 
     public Sheet createSheetFromDTO(){
-        //TODO!!!
-        return null;
+        return new SheetImpl(this.getSheetName(),this.sizeOfColumns, this.sizeOfRows, this.heightOfRow, this.lengthOfCol);
+    }
+
+    public CellDTO getCell(CoordinateDTO coordinate)
+    {
+        return cellMap.get(coordinate);
     }
 }

@@ -22,6 +22,11 @@ public class CoordinateImpl implements Coordinate {
     }
 
     @Override
+    public CoordinateDTO convertToDTO() {
+        return new CoordinateDTO(row, column);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

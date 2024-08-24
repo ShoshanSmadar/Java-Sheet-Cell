@@ -20,4 +20,9 @@ public class CoordinateDTO {
     public int getCol() {
         return col;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf('A' + col) + row;
+    }
 }

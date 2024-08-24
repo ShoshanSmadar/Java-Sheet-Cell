@@ -80,7 +80,7 @@ public class SheetImpl implements Sheet {
             cellDTOMap.put(coord, cellDTO);
         }
 
-        return new SheetDTO(this.sheetName, this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.hightOfRows, this.sizeOfRows);
+        return new SheetDTO(this.sheetName, this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.sizeOfRows, this.hightOfRows);
     }
 
     @Override

@@ -2,11 +2,15 @@ package program.function;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import engine.Engine;
 import program.outpot.Output;
 import sheet.SheetDTO;
 
+import java.util.Scanner;
+
 public class FunctionImpl implements ProgramFunctions{
     public FunctionImpl() {}
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public boolean addFile() {
@@ -18,14 +22,14 @@ public class FunctionImpl implements ProgramFunctions{
         Output.printSheetStatments(sheet.getSheetVersion(), sheet.getSheetName());
         printFirstRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns());
 
-        int rowsBefore = (sheet.getSizeOfRows() - 1) / 2;
-        int rowsAfter = sheet.getSizeOfRows() - 1 - rowsBefore;
+        int rowsBefore = (sheet.getHeightOfRow() - 1) / 2;
+        int rowsAfter = sheet.getHeightOfRow() - 1 - rowsBefore;
 
         for(int i = 0; i < sheet.getSizeOfRows(); i++) {
             for(int j = 0; j < rowsBefore; j++) {
                 printEmptyCellRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns());
             }
-            printCellRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns(), i, sheet);
+            printCellRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns(), i + 1, sheet);
             for(int j = 0; j < rowsAfter; j++) {
                 printEmptyCellRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns());
             }
@@ -126,12 +130,53 @@ public class FunctionImpl implements ProgramFunctions{
     }
 
     @Override
-    public void showCell() {
+    public void showCell(SheetDTO sheet) {
+        CoordinateDTO coordinate = getCellCoordinates(sheet.getSizeOfRows(), sheet.getSizeOfColumns());
+        CellDTO cell = sheet.getCell(coordinate);
+        if (cell == null) {
+            Output.printCellIsEmpty(coordinate);
+        }
+        else {
+            Output.printCell(cell);
+        }
+    }
 
+    private CoordinateDTO getCellCoordinates(int row, int col)
+    {
+        Output.printChooseCell(row, col);
+        return readCellChoice(scanner.next());
+    }
+
+    private CoordinateDTO readCellChoice(String input)
+    {
+        if (input == null || input.length() < 2) {
+            throw new IllegalArgumentException("Input must be a capital letter followed by a number.");
+        }
+
+        char letter = input.charAt(0);
+        String numberPart = input.substring(1);
+
+        if (letter < 'A' || letter > 'Z') {
+            throw new IllegalArgumentException("First character must be a capital letter (A-Z), but gut " + letter);
+        }
+
+        int number;
+        try {
+            number = Integer.parseInt(numberPart) + 1;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Part after capital letter must be a number, but gut " + numberPart);
+        }
+
+        int letterAsNumber = letter - 'A' + 1;
+
+        return new CoordinateDTO(number, letterAsNumber);
     }
 
     @Override
-    public boolean updateCell() {
+    public boolean updateCell(Engine sheetProgram) {
+        CoordinateDTO CellCoordinates = getCellCoordinates(sheetProgram.getSheetDTO().getSizeOfRows(),
+                sheetProgram.getSheetDTO().getSizeOfColumns());
+        //TODO!
         return false;
     }
 

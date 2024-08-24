@@ -7,5 +7,5 @@ public enum ProgramOption {
     UPDATE_CELL,
     SHOW_VERSION,
     EXIT,
-    EXPLAIN_FNCTIONS;
+    EXPLAIN_FUNCTIONS;
 }

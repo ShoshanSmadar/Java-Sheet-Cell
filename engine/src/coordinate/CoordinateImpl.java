@@ -23,6 +23,11 @@ public class CoordinateImpl implements Coordinate, Cloneable {
     }
 
     @Override
+    public String toString() {
+        return new StringBuilder().append(String.valueOf((char) ('A' + column))).append(String.valueOf(row + 1)).toString();
+    }
+
+    @Override
     public int getRow() {
         return row;
     }

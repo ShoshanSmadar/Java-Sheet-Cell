@@ -17,4 +17,5 @@ public interface Cell extends Cloneable{
     void updateVersion(int version);
     CellDTO getConvertToCellDTO();
     Cell clone();
+    List<Coordinate> getdependingOn();
 }

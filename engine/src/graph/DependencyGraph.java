@@ -11,7 +11,7 @@ public interface DependencyGraph extends Cloneable{
     public void removeEdge(Coordinate from, Coordinate to);
     public List<Coordinate> topologicalSort() throws Exception;
     public void ExpandGraph(Coordinate coordinate);
-    public void ExpandGraph(Coordinate coordinate, List<Coordinate> coordinateDependencies);
+    public void ExpandGraph(Coordinate coordinateThatPoints, Coordinate coordinate);
     public List<CoordinateDTO> getIncomingEdgesDTO(Coordinate coord);
     public List<CoordinateDTO> getOutgoingEdgesDTO(Coordinate coord);
     public List<Coordinate> getIncomingEdges(Coordinate coord);

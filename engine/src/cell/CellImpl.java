@@ -9,9 +9,7 @@ import expression.Expression;
 import expression.parser.FunctionParser;
 import sheet.Sheet;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CellImpl implements Cell, Cloneable {
@@ -46,6 +44,11 @@ public class CellImpl implements Cell, Cloneable {
         catch (CloneNotSupportedException e){
             return null;
         }
+    }
+
+    @Override
+    public List<Coordinate> getdependingOn() {
+        return this.dependsOn;
     }
 
     @Override
@@ -104,7 +107,7 @@ public class CellImpl implements Cell, Cloneable {
     }
 
     private void calculateDependenciesFromString() {
-        String patternStart = "\\{\\s*REF\\s*,";
+        String patternStart = "{REF,";
         char endChar = '}';
         int index = 0;
 
@@ -121,7 +124,7 @@ public class CellImpl implements Cell, Cloneable {
 
                 int row;
                 try {
-                    row = Integer.parseInt(number);
+                    row = Integer.parseInt(number) - 1;
                 } catch (NumberFormatException e) {
                     continue;
                 }

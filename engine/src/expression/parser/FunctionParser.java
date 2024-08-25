@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import static java.lang.Character.isLetter;
+
 public enum FunctionParser {
     Base {
         @Override
@@ -186,20 +188,20 @@ public enum FunctionParser {
             checkNumberOfArguments(1, arguments.size(), "REF");
 
             String input = arguments.get(0).trim();
-            char uppercaseLetter = input.charAt(0);
-            if(!Character.isUpperCase(uppercaseLetter)) {
-                throw new IllegalArgumentException("Invalid argument for cell name, expected an upper case letter but got" + uppercaseLetter);
+            char Letter = input.charAt(0);
+            if(!isLetter(Letter)) {
+                throw new IllegalArgumentException("Invalid argument for cell name, expected a letter but got" + Letter);
             }
             String number = input.substring(1);
 
             int row;
             try{
-                row = Integer.parseInt(number);
+                row = Integer.parseInt(number) - 1;
             }
             catch(NumberFormatException e){
                 throw new IllegalArgumentException("Invalid argument for cell name, expected a number but got" + number);
             }
-            int col = uppercaseLetter - 'A';
+            int col = Character.toUpperCase(Letter) - 'A';
 
             return new RefExpression(row, col);
         }
@@ -209,7 +211,7 @@ public enum FunctionParser {
 
     private static void checkNumberOfArguments(int expected, int actual, String nameOfFunction) {
         if (actual != expected) {
-            throw new IllegalArgumentException("Invalid number of arguments for" + nameOfFunction+ " function, Expected "+ expected +", but got " + actual);
+            throw new IllegalArgumentException("Invalid number of arguments for " + nameOfFunction+ " function, Expected "+ expected +", but got " + actual);
         }
     }
 

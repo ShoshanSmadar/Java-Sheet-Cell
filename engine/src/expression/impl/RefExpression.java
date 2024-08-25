@@ -17,7 +17,7 @@ public class RefExpression implements Expression {
 
     @Override
     public EffectiveValue eval(Sheet sheet) {
-        return new EffectiveValueImpl(CellType.UNKNOWN, sheet.getCell(row, col).getEffectiveValue());
+        return new EffectiveValueImpl(CellType.UNKNOWN, sheet.getCell(row, col).getEffectiveValue().getValue());
     }
 
     @Override

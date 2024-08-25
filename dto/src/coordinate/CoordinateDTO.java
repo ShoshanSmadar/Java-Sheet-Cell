@@ -20,6 +20,7 @@ public class CoordinateDTO {
     }
 
     public int getCol() {
+
         return col;
     }
 

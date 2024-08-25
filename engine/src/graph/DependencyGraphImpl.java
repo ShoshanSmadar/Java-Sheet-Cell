@@ -22,8 +22,7 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
             newGraph.adjList = new HashMap<>();
             for(Map.Entry<Coordinate, List<Coordinate>> entry : this.adjList.entrySet()) {
                Coordinate from = entry.getKey();
-               List<Coordinate> to = new ArrayList<>();
-               to.add(entry.getKey().clone());
+               List<Coordinate> to = new ArrayList<>(entry.getValue());
                newGraph.adjList.put(from, to);
             }
             return newGraph;
@@ -69,14 +68,18 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
 
     @Override
     public void ExpandGraph(Coordinate coordinate) {
-
+        if(!adjList.containsKey(coordinate)) {
+            adjList.put(coordinate, new ArrayList<>());
+        }
     }
 
 
     @Override
-    public void ExpandGraph(Coordinate coordinate, List<Coordinate> coordinatesDependencies) {
-        adjList.remove(coordinate);
-        adjList.put(coordinate, coordinatesDependencies);
+    public void ExpandGraph(Coordinate coordinateThatPoints, Coordinate coordinate){
+        if(!adjList.containsKey(coordinateThatPoints)) {
+            adjList.put(coordinateThatPoints, new ArrayList<>());
+        }
+        adjList.get(coordinateThatPoints).add(coordinate);
     }
 
     public void removeCoordinate(Coordinate coordinate) {

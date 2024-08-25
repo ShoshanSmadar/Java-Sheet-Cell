@@ -1,6 +1,7 @@
 package program.function;
 
 import cell.CellDTO;
+import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 import engine.Engine;
 import program.outpot.Output;
@@ -8,6 +9,8 @@ import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
 import java.util.Scanner;
+
+import static java.lang.Character.isUpperCase;
 
 public class FunctionImpl implements ProgramFunctions{
     public FunctionImpl() {}
@@ -87,8 +90,8 @@ public class FunctionImpl implements ProgramFunctions{
                 String cellValue = getStringValue(sheet.getCellMap().get(coordinate));
                 if (cellValue.length() > colLength)
                 {
-                    cellValue = cellValue.substring(0, colLength - 3);
-                    cellValue = cellValue + "...";
+                    cellValue = cellValue.substring(0, colLength - 2);
+                    cellValue = cellValue + "..";
                     rowBuilder.append(cellValue).append("|");
                 }
                 else
@@ -120,7 +123,7 @@ public class FunctionImpl implements ProgramFunctions{
         }
         else if (cell.getEffectiveValue() instanceof Boolean)
         {
-            cellValue = cell.getEffectiveValue().toString();
+            cellValue = cell.getEffectiveValue().toString().toUpperCase();
         }
         else
         {
@@ -142,10 +145,19 @@ public class FunctionImpl implements ProgramFunctions{
         }
     }
 
+    private void checkIfCoordinateIsInSheet(int row, int col, CoordinateDTO coor)
+    {
+        if(row < 0 || coor.getRow() > row || coor.getCol() > col || coor.getCol() < 0){
+            throw new IndexOutOfBoundsException("The coordinate given " + coor.toString() + " is out of sheet scope.\ncommand failed.");
+        }
+    }
+
     private CoordinateDTO getCellCoordinates(int row, int col)
     {
         Output.printChooseCell(row, col);
-        return readCellChoice(scanner.next());
+        CoordinateDTO coordinateDTO = readCellChoice(scanner.next());
+        checkIfCoordinateIsInSheet(row, col, coordinateDTO);
+        return coordinateDTO;
     }
 
     private CoordinateDTO readCellChoice(String input)
@@ -154,11 +166,11 @@ public class FunctionImpl implements ProgramFunctions{
             throw new IllegalArgumentException("Input must be a capital letter followed by a number.");
         }
 
-        char letter = input.charAt(0);
+        char letter = Character.toUpperCase(input.charAt(0));
         String numberPart = input.substring(1);
 
-        if (letter < 'A' || letter > 'Z') {
-            throw new IllegalArgumentException("First character must be a capital letter (A-Z), but gut " + letter);
+        if (!isUpperCase(letter)) {
+            throw new IllegalArgumentException("First character must be a  letter (a-z or A-Z), but gut " + letter);
         }
 
         int number;
@@ -179,6 +191,7 @@ public class FunctionImpl implements ProgramFunctions{
                 sheetProgram.getSheetDTO().getSizeOfColumns());
         try{
             sheetProgram.changeCell(CellCoordinates, getExpression());
+            showSheet(sheetProgram.getSheetDTO());
         }
         catch (Exception e) {
             Output.printExeptionMessage(e);

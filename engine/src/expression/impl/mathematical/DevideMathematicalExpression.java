@@ -20,7 +20,11 @@ public class DevideMathematicalExpression implements Expression {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
 
-        double result = leftValue.extractValueWithExpectation(Double.class) / rightValue.extractValueWithExpectation(Double.class);
+        double rightValueExtracted = rightValue.extractValueWithExpectation(Double.class);
+        if (rightValueExtracted == 0.0) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
+        double result = leftValue.extractValueWithExpectation(Double.class) /rightValueExtracted ;
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);
     }

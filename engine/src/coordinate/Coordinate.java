@@ -5,4 +5,5 @@ public interface Coordinate extends Cloneable{
     int getColumn();
     CoordinateDTO convertToDTO();
     Coordinate clone();
+    String toString();
 }

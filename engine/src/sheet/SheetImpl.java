@@ -73,7 +73,11 @@ public class SheetImpl implements Sheet, Cloneable {
 
         SheetImpl newSheetVersion = (SheetImpl) this.clone();
         Cell newCell = new CellImpl(newSheetVersion, row, col, value, newSheetVersion.getVersion() + 1);
-        newSheetVersion.cellMap.remove(coordinate);
+        for(Coordinate corr : newCell.getdependingOn()){
+            if(!this.cellMap.containsKey(corr)){
+                throw new IllegalArgumentException("The referenced coordinate " + coordinate.toString() + " is empty, command failed.");
+            }
+        }
         newSheetVersion.cellMap.put(coordinate, newCell);
 
         List<Cell> cellsThatHaveChanged =
@@ -120,7 +124,10 @@ public class SheetImpl implements Sheet, Cloneable {
 
     @Override
     public void enterCoordinateAndDependenciesToGraph(Coordinate cellCoordinate, List<Coordinate> coordinateDependencies) {
-        this.coordinateGraph.ExpandGraph(cellCoordinate, coordinateDependencies);
+        this.coordinateGraph.ExpandGraph(cellCoordinate);
+        for(Coordinate coordinateThatPointsTo : coordinateDependencies){
+            this.coordinateGraph.ExpandGraph(coordinateThatPointsTo, cellCoordinate);
+        }
     }
 
     @Override

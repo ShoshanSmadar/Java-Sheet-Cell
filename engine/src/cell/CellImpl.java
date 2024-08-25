@@ -29,6 +29,7 @@ public class CellImpl implements Cell, Cloneable {
         this.lastVersionChanged = version;
         this.dependsOn = new ArrayList<>();
         calculateDependenciesFromString();
+        sheet.enterCoordinateAndDependenciesToGraph(coordinate, this.dependsOn);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class CellImpl implements Cell, Cloneable {
 
     @Override
     public EffectiveValue getEffectiveValue() {
+        boolean bool = calculateEffectiveValue();
         return effectiveValue;
     }
 
@@ -77,7 +79,7 @@ public class CellImpl implements Cell, Cloneable {
         if (newEffectiveValue.equals(effectiveValue)) {
             return false;
         } else {
-            effectiveValue = newEffectiveValue;
+            this.effectiveValue = newEffectiveValue;
             return true;
         }
     }
@@ -96,7 +98,7 @@ public class CellImpl implements Cell, Cloneable {
     @Override
     public CellDTO getConvertToCellDTO() {
         return new CellDTO(this.coordinate.convertToDTO(), this.originalValue,
-                this.effectiveValue, this.lastVersionChanged,
+                this.effectiveValue.getValue(), this.lastVersionChanged,
                 this.fatherSheet.getCellDependingCoordinatesDTO(this.coordinate),
                 this.fatherSheet.getCellAfctingCoordinates(this.coordinate));
     }

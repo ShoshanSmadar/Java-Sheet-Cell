@@ -119,6 +119,11 @@ public class SheetImpl implements Sheet, Cloneable {
     }
 
     @Override
+    public void enterCoordinateAndDependenciesToGraph(Coordinate cellCoordinate, List<Coordinate> coordinateDependencies) {
+        this.coordinateGraph.ExpandGraph(cellCoordinate, coordinateDependencies);
+    }
+
+    @Override
     public void increaseVersion() {
         this.version++;
     }
@@ -153,7 +158,7 @@ public class SheetImpl implements Sheet, Cloneable {
     }
 
     private List<Coordinate> getCalculationOrder() throws Exception{
-        return this.coordinateGraph.topologicalSort();
+        return this.coordinateGraph.topologicalOrder();
     }
 
     private List<Cell> getCellsByCalculationOrder() throws Exception{

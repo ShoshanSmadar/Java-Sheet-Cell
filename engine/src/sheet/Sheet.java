@@ -19,6 +19,7 @@ public interface Sheet {
     public List<CoordinateDTO> getCellDependingCoordinatesDTO(Coordinate cellCoordinate);
     public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate);
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate);
+    public void enterCoordinateAndDependenciesToGraph(Coordinate cellCoordinate, List<Coordinate> coordinateDependencies);
 
 
 

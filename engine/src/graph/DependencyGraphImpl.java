@@ -67,12 +67,16 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         return sortedCoordinates;
     }
 
-
     @Override
     public void ExpandGraph(Coordinate coordinate) {
-        if (!adjList.containsKey(coordinate)) {
-            adjList.put(coordinate, new ArrayList<>());
-        }
+
+    }
+
+
+    @Override
+    public void ExpandGraph(Coordinate coordinate, List<Coordinate> coordinatesDependencies) {
+        adjList.remove(coordinate);
+        adjList.put(coordinate, coordinatesDependencies);
     }
 
     public void removeCoordinate(Coordinate coordinate) {
@@ -99,6 +103,44 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
     @Override
     public List<Coordinate> getIncomingEdges(Coordinate coord) {
         return this.adjList.get(coord);
+    }
+
+    @Override
+    public List<Coordinate> topologicalOrder() throws IllegalStateException {
+        Map<Coordinate, Boolean> visited = new HashMap<>();
+        Map<Coordinate, Boolean> inPath = new HashMap<>();
+        List<Coordinate> order = new ArrayList<>();
+
+        for (Coordinate node : adjList.keySet()) {
+            if (!visited.containsKey(node)) {
+                if (!dfs(node, visited, inPath, order)) {
+                    throw new IllegalStateException("A Cycle was detected in the sheet, cells are depending on each other. Command was cancelled.");
+                }
+            }
+        }
+        Collections.reverse(order);
+        return order;
+    }
+
+    private boolean dfs(Coordinate node, Map<Coordinate, Boolean> visited, Map<Coordinate, Boolean> inPath, List<Coordinate> order) {
+        visited.put(node, true);
+        inPath.put(node, true);
+
+        if (adjList.containsKey(node)) {
+            for (Coordinate neighbor : adjList.get(node)) {
+                if (!visited.containsKey(neighbor)) {
+                    if (!dfs(neighbor, visited, inPath, order)) {
+                        return false;
+                    }
+                } else if (inPath.get(neighbor)) {
+                    return false;
+                }
+            }
+        }
+
+        inPath.put(node, false);
+        order.add(node);
+        return true;
     }
 
     private void topologicalSortUtil(Coordinate coord, Map<Coordinate, Boolean> visited,

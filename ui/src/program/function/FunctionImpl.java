@@ -109,13 +109,13 @@ public class FunctionImpl implements ProgramFunctions{
     {
         String cellValue;
 
-        if(cell.getEffectiveValue() instanceof Integer)
+        if (cell.getEffectiveValue() instanceof Integer)
         {
             cellValue = cell.getEffectiveValue().toString();
         }
         else if (cell.getEffectiveValue() instanceof Double)
         {
-            cellValue = String.format("%.2f", cell.getEffectiveValue());
+            cellValue = String.format("%.2f", (Double) cell.getEffectiveValue());
         }
         else if (cell.getEffectiveValue() instanceof Boolean)
         {
@@ -123,7 +123,7 @@ public class FunctionImpl implements ProgramFunctions{
         }
         else
         {
-            cellValue = cell.getEffectiveValue().toString();
+            cellValue = (String) cell.getEffectiveValue();
         }
 
         return cellValue;
@@ -196,7 +196,7 @@ public class FunctionImpl implements ProgramFunctions{
 
     @Override
     public void exitProgram() {
-
+        System.exit(0);
     }
 
     @Override

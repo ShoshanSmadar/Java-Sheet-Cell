@@ -6,6 +6,7 @@ import engine.Engine;
 import program.outpot.Output;
 import sheet.SheetDTO;
 
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class FunctionImpl implements ProgramFunctions{
@@ -68,7 +69,7 @@ public class FunctionImpl implements ProgramFunctions{
         StringBuilder rowBuilder = new StringBuilder();
         rowBuilder.append("   ").append("|");
         for (int i = 0; i < numberOfCols; i++) {
-            rowBuilder.append(" ".repeat(colLength));
+            rowBuilder.append(" ".repeat(colLength)).append("|");
         }
         Output.printSheetRow(rowBuilder.toString());
     }
@@ -97,9 +98,12 @@ public class FunctionImpl implements ProgramFunctions{
 
                     rowBuilder.append(" ".repeat(spacesBefore))
                             .append(cellValue)
-                            .append(spacesAfter)
+                            .append(" ".repeat(spacesAfter))
                             .append("|");
                 }
+            }
+            else {
+                rowBuilder.append(" ".repeat(colLength)).append("|");
             }
         }
         Output.printSheetRow(rowBuilder.toString());
@@ -109,13 +113,10 @@ public class FunctionImpl implements ProgramFunctions{
     {
         String cellValue;
 
-        if (cell.getEffectiveValue() instanceof Integer)
+        if (cell.getEffectiveValue() instanceof Double)
         {
-            cellValue = cell.getEffectiveValue().toString();
-        }
-        else if (cell.getEffectiveValue() instanceof Double)
-        {
-            cellValue = String.format("%.2f", (Double) cell.getEffectiveValue());
+            DecimalFormat df = new DecimalFormat("#,###.##");
+            cellValue = df.format(cell.getEffectiveValue());
         }
         else if (cell.getEffectiveValue() instanceof Boolean)
         {

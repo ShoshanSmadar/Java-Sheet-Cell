@@ -2,6 +2,8 @@ package engine;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import jakarta.xml.bind.JAXBException;
+import jaxbConvert.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
 
@@ -10,14 +12,14 @@ import java.util.List;
 
 public class EngineImpl implements Engine{
     private List<Sheet> sheetList;
-    private String sheetName;
 
-    public EngineImpl() {}
+    public EngineImpl() {
+        sheetList = new ArrayList<>();
+    }
 
     public EngineImpl(SheetDTO sheet, String sheetName) {
         sheetList = new ArrayList<>();
         sheetList.add(sheet.createSheetFromDTO());
-        this.sheetName = sheetName;
     }
 
     @Override
@@ -28,11 +30,6 @@ public class EngineImpl implements Engine{
     @Override
     public CellDTO getCellDTO(CoordinateDTO coordinate) {
         return sheetList.getLast().getCell(coordinate.getRow(), coordinate.getCol()).getConvertToCellDTO();
-    }
-
-    @Override
-    public String getSheetName() {
-        return this.sheetName;
     }
 
     @Override
@@ -51,5 +48,18 @@ public class EngineImpl implements Engine{
     @Override
     public void changeCell(CoordinateDTO coordinateToChange, String expression) throws Exception{
         sheetList.add(sheetList.getLast().UpdateCellValueAndSheet(coordinateToChange.getRow(), coordinateToChange.getCol(), expression));
+    }
+
+    @Override
+    public void enterNewSheetFromXML(String xmlPath) {
+        try{
+            Sheet newSheet = XmlParser.sheetParser(xmlPath);
+            sheetList.clear();
+            sheetList.add(newSheet);
+        }
+        catch(Exception e){
+            throw new RuntimeException("Error acured while loading XML file.\n" +
+                    "The error accured because: " + e.getMessage());
+        }
     }
 }

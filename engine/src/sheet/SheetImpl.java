@@ -81,18 +81,24 @@ public class SheetImpl implements Sheet, Cloneable {
         }
         newSheetVersion.cellMap.put(coordinate, newCell);
 
-        List<Cell> cellsThatHaveChanged =
-                newSheetVersion
-                        .getCellsByCalculationOrder()
-                        .stream()
-                        .filter(Cell::calculateEffectiveValue)
-                        .collect(Collectors.toList());
+        List<Cell> cellsThatHaveChanged = newSheetVersion.calculateAllSheetAffectiveValue();
 
         newSheetVersion.increaseVersion();
         int newVersion = newSheetVersion.getVersion();
         cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
 
         return newSheetVersion;
+    }
+
+    public List<Cell> calculateAllSheetAffectiveValue() throws Exception {
+        List<Cell> cellsThatHaveChanged =
+                this
+                        .getCellsByCalculationOrder()
+                        .stream()
+                        .filter(Cell::calculateEffectiveValue)
+                        .collect(Collectors.toList());
+
+        return cellsThatHaveChanged;
     }
 
     @Override

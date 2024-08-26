@@ -1,7 +1,6 @@
 package program.function;
 
 import cell.CellDTO;
-import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 import engine.Engine;
 import program.outpot.Output;
@@ -17,8 +16,21 @@ public class FunctionImpl implements ProgramFunctions{
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public boolean addFile() {
-        return false;
+    public boolean addFile(Engine sheetProgram) {
+        Output.printAskForXMLFile();
+        try {
+            String fileName = scanner.nextLine();
+            if(!fileName.endsWith(".xml"))
+            {
+                throw new Exception("Invalid file format, try again.\n");
+            }
+            sheetProgram.enterNewSheetFromXML(fileName);
+            return true;
+        }
+        catch(Exception e) {
+            Output.printExeptionMessage(e);
+            return false;
+        }
     }
 
     @Override
@@ -145,10 +157,10 @@ public class FunctionImpl implements ProgramFunctions{
         }
     }
 
-    private void checkIfCoordinateIsInSheet(int row, int col, CoordinateDTO coor)
+    private void checkIfCoordinateIsInSheet(int row, int col, CoordinateDTO coordinate)
     {
-        if(row < 0 || coor.getRow() > row || coor.getCol() > col || coor.getCol() < 0){
-            throw new IndexOutOfBoundsException("The coordinate given " + coor.toString() + " is out of sheet scope.\ncommand failed.");
+        if(row < 0 || coordinate.getRow() > row || coordinate.getCol() > col || coordinate.getCol() < 0){
+            throw new IndexOutOfBoundsException("The coordinate given " + coordinate.toString() + " is out of sheet scope.\ncommand failed.");
         }
     }
 

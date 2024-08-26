@@ -54,6 +54,7 @@ public class EngineImpl implements Engine{
     public void enterNewSheetFromXML(String xmlPath) {
         try{
             Sheet newSheet = XmlParser.sheetParser(xmlPath);
+            newSheet.calculateAllSheetAffectiveValue();
             sheetList.clear();
             sheetList.add(newSheet);
         }

@@ -1,9 +1,5 @@
 package program;
 
-
-import cell.CellDTO;
-import coordinate.Coordinate;
-import coordinate.CoordinateDTO;
 import engine.Engine;
 import engine.EngineImpl;
 import program.function.FunctionImpl;
@@ -19,13 +15,39 @@ public class ProgramImpl implements Program{
     private ProgramFunctions functions = new FunctionImpl();
 
     public ProgramImpl() {
-        sheetProgram = new EngineImpl(new SheetDTO("first try", 0
-                , new HashMap<>(), 10, 5, 15, 2 )
-                , "first try");
+        /*sheetProgram = new EngineImpl(new SheetDTO("first try", 0
+                , new HashMap<>(), 10, 5, 15, 2)
+                , "first try");*/
+        sheetProgram = new EngineImpl();
     }
 
     @Override
     public void start(){
+        Output.printWelcome();
+        int userChoice;
+
+        while(!functions.addFile(sheetProgram));
+
+        while(true)
+        {
+            Output.printMenu();
+            try {
+                userChoice = scanner.nextInt();
+                optionSelect(userChoice - 1);
+            }
+            catch (InputMismatchException e) {
+                Output.printWrongInput();
+                scanner.nextLine(); // clear wrong input
+            }
+            catch (Exception e)
+            {
+                Output.printExeptionMessage(e);
+                Output.printTryAgain();
+            }
+        }
+    }
+
+    /*public void start(){
         Output.printWelcome();
         int userChoice;
 
@@ -46,11 +68,11 @@ public class ProgramImpl implements Program{
                 Output.printTryAgain();
             }
         }
-    }
+    }*/
     
     private void optionSelect(int userChoice) throws Exception {
         if(userChoice == ProgramOption.ADD_FILE.ordinal())
-            functions.addFile();
+            functions.addFile(sheetProgram);
         else if (userChoice == ProgramOption.SHOW_SHEET.ordinal())
             functions.showSheet(sheetProgram.getSheetDTO());
         else if (userChoice == ProgramOption.SHOW_CELL.ordinal())

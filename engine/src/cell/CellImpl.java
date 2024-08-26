@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CellImpl implements Cell, Cloneable {
-    private final Sheet fatherSheet;
+    private Sheet fatherSheet;
     private Coordinate coordinate;
     private EffectiveValue effectiveValue;
     private int lastVersionChanged;
@@ -70,6 +70,11 @@ public class CellImpl implements Cell, Cloneable {
     @Override
     public int getLastVersionChanged(){
         return lastVersionChanged;
+    }
+
+    @Override
+    public void setFatherSheet(Sheet newSheet){
+        this.fatherSheet = newSheet;
     }
 
     @Override

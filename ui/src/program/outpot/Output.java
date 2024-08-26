@@ -8,7 +8,11 @@ import java.util.stream.Collectors;
 
 public class Output {
     public static void printWelcome(){
-        System.out.println("Welcome to Java Sheet Cell!\nPlease Enter XML file to start.");
+        System.out.println("Welcome to Java Sheet Cell!\n");
+    }
+
+    public static void printAskForXMLFile(){
+        System.out.println("Please Enter XML file path: ");
     }
 
     public static void printMenu(){

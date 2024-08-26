@@ -80,6 +80,9 @@ public class SheetImpl implements Sheet, Cloneable {
             }
         }
         newSheetVersion.cellMap.put(coordinate, newCell);
+        for(Cell cell : newSheetVersion.cellMap.values()){
+            cell.setFatherSheet(newSheetVersion);
+        }
 
         List<Cell> cellsThatHaveChanged = newSheetVersion.calculateAllSheetAffectiveValue();
 
@@ -90,6 +93,7 @@ public class SheetImpl implements Sheet, Cloneable {
         return newSheetVersion;
     }
 
+    @Override
     public List<Cell> calculateAllSheetAffectiveValue() throws Exception {
         List<Cell> cellsThatHaveChanged =
                 this

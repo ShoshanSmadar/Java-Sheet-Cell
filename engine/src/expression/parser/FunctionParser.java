@@ -155,7 +155,7 @@ public enum FunctionParser {
             Expression left = parseExpression(arguments.get(0).trim());
             Expression right = parseExpression(arguments.get(1).trim());
 
-            if ((!left.getFunctionResultType().equals(CellType.STRING) && left.getFunctionResultType().equals(CellType.UNKNOWN))
+            if ((!left.getFunctionResultType().equals(CellType.STRING) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
                     || !right.getFunctionResultType().equals(CellType.STRING) && !right.getFunctionResultType().equals(CellType.UNKNOWN)) {
                 throw new IllegalArgumentException("Invalid argument types for CONCAT function, Expected STRING but got " + left.getFunctionResultType() + "on the left and " + right.getFunctionResultType() + "on the right.");
             }

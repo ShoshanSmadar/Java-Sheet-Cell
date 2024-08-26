@@ -117,7 +117,7 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         for (Coordinate node : adjList.keySet()) {
             if (!visited.containsKey(node)) {
                 if (!dfs(node, visited, inPath, order)) {
-                    throw new IllegalStateException("A Cycle was detected in the sheet, cells are depending on each other. Command was cancelled.");
+                    throw new IllegalStateException("A Cycle was detected in the sheet, cells are depending on each other.");
                 }
             }
         }

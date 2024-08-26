@@ -114,8 +114,9 @@ public class SheetImpl implements Sheet, Cloneable {
 
     @Override
     public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate) {
-        return this.coordinateGraph.getIncomingEdgesDTO(cellCoordinate);
+        return this.coordinateGraph.getOutgoingEdgesDTO(cellCoordinate);
     }
+
 
     @Override
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate) {

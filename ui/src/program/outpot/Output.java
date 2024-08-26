@@ -4,6 +4,8 @@ import cell.Cell;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
 
+import java.util.stream.Collectors;
+
 public class Output {
     public static void printWelcome(){
         System.out.println("Welcome to Java Sheet Cell!\nPlease Enter XML file to start.");
@@ -40,13 +42,13 @@ public class Output {
             System.out.println("Cell is not depending on any other cells");
         }
         else{
-            System.out.println("Cell is depending on this Cells: "+ cell.getAffectedBy().stream().toString());
+            System.out.println("Cell is depending on this Cells: " + cell.getListOfStringCoordinates(cell.getAffectedBy()));
         }
         if (cell.getAffecting().size() == 0) {
             System.out.println("Cell is not affecting any other cells\n");
         }
         else{
-            System.out.println("Cell is affecting this Cells: "+ cell.getAffectedBy().stream().toString() + "\n");
+            System.out.println("Cell is affecting this Cells: " + cell.getListOfStringCoordinates(cell.getAffecting()) + "\n");
         }
     }
 

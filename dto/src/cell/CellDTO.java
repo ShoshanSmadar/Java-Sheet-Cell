@@ -3,6 +3,7 @@ package cell;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CellDTO {
@@ -39,6 +40,15 @@ public class CellDTO {
     }
     public List<CoordinateDTO> getAffecting() {
         return affecting;
+    }
+
+    public List<String> getListOfStringCoordinates(List<CoordinateDTO> coordinateList)
+    {
+        List<String> listOfStringCoordinates = new ArrayList<>();
+        for (CoordinateDTO coordinateDTO : coordinateList) {
+            listOfStringCoordinates.add(coordinateDTO.toString());
+        }
+        return listOfStringCoordinates;
     }
 
     public void setCoordinate(CoordinateDTO coordinate) {

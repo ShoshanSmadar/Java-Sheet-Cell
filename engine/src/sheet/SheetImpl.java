@@ -23,7 +23,8 @@ public class SheetImpl implements Sheet, Cloneable {
     private final int sizeOfRows;
     private DependencyGraph coordinateGraph;
 
-    public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows, int hightOfRows, int lengthOfColumns) {
+    public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows,
+                     int hightOfRows, int lengthOfColumns) {
         this.sheetName = sheetName;
         this.cellMap = new HashMap<>();
         this.version = 0;
@@ -134,6 +135,14 @@ public class SheetImpl implements Sheet, Cloneable {
     @Override
     public void increaseVersion() {
         this.version++;
+    }
+
+    @Override
+    public void enterCellFromXML(Cell cell) {
+        cellMap.put(cell.getCoordinate(), cell);
+        for(Coordinate coordinate : cell.getdependingOn()){
+            this.coordinateGraph.ExpandGraph(coordinate, cell.getCoordinate());
+        }
     }
 
     @Override

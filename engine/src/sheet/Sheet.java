@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface Sheet {
+
+    int getNumberOfSheetsChangedInVersion();
     public int getVersion();
     public Cell getCell(int row, int col);
     public Cell getCell(Coordinate coordinate);

@@ -22,6 +22,7 @@ public class SheetImpl implements Sheet, Cloneable {
     private final int hightOfRows;
     private final int sizeOfRows;
     private DependencyGraph coordinateGraph;
+    private int numberOfCellsChangedInVersion = 0;
 
     public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows,
                      int hightOfRows, int lengthOfColumns) {
@@ -33,6 +34,11 @@ public class SheetImpl implements Sheet, Cloneable {
         this.coordinateGraph = new DependencyGraphImpl();
         this.hightOfRows = hightOfRows;
         this.lengthOfColumns = lengthOfColumns;
+    }
+
+    @Override
+    public int getNumberOfSheetsChangedInVersion() {
+        return numberOfCellsChangedInVersion;
     }
 
     @Override
@@ -86,6 +92,7 @@ public class SheetImpl implements Sheet, Cloneable {
 
         List<Cell> cellsThatHaveChanged = newSheetVersion.calculateAllSheetAffectiveValue();
 
+        numberOfCellsChangedInVersion = cellsThatHaveChanged.size();
         newSheetVersion.increaseVersion();
         int newVersion = newSheetVersion.getVersion();
         cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));

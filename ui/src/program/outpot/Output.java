@@ -70,8 +70,9 @@ public class Output {
         System.out.println("following functions are posible:" +
                 "\nMathematicl functions: PLUS, MINUS, TIMES, DIVIDE, MOD, POW, ABS. " +
                 "\nSentence functions: CONCAT, SUB " +
-                "\nRefrence another cell: REF");
-        System.out.println("for more information on each function please choose option 7 on main menu.");
+                "\nRefrence another cell: REF" +
+                "\nIf you want to clear the cell press Enter");
+        System.out.println("For more information on each function please choose option 7 on main menu.");
         System.out.println("\nPlease enter new Cell value:");
     }
 

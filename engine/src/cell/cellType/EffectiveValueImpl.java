@@ -44,6 +44,6 @@ public class EffectiveValueImpl implements EffectiveValue {
         if (cellType.isAssignableFrom(type)) {
             return type.cast(value);
         }
-        throw new ClassCastException("Expected " + type + " but got " + cellType);
+        throw new ClassCastException("Expected " + type + " but got " + cellType+"\nCommand failed.");
     }
 }

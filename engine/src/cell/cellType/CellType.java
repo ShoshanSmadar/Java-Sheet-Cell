@@ -6,7 +6,8 @@ public enum CellType {
     NUMERIC(Double.class),
     STRING(String.class),
     BOOLEAN(Boolean.class),
-    UNKNOWN(Object.class);
+    UNKNOWN(Object.class),
+    UNDEFINED(String.class);
 
     private Class<?> type;
 

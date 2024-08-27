@@ -21,7 +21,9 @@ public class ConcatExpression implements Expression {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
 
-
+        if(leftValue.getCellType() == CellType.UNDEFINED || rightValue.getCellType() == CellType.UNDEFINED){
+            return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
+        }
         String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
 
         return new EffectiveValueImpl(CellType.STRING, result);

@@ -7,6 +7,7 @@ import expression.impl.RefExpression;
 import expression.impl.mathematical.*;
 import expression.impl.string.ConcatExpression;
 import expression.impl.string.SubExpression;
+import expression.impl.string.UndefeindExpression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +172,9 @@ public enum FunctionParser {
             Expression startIndex = parseExpression(arguments.get(1).trim());
             Expression endIndex = parseExpression(arguments.get(2).trim());
 
+            if(source.getFunctionResultType().equals(CellType.UNDEFINED)){
+                return new UndefeindExpression();
+            }
             if (!source.getFunctionResultType().equals(CellType.STRING) && !source.getFunctionResultType().equals(CellType.UNKNOWN))
             {
                 throw new IllegalArgumentException("Invalid argument types for SUB function, Expected STRING but got " + source.getFunctionResultType() + "as source.");

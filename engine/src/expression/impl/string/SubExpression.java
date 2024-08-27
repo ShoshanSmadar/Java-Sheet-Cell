@@ -25,8 +25,15 @@ public class SubExpression implements Expression {
         EffectiveValue startValue = startIndex.eval(sheet);
         EffectiveValue endValue = endIndex.eval(sheet);
 
+        String sourseStringValue = sourceValue.extractValueWithExpectation(String.class);
+        Double startIndexValue = startValue.extractValueWithExpectation(Double.class);
+        Double endIndexValue = endValue.extractValueWithExpectation(Double.class);
 
-        String subString = sourceValue.extractValueWithExpectation(String.class).substring(startValue.extractValueWithExpectation(Integer.class), endValue.extractValueWithExpectation(Integer.class));
+        if(startIndexValue < 0 || startIndexValue > endIndexValue || endIndexValue > sourseStringValue.length()
+                || Math.round(startIndexValue) != startIndexValue || Math.round(endIndexValue) != endIndexValue) {
+            return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
+        }
+        String subString = sourceValue.extractValueWithExpectation(String.class).substring((int)Math.round(startIndexValue),(int) Math.round(endIndexValue));
 
         return new EffectiveValueImpl(CellType.STRING, subString);
     }

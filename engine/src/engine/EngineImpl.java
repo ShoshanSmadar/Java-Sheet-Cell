@@ -63,6 +63,8 @@ public class EngineImpl implements Engine{
     @Override
     public void enterNewSheetFromXML(String xmlPath) {
         try{
+            if(!xmlPath.endsWith(".xml"))
+                throw new Exception("Invalid file format.\n");
             Sheet newSheet = XmlParser.sheetParser(xmlPath);
             newSheet.calculateAllSheetAffectiveValue();
             sheetList.clear();
@@ -70,11 +72,11 @@ public class EngineImpl implements Engine{
         }
         catch (FileNotFoundException e) {
             throw new RuntimeException("Error acured while loading XML file.\n" +
-                    "The error accured because: file wasn't found in given path.");
+                    "The error accrued because: file wasn't found in given path.");
         }
         catch(Exception e){
             throw new RuntimeException("Error acured while loading XML file.\n" +
-                    "The error accured because: " + e.getMessage());
+                    "The error accrued because: " + e.getMessage());
         }
     }
 }

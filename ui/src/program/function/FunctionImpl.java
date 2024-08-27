@@ -21,10 +21,6 @@ public class FunctionImpl implements ProgramFunctions{
         Output.printAskForXMLFile();
         try {
             String fileName = scanner.nextLine().trim();
-            if(!fileName.endsWith(".xml"))
-            {
-                throw new Exception("Invalid file format, try again.\n");
-            }
             Output.printLoadingFile();
             sheetProgram.enterNewSheetFromXML(fileName);
             Output.printFinshLoadingFile();
@@ -171,7 +167,7 @@ public class FunctionImpl implements ProgramFunctions{
     {
         Output.printChooseCell(row, col);
         CoordinateDTO coordinateDTO = readCellChoice(scanner.next());
-        checkIfCoordinateIsInSheet(row, col, coordinateDTO);
+        checkIfCoordinateIsInSheet(row - 1, col, coordinateDTO);
         return coordinateDTO;
     }
 
@@ -192,7 +188,7 @@ public class FunctionImpl implements ProgramFunctions{
         try {
             number = Integer.parseInt(numberPart);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Part after capital letter must be a number, but gut " + numberPart);
+            throw new IllegalArgumentException("Row must be a number, but gut " + numberPart);
         }
 
         int letterAsNumber = letter - 'A';
@@ -216,7 +212,8 @@ public class FunctionImpl implements ProgramFunctions{
 
     public String getExpression(){
         Output.printAskForCellFunction();
-        return scanner.next();
+        scanner.nextLine();
+        return scanner.nextLine();
     }
 
     @Override

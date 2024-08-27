@@ -80,7 +80,7 @@ public class ProgramImpl implements Program{
         else if (userChoice == ProgramOption.UPDATE_CELL.ordinal())
             functions.updateCell(sheetProgram);
         else if(userChoice == ProgramOption.SHOW_VERSION.ordinal())
-            functions.showVersion();
+            functions.showVersion(sheetProgram);
         else if (userChoice == ProgramOption.EXIT.ordinal())
             functions.exitProgram();
         else if (userChoice == ProgramOption.EXPLAIN_FUNCTIONS.ordinal())

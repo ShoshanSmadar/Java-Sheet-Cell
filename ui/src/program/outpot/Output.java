@@ -16,8 +16,8 @@ public class Output {
     }
 
     public static void printMenu(){
-        System.out.println("Please choose one of the following options:");
-        System.out.println("*******************************************");
+        System.out.println("\n*******************************************\n");
+        System.out.println("Please choose one of the following options:\n");
         System.out.println("1. upload new XML file");
         System.out.println("2. Show Sheet");
         System.out.println("3. Show a Cell");
@@ -25,6 +25,11 @@ public class Output {
         System.out.println("5. Show specific Sheet Version");
         System.out.println("6. Exit");
         System.out.println("7. HELP - Function explantion");
+    }
+
+    public static void printAskForVersionNumber(int lastVersionNumber){
+        System.out.println("Current sheet version is " + lastVersionNumber);
+        System.out.println("Please choose a version to see between 1-" + lastVersionNumber +":");
     }
 
     public static void printChooseCell(int row, int col){

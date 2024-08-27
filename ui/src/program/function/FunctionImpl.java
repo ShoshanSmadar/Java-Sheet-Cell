@@ -50,7 +50,7 @@ public class FunctionImpl implements ProgramFunctions{
                 printEmptyCellRow(sheet.getLengthOfCol(), sheet.getSizeOfColumns());
             }
         }
-
+        System.out.println();
 
     }
 
@@ -216,8 +216,19 @@ public class FunctionImpl implements ProgramFunctions{
     }
 
     @Override
-    public void showVersion() {
-
+    public void showVersion(Engine sheetProgram) {
+        Output.printAskForVersionNumber((sheetProgram.getSheetCurrentVersion() + 1));
+        int userChoice;
+        try{
+            userChoice = scanner.nextInt();
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("Input must be a number");
+        }
+        if (userChoice < 1 || userChoice > sheetProgram.getSheetCurrentVersion() + 1) {
+            throw new IndexOutOfBoundsException("Input must be a number between 1-" +  (sheetProgram.getSheetCurrentVersion() + 1));
+        }
+        showSheet(sheetProgram.getOldVersionSheet(userChoice - 1));
     }
 
     @Override

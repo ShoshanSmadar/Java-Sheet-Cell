@@ -7,6 +7,7 @@ import program.outpot.Output;
 import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.Scanner;
 
 import static java.lang.Character.isUpperCase;
@@ -216,19 +217,86 @@ public class FunctionImpl implements ProgramFunctions{
     }
 
     @Override
+    public void ShowOldVersionTable(Engine sheetProgram) {
+        StringBuilder VersionLine = new StringBuilder();
+        StringBuilder CellsChangedLine = new StringBuilder();
+        VersionLine.append("Version number          |");
+        CellsChangedLine.append("Number Of Cells Changed |");
+        int columnSize = Integer.max( sheetProgram.getALLPastSheetNumberOfCellsChanged().size(), Collections.max(sheetProgram.getALLPastSheetNumberOfCellsChanged())) + 2;
+        int versionNumber = 0;
+        for(int cellsThatHaveChanged : sheetProgram.getALLPastSheetNumberOfCellsChanged()){
+            versionNumber++;
+            VersionLine.append(centerStringInSize(String.valueOf(versionNumber), columnSize)).append("|");
+            CellsChangedLine.append(centerStringInSize(String.valueOf(cellsThatHaveChanged), columnSize)).append("|");
+        }
+        Output.printShowTableVersion(VersionLine.toString(), CellsChangedLine.toString());
+
+        Output.PrintAskIfShowSpecificOldVersion();
+        if(getAndCheckIntInput(1,2) == 1){
+            showVersion(sheetProgram);
+        }
+    }
+
+    private static String centerStringInSize(String itemToCenter, int size) {
+        int numberLength = itemToCenter.length();
+
+        // Calculate the number of spaces on the left
+        int leftPadding = (size - numberLength) / 2;
+
+        // Build the result string
+        StringBuilder result = new StringBuilder();
+
+        // Append left spaces
+        for (int i = 0; i < leftPadding; i++) {
+            result.append(" ");
+        }
+
+        // Append the number
+        result.append(itemToCenter);
+
+        // Append right spaces (if needed)
+        while (result.length() < size) {
+            result.append(" ");
+        }
+
+        return result.toString();
+    }
+
+    @Override
     public void showVersion(Engine sheetProgram) {
         Output.printAskForVersionNumber((sheetProgram.getSheetCurrentVersion() + 1));
-        int userChoice;
-        try{
-            userChoice = scanner.nextInt();
-        }
-        catch (Exception e) {
-            throw new IllegalArgumentException("Input must be a number");
-        }
-        if (userChoice < 1 || userChoice > sheetProgram.getSheetCurrentVersion() + 1) {
-            throw new IndexOutOfBoundsException("Input must be a number between 1-" +  (sheetProgram.getSheetCurrentVersion() + 1));
-        }
+        int userChoice = getAndCheckIntInput(1, (sheetProgram.getSheetCurrentVersion() + 1));
+//        try{
+//            userChoice = scanner.nextInt();
+//        }
+//        catch (Exception e) {
+//            throw new IllegalArgumentException("Input must be a number");
+//        }
+//        if (userChoice < 1 || userChoice > sheetProgram.getSheetCurrentVersion() + 1) {
+//            throw new IndexOutOfBoundsException("Input must be a number between 1-" +  (sheetProgram.getSheetCurrentVersion() + 1));
+//        }
         showSheet(sheetProgram.getOldVersionSheet(userChoice - 1));
+    }
+
+    private int getAndCheckIntInput(int minSize, int maxSize){
+        int userChoice = -1;
+        boolean finished = false;
+        while(!finished){
+            try{
+                userChoice = scanner.nextInt();
+            }
+            catch (Exception e) {
+                Output.printInputMustBeANumber();
+                scanner.next();
+                continue;
+            }
+            if (userChoice < minSize || userChoice > maxSize) {
+                Output.printWrongInputShowCorrect(minSize, maxSize);
+                continue;
+            }
+            finished = true;
+        }
+        return userChoice;
     }
 
     @Override

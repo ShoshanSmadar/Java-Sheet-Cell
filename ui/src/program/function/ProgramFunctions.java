@@ -8,6 +8,9 @@ public interface ProgramFunctions {
     public void showSheet(SheetDTO sheet);
     public void showCell(SheetDTO sheet);
     public void updateCell(Engine sheetProgram);
+
+    void ShowOldVersionTable(Engine sheetProgram);
+
     public void showVersion(Engine sheetProgram);
     public void exitProgram();
     public void explainFunctions();

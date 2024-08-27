@@ -1,10 +1,7 @@
 package program.outpot;
 
-import cell.Cell;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
-
-import java.util.stream.Collectors;
 
 public class Output {
     public static void printWelcome(){
@@ -85,6 +82,14 @@ public class Output {
         System.out.println("Wrong Input! Please try again.");
     }
 
+    public static void printInputMustBeANumber(){
+        System.out.println("Wrong Input! Input must be a number, try again.");
+    }
+
+    public static void printWrongInputShowCorrect(int start, int end){
+        System.out.println("Wrong Input! Number must be between "+start+"-"+end+" Please try again.");
+    }
+
     public static void printSheetRow(String sheetRow){
         System.out.println(sheetRow);
     }
@@ -94,5 +99,15 @@ public class Output {
         System.out.println("\n*******************************************\n");
         System.out.println("Current version: " + currentVersion);
         System.out.println("Sheet name: " + sheetName);
+    }
+
+    public static void printShowTableVersion(String versionLine, String numberOfCellsChangedLine){
+        System.out.println("Information for all sheet versions:");
+        System.out.println(versionLine);
+        System.out.println(numberOfCellsChangedLine);
+    }
+
+    public static void PrintAskIfShowSpecificOldVersion(){
+        System.out.println("Would you like to see a specific version?(press number)\n1. Yes\n2. No");
     }
 }

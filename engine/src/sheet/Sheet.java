@@ -3,12 +3,11 @@ import cell.Cell;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface Sheet {
 
-    int getNumberOfSheetsChangedInVersion();
+    int getNumberOfCellsChangedInVersion();
     public int getVersion();
     public Cell getCell(int row, int col);
     public Cell getCell(Coordinate coordinate);
@@ -24,7 +23,4 @@ public interface Sheet {
     public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate);
     public List<Coordinate> getCellDependingCoordinates(Coordinate cellCoordinate);
     public void enterCoordinateAndDependenciesToGraph(Coordinate cellCoordinate, List<Coordinate> coordinateDependencies);
-
-
-
 }

@@ -2,7 +2,6 @@ package engine;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
-import jakarta.xml.bind.JAXBException;
 import jaxbConvert.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
@@ -35,6 +34,15 @@ public class EngineImpl implements Engine{
     @Override
     public int getSheetCurrentVersion() {
         return sheetList.size();
+    }
+
+    @Override
+    public List<Integer> getALLPastSheetNumberOfCellsChanged(){
+        List<Integer> cellsChangedList = new ArrayList<>();
+        for(Sheet sheet : sheetList){
+            cellsChangedList.add(sheet.getNumberOfCellsChangedInVersion());
+        }
+        return cellsChangedList;
     }
 
     @Override

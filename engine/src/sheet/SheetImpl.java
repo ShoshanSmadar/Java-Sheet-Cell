@@ -37,7 +37,7 @@ public class SheetImpl implements Sheet, Cloneable {
     }
 
     @Override
-    public int getNumberOfSheetsChangedInVersion() {
+    public int getNumberOfCellsChangedInVersion() {
         return numberOfCellsChangedInVersion;
     }
 

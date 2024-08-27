@@ -207,6 +207,7 @@ public class FunctionImpl implements ProgramFunctions{
         try{
             sheetProgram.changeCell(CellCoordinates, getExpression());
             showSheet(sheetProgram.getSheetDTO());
+            Output.printCellUpdatedSucsesfully();
         }
         catch (Exception e) {
             Output.printExeptionMessage(e);

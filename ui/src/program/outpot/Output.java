@@ -35,6 +35,10 @@ public class Output {
         System.out.println("Please enter wanted Cell, columns between A-"+(char)('A'+ col -1)+" rows between 1-"+row+"\n(enter capital letter and then number for example A4):");
     }
 
+    public static void printCellUpdatedSucsesfully(){
+        System.out.println("Cell has been updated successfully");
+    }
+
     public static void printCellIsEmpty(CoordinateDTO coordinate)
     {
         System.out.println("Cell " + coordinate.toString() + " is empty.");

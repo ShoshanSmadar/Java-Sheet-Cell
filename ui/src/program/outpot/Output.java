@@ -2,6 +2,8 @@ package program.outpot;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import program.function.HelpFunction;
+
 
 public class Output {
     public static void printWelcome(){
@@ -117,5 +119,24 @@ public class Output {
 
     public static void printFinshLoadingFile(){
         System.out.println("File loaded successfully.\n");
+    }
+
+    public static void printAskWichFunctionToHelpWith(){
+        System.out.println("Choose the function description you want to see:");
+        for (int i = 0; i < HelpFunction.getString().length; i++) {
+            System.out.println(HelpFunction.getString()[i].substring(0, HelpFunction.getString()[i].indexOf('\n')));
+        }
+        System.out.println((HelpFunction.getString().length + 1) + ". All of the above");
+    }
+
+    public static void printOneFunctionHelp(int input){
+        System.out.println(HelpFunction.getString()[input - 1]);
+    }
+
+    public static void printAllHelp(){
+        for (String description : HelpFunction.getString()) {
+            System.out.println(description);
+            System.out.println();
+        }
     }
 }

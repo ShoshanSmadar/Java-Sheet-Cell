@@ -72,10 +72,6 @@ public class EngineImpl implements Engine{
             throw new RuntimeException("Error acured while loading XML file.\n" +
                     "The error accured because: file wasn't found in given path.");
         }
-        catch (IllegalArgumentException e) {
-            throw new RuntimeException("Error acured while loading XML file.\n" +
-                    "The error accured because: file wasn't found in given path.");
-        }
         catch(Exception e){
             throw new RuntimeException("Error acured while loading XML file.\n" +
                     "The error accured because: " + e.getMessage());

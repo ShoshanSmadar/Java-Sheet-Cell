@@ -308,6 +308,14 @@ public class FunctionImpl implements ProgramFunctions{
 
     @Override
     public void explainFunctions() {
+        Output.printAskWichFunctionToHelpWith();
+        int input = getAndCheckIntInput(1, (HelpFunction.getString().length +1));
+        if(input >0 && input <= HelpFunction.getString().length){
+            Output.printOneFunctionHelp(input);
+        }
+        else{
+            Output.printAllHelp();
+        }
 
     }
 }

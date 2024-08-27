@@ -20,12 +20,14 @@ public class FunctionImpl implements ProgramFunctions{
     public boolean addFile(Engine sheetProgram) {
         Output.printAskForXMLFile();
         try {
-            String fileName = scanner.nextLine();
+            String fileName = scanner.nextLine().trim();
             if(!fileName.endsWith(".xml"))
             {
                 throw new Exception("Invalid file format, try again.\n");
             }
+            Output.printLoadingFile();
             sheetProgram.enterNewSheetFromXML(fileName);
+            Output.printFinshLoadingFile();
             return true;
         }
         catch(Exception e) {

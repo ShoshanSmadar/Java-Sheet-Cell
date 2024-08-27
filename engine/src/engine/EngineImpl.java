@@ -2,10 +2,12 @@ package engine;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import jakarta.xml.bind.JAXBException;
 import jaxbConvert.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,14 @@ public class EngineImpl implements Engine{
             newSheet.calculateAllSheetAffectiveValue();
             sheetList.clear();
             sheetList.add(newSheet);
+        }
+        catch (FileNotFoundException e) {
+            throw new RuntimeException("Error acured while loading XML file.\n" +
+                    "The error accured because: file wasn't found in given path.");
+        }
+        catch (IllegalArgumentException e) {
+            throw new RuntimeException("Error acured while loading XML file.\n" +
+                    "The error accured because: file wasn't found in given path.");
         }
         catch(Exception e){
             throw new RuntimeException("Error acured while loading XML file.\n" +

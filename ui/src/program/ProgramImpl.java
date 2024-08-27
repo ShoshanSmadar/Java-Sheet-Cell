@@ -86,7 +86,7 @@ public class ProgramImpl implements Program{
         else if (userChoice == ProgramOption.EXPLAIN_FUNCTIONS.ordinal())
             functions.explainFunctions();
         else
-            throw new IllegalArgumentException("Expected a number between 1 to "
+            throw new IllegalArgumentException("Expected a number between 1-"
                     + ProgramOption.values().length + ". but got " + (userChoice + 1));
     }
 

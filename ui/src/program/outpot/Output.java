@@ -110,4 +110,12 @@ public class Output {
     public static void PrintAskIfShowSpecificOldVersion(){
         System.out.println("Would you like to see a specific version?(press number)\n1. Yes\n2. No");
     }
+
+    public static void printLoadingFile(){
+        System.out.println("Loading file...");
+    }
+
+    public static void printFinshLoadingFile(){
+        System.out.println("File loaded successfully.\n");
+    }
 }

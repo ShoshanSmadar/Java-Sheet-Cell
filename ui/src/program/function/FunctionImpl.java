@@ -262,10 +262,10 @@ public class FunctionImpl implements ProgramFunctions{
         return result.toString();
     }
 
-    @Override
-    public void showVersion(Engine sheetProgram) {
-        Output.printAskForVersionNumber((sheetProgram.getSheetCurrentVersion() + 1));
-        int userChoice = getAndCheckIntInput(1, (sheetProgram.getSheetCurrentVersion() + 1));
+
+    private void showVersion(Engine sheetProgram) {
+        Output.printAskForVersionNumber((sheetProgram.getSheetCurrentVersion()));
+        int userChoice = getAndCheckIntInput(1, (sheetProgram.getSheetCurrentVersion()));
 //        try{
 //            userChoice = scanner.nextInt();
 //        }
@@ -275,7 +275,7 @@ public class FunctionImpl implements ProgramFunctions{
 //        if (userChoice < 1 || userChoice > sheetProgram.getSheetCurrentVersion() + 1) {
 //            throw new IndexOutOfBoundsException("Input must be a number between 1-" +  (sheetProgram.getSheetCurrentVersion() + 1));
 //        }
-        showSheet(sheetProgram.getOldVersionSheet(userChoice - 1));
+        showSheet(sheetProgram.getOldVersionSheet(userChoice));
     }
 
     private int getAndCheckIntInput(int minSize, int maxSize){

@@ -40,15 +40,15 @@ public class EngineImpl implements Engine{
     public List<Integer> getALLPastSheetNumberOfCellsChanged(){
         List<Integer> cellsChangedList = new ArrayList<>();
         for(Sheet sheet : sheetList){
-            cellsChangedList.add(sheet.getNumberOfCellsChangedInVersion());
+            cellsChangedList.addLast(sheet.getNumberOfCellsChangedInVersion());
         }
         return cellsChangedList;
     }
 
     @Override
     public SheetDTO getOldVersionSheet(int versionWanted) {
-        if(versionWanted < 1 || versionWanted >= sheetList.size()){
-            throw new IndexOutOfBoundsException("Invalid version wanted, version must be between 1 and " + (sheetList.size()));
+        if(versionWanted < 1 || versionWanted > sheetList.size()){
+            throw new IndexOutOfBoundsException("Invalid version wanted, version must be between 1-" + (sheetList.size()));
         }
         return sheetList.get(versionWanted - 1).convertToSheetDTO();
     }

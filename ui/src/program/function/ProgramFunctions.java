@@ -4,14 +4,11 @@ import engine.Engine;
 import sheet.SheetDTO;
 
 public interface ProgramFunctions {
-    public boolean addFile(Engine sheetProgram);
-    public void showSheet(SheetDTO sheet);
-    public void showCell(SheetDTO sheet);
-    public void updateCell(Engine sheetProgram);
-
+    boolean addFile(Engine sheetProgram);
+    void showSheet(SheetDTO sheet);
+    void showCell(SheetDTO sheet);
+    void updateCell(Engine sheetProgram);
     void ShowOldVersionTable(Engine sheetProgram);
-
-    public void showVersion(Engine sheetProgram);
-    public void exitProgram();
-    public void explainFunctions();
+    void exitProgram();
+    void explainFunctions();
 }

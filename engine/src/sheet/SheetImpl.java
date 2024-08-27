@@ -92,7 +92,6 @@ public class SheetImpl implements Sheet, Cloneable {
 
         List<Cell> cellsThatHaveChanged = newSheetVersion.calculateAllSheetAffectiveValue();
 
-        numberOfCellsChangedInVersion = cellsThatHaveChanged.size();
         newSheetVersion.increaseVersion();
         int newVersion = newSheetVersion.getVersion();
         cellsThatHaveChanged.forEach(cell -> cell.updateVersion(newVersion));
@@ -109,6 +108,7 @@ public class SheetImpl implements Sheet, Cloneable {
                         .filter(Cell::calculateEffectiveValue)
                         .collect(Collectors.toList());
 
+        this.numberOfCellsChangedInVersion = cellsThatHaveChanged.size();
         return cellsThatHaveChanged;
     }
 

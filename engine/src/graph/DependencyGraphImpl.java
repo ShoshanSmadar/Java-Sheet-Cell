@@ -79,7 +79,9 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         if(!adjList.containsKey(coordinateThatPoints)) {
             adjList.put(coordinateThatPoints, new ArrayList<>());
         }
-        adjList.get(coordinateThatPoints).add(coordinate);
+        if(!adjList.get(coordinateThatPoints).contains(coordinate)) {
+            adjList.get(coordinateThatPoints).add(coordinate);
+        }
     }
 
     public void removeCoordinate(Coordinate coordinate) {
@@ -91,7 +93,9 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         List<Coordinate> incomingEdges = new ArrayList<>();
         for (Map.Entry<Coordinate, List<Coordinate>> entry : adjList.entrySet()) {
             if (entry.getValue().contains(coord)) {
-                incomingEdges.add(entry.getKey());
+                if(!incomingEdges.contains(entry.getKey())){
+                    incomingEdges.add(entry.getKey());
+                }
             }
         }
 

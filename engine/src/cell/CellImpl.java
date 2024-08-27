@@ -135,7 +135,10 @@ public class CellImpl implements Cell, Cloneable {
                 }
                 int col = uppercaseLetter - 'A';
 
-                this.dependsOn.add(new CoordinateImpl(row, col));
+                Coordinate newCoordinate = CoordinateFactory.createCoordinate(row, col);
+                if(!this.dependsOn.contains(newCoordinate)) {
+                    this.dependsOn.add(new CoordinateImpl(row, col));
+                }
                 index = endIndex + 1;
             } else {
                 break; // No more closing braces found

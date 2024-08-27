@@ -19,13 +19,13 @@ public class Output {
         System.out.println("2. Show Sheet");
         System.out.println("3. Show a Cell");
         System.out.println("4. Update Cell value");
-        System.out.println("5. Show specific Sheet Version");
+        System.out.println("5. Show Old Sheet Versions");
         System.out.println("6. Exit");
         System.out.println("7. HELP - Function explantion");
     }
 
     public static void printAskForVersionNumber(int lastVersionNumber){
-        System.out.println("Current sheet version is " + lastVersionNumber);
+        System.out.println("Latest sheet version is " + lastVersionNumber);
         System.out.println("Please choose a version to see between 1-" + lastVersionNumber +":");
     }
 
@@ -48,13 +48,13 @@ public class Output {
             System.out.println("Cell is not depending on any other cells");
         }
         else{
-            System.out.println("Cell is depending on this Cells: " + cell.getListOfStringCoordinates(cell.getAffectedBy()));
+            System.out.println("Cell is depending on this Cells: " + String.join(", ", cell.getListOfStringCoordinates(cell.getAffectedBy())));
         }
         if (cell.getAffecting().size() == 0) {
             System.out.println("Cell is not affecting any other cells\n");
         }
         else{
-            System.out.println("Cell is affecting this Cells: " + cell.getListOfStringCoordinates(cell.getAffecting()) + "\n");
+            System.out.println("Cell is affecting this Cells: " + String.join(", ", cell.getListOfStringCoordinates(cell.getAffecting())) + "\n");
         }
     }
 
@@ -97,7 +97,7 @@ public class Output {
     public static void printSheetStatments(int currentVersion, String sheetName)
     {
         System.out.println("\n*******************************************\n");
-        System.out.println("Current version: " + currentVersion);
+        System.out.println("Currently Showing sheet version: " + currentVersion);
         System.out.println("Sheet name: " + sheetName);
     }
 

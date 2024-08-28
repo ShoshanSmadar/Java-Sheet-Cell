@@ -1,11 +1,8 @@
 <component name="libraryTable">
-  <library name="mod">
-    <CLASSES>
-      <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod" />
-    </CLASSES>
+  <library name="jaxb-ri-4.0">
+    <CLASSES />
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod" />
       <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5" />
       <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/docs/download" />
       <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/samples/character-escape/src" />
@@ -43,7 +40,5 @@
       <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/samples/xml-channel/src" />
       <root url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/samples/xml-stylesheet/src" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../jaxb-ri-4.0.5/mod" recursive="false" type="SOURCES" />
   </library>
 </component>

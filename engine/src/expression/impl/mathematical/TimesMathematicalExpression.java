@@ -20,6 +20,19 @@ public class TimesMathematicalExpression implements Expression {
         EffectiveValue leftValue = left.eval(sheet);
         EffectiveValue rightValue = right.eval(sheet);
 
+        if(leftValue.getCellType() == CellType.UNDEFINED) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
+        if( rightValue.getCellType() == CellType.UNDEFINED){
+            return new EffectiveValueImpl(CellType.NUMERIC,  Double.NaN);
+        }
+        if(leftValue.getCellType() == CellType.UNKNOWN && !(leftValue.getValue() instanceof Double)) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
+        if(rightValue.getCellType() == CellType.UNKNOWN && !(rightValue.getValue() instanceof Double)) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
+
         double result = leftValue.extractValueWithExpectation(Double.class) * rightValue.extractValueWithExpectation(Double.class);
 
         return new EffectiveValueImpl(CellType.NUMERIC, result);

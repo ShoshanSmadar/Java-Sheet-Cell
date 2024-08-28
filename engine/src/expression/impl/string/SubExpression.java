@@ -25,6 +25,15 @@ public class SubExpression implements Expression {
         EffectiveValue startValue = startIndex.eval(sheet);
         EffectiveValue endValue = endIndex.eval(sheet);
 
+        if(sourceValue.getCellType() == CellType.UNKNOWN && (sourceValue.getValue() instanceof Double || sourceValue.getValue() instanceof Boolean)) {
+            return new EffectiveValueImpl(CellType.UNDEFINED, CellType.UNDEFINED);
+        }
+        if(startValue.getCellType() == CellType.UNKNOWN && !(startValue.getValue() instanceof Double)) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
+        if(endValue.getCellType() == CellType.UNKNOWN && !(endValue.getValue() instanceof Double)) {
+            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+        }
         String sourseStringValue = sourceValue.extractValueWithExpectation(String.class);
         Double startIndexValue = startValue.extractValueWithExpectation(Double.class);
         Double endIndexValue = endValue.extractValueWithExpectation(Double.class);
@@ -33,6 +42,7 @@ public class SubExpression implements Expression {
                 || Math.round(startIndexValue) != startIndexValue || Math.round(endIndexValue) != endIndexValue) {
             return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
+
         String subString = sourceValue.extractValueWithExpectation(String.class).substring((int)Math.round(startIndexValue),(int) Math.round(endIndexValue));
 
         return new EffectiveValueImpl(CellType.STRING, subString);

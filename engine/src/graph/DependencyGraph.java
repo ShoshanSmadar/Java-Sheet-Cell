@@ -9,7 +9,6 @@ import java.util.Map;
 public interface DependencyGraph extends Cloneable{
     public void addEdge(Coordinate from, Coordinate to);
     public void removeEdge(Coordinate from, Coordinate to);
-    public List<Coordinate> topologicalSort() throws Exception;
     public void ExpandGraph(Coordinate coordinate);
     public void ExpandGraph(Coordinate coordinateThatPoints, Coordinate coordinate);
     public List<CoordinateDTO> getIncomingEdgesDTO(Coordinate coord);

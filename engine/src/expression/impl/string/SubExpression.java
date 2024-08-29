@@ -4,6 +4,7 @@ import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 
 import cell.cellType.EffectiveValueImpl;
+import constant.Constants;
 import expression.Expression;
 import sheet.Sheet;
 
@@ -40,7 +41,7 @@ public class SubExpression implements Expression {
 
         if(startIndexValue < 0 || startIndexValue > endIndexValue || endIndexValue > sourseStringValue.length()
                 || Math.round(startIndexValue) != startIndexValue || Math.round(endIndexValue) != endIndexValue) {
-            return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
+            return new EffectiveValueImpl(CellType.UNDEFINED, Constants.UNDEFINED);
         }
 
         String subString = sourceValue.extractValueWithExpectation(String.class).substring((int)Math.round(startIndexValue),(int) Math.round(endIndexValue));

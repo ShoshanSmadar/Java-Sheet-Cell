@@ -3,6 +3,7 @@ package expression.impl;
 import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
+import constant.Constants;
 import expression.Expression;
 import sheet.Sheet;
 
@@ -18,7 +19,7 @@ public class RefExpression implements Expression {
     @Override
     public EffectiveValue eval(Sheet sheet) {
         if(sheet.getCell(row, col) == null){
-               return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
+               return new EffectiveValueImpl(CellType.UNDEFINED, Constants.UNDEFINED);
         }
         EffectiveValue value = sheet.getCell(row, col).getEffectiveValue();
         if(value.getCellType() == CellType.UNDEFINED)

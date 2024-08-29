@@ -231,6 +231,17 @@ public enum FunctionParser {
 
             //remove the first element from the array
             topLevelParts.remove(0);
+
+            boolean isFunction = false;
+            for( FunctionParser function : FunctionParser.values()){
+                if(function.name().equals(functionName)){
+                    isFunction = true;
+                }
+            }
+            if(!isFunction){
+                throw new IllegalArgumentException("Invalid function name " + functionName);
+            }
+
             return FunctionParser.valueOf(functionName).parse(topLevelParts);
         }
 

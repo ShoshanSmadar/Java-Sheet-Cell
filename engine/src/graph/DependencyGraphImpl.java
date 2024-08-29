@@ -47,32 +47,11 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
     }
 
     @Override
-    public List<Coordinate> topologicalSort() throws Exception {
-        Map<Coordinate, Boolean> visited = new HashMap<>();
-        Map<Coordinate, Boolean> inRecStack = new HashMap<>();
-        Stack<Coordinate> stack = new Stack<>();
-
-        for (Coordinate coord : adjList.keySet()) {
-            if (!visited.containsKey(coord)) {
-                topologicalSortUtil(coord, visited, inRecStack, stack);
-            }
-        }
-
-        List<Coordinate> sortedCoordinates = new ArrayList<>();
-        while (!stack.isEmpty()) {
-            sortedCoordinates.add(stack.pop());
-        }
-
-        return sortedCoordinates;
-    }
-
-    @Override
     public void ExpandGraph(Coordinate coordinate) {
         if(!adjList.containsKey(coordinate)) {
             adjList.put(coordinate, new ArrayList<>());
         }
     }
-
 
     @Override
     public void ExpandGraph(Coordinate coordinateThatPoints, Coordinate coordinate){
@@ -157,10 +136,9 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         }
 
         if (visited.getOrDefault(coord, false)) {
-            return; // Node has already been processed
+            return;
         }
 
-        // Mark the node as visited and part of the recursion stack
         visited.put(coord, true);
         inRecStack.put(coord, true);
 
@@ -171,7 +149,6 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
             }
         }
 
-        // Remove from the recursion stack and push to stack
         inRecStack.put(coord, false);
         stack.push(coord);
     }

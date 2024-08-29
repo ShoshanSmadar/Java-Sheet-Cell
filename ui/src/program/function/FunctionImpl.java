@@ -158,7 +158,7 @@ public class FunctionImpl implements ProgramFunctions{
 
     private void checkIfCoordinateIsInSheet(int row, int col, CoordinateDTO coordinate)
     {
-        if(row < 0 || coordinate.getRow() > row || coordinate.getCol() > col || coordinate.getCol() < 0){
+        if(coordinate.getRow() < 0 || coordinate.getRow() > row || coordinate.getCol()  > col - 1 || coordinate.getCol() < 0){
             throw new IndexOutOfBoundsException("The coordinate given " + coordinate.toString() + " is out of sheet scope.\ncommand failed.");
         }
     }

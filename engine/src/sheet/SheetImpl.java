@@ -80,11 +80,11 @@ public class SheetImpl implements Sheet, Cloneable {
 
         SheetImpl newSheetVersion = (SheetImpl) this.clone();
         Cell newCell = new CellImpl(newSheetVersion, row, col, value, newSheetVersion.getVersion() + 1);
-        for(Coordinate corr : newCell.getdependingOn()){
-            if(!this.cellMap.containsKey(corr)){
-                throw new IllegalArgumentException("The referenced coordinate " + coordinate.toString() + " is empty, command failed.");
-            }
-        }
+//        for(Coordinate corr : newCell.getdependingOn()){
+//            if(!this.cellMap.containsKey(corr)){
+//                throw new IllegalArgumentException("The referenced coordinate " + coordinate.toString() + " is empty, command failed.");
+//            }
+//        }
         newSheetVersion.cellMap.put(coordinate, newCell);
         for(Cell cell : newSheetVersion.cellMap.values()){
             cell.setFatherSheet(newSheetVersion);

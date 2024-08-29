@@ -21,6 +21,6 @@ public abstract class XmlParser {
             throw new FileNotFoundException(xmlPath);
         }
         STLSheet XMLsheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
-        return  ConvertSheet.ConvertSheet(XMLsheet);
+        return  ConvertSheet.ConvertSheetFromXML(XMLsheet);
     }
 }

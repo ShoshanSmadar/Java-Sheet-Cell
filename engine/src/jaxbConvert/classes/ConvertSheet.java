@@ -1,6 +1,7 @@
 package jaxbConvert.classes;
 
 import cell.CellImpl;
+import constant.Constants;
 import jaxb.STLCell;
 import jaxb.STLSheet;
 import sheet.Sheet;
@@ -8,7 +9,15 @@ import sheet.SheetImpl;
 
 public abstract class ConvertSheet {
 
-    public static Sheet ConvertSheet(STLSheet XMLsheet) {
+    public static Sheet ConvertSheetFromXML(STLSheet XMLsheet) {
+        if(XMLsheet.getSTLLayout().getColumns() < Constants.MIN_SIZE_OF_COLUMNS ||XMLsheet.getSTLLayout().getColumns() > Constants.MAX_SIZE_OF_COLUMNS){
+            throw new IndexOutOfBoundsException("Sheet columns must be between "
+                    + Constants.MIN_SIZE_OF_COLUMNS +"-"+ Constants.MAX_SIZE_OF_COLUMNS + " but gut " + XMLsheet.getSTLLayout().getColumns());
+        }
+        if(XMLsheet.getSTLLayout().getRows() < Constants.MIN_SIZE_OF_ROWS ||XMLsheet.getSTLLayout().getRows() > Constants.MAX_SIZE_OF_ROWS){
+            throw new IndexOutOfBoundsException("Sheet rows must be between "
+                    + Constants.MIN_SIZE_OF_ROWS +"-"+ Constants.MAX_SIZE_OF_ROWS + " but gut " + XMLsheet.getSTLLayout().getRows());
+        }
         Sheet sheet = new SheetImpl(XMLsheet.getName(),
                 XMLsheet.getSTLLayout().getColumns(),
                 XMLsheet.getSTLLayout().getRows(),
@@ -32,8 +41,15 @@ public abstract class ConvertSheet {
 
     private static void checkIfInSheet(int size, int maxSize, String name){
         if(size > maxSize | size < 0){
-            throw new IndexOutOfBoundsException("Cell coordinate is outside of sheet. Expected a "+name+" in the range 0-"+maxSize+" and got "+size);
+            if(name == "column")
+            {
+                throw new IndexOutOfBoundsException("Cell coordinate is outside of sheet. Expected a "+name
+                        +" in the range A-"+((char) (maxSize + 'A' ))+" and got "+ ((char)(size + 'A')));
+            }
+            else{
+                throw new IndexOutOfBoundsException("Cell coordinate is outside of sheet. Expected a "+name+" in the range 0-"+maxSize+" and got "+size);
+            }
+
         }
     }
-
 }

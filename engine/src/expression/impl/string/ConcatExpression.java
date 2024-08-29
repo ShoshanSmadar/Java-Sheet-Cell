@@ -25,10 +25,10 @@ public class ConcatExpression implements Expression {
             return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
         if(leftValue.getCellType() == CellType.UNKNOWN && !(leftValue.getValue() instanceof Double)) {
-            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+            return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
         if(rightValue.getCellType() == CellType.UNKNOWN && !(rightValue.getValue() instanceof Double)) {
-            return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
+            return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
         String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);
 

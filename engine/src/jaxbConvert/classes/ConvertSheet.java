@@ -7,6 +7,8 @@ import jaxb.STLSheet;
 import sheet.Sheet;
 import sheet.SheetImpl;
 
+import java.util.Objects;
+
 public abstract class ConvertSheet {
 
     public static Sheet ConvertSheetFromXML(STLSheet XMLsheet) {
@@ -41,7 +43,7 @@ public abstract class ConvertSheet {
 
     private static void checkIfInSheet(int size, int maxSize, String name){
         if(size > maxSize | size < 0){
-            if(name == "column")
+            if(Objects.equals(name, "column"))
             {
                 throw new IndexOutOfBoundsException("Cell coordinate is outside of sheet. Expected a "+name
                         +" in the range A-"+((char) (maxSize + 'A' ))+" and got "+ ((char)(size + 'A')));

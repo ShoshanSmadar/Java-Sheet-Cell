@@ -82,7 +82,7 @@ public class SheetImpl implements Sheet, Cloneable {
         Cell newCell = new CellImpl(newSheetVersion, row, col, value, newSheetVersion.getVersion() + 1);
 //        for(Coordinate corr : newCell.getdependingOn()){
 //            if(!this.cellMap.containsKey(corr)){
-//                throw new IllegalArgumentException("The referenced coordinate " + coordinate.toString() + " is empty, command failed.");
+//               cellMap.put(corr,)
 //            }
 //        }
         newSheetVersion.cellMap.put(coordinate, newCell);
@@ -101,9 +101,17 @@ public class SheetImpl implements Sheet, Cloneable {
 
     @Override
     public List<Cell> calculateAllSheetAffectiveValue() throws Exception {
+
+        List<Cell> calculateOrder =this.getCellsByCalculationOrder();
+        List<Cell> calculateOrderFixed = new ArrayList<>();
+        for(Cell cell : calculateOrder){
+            if(this.cellMap.containsValue(cell)){
+                calculateOrderFixed.add(cell);
+            }
+        }
+
         List<Cell> cellsThatHaveChanged =
-                this
-                        .getCellsByCalculationOrder()
+                calculateOrderFixed
                         .stream()
                         .filter(Cell::calculateEffectiveValue)
                         .collect(Collectors.toList());

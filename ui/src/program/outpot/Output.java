@@ -33,7 +33,16 @@ public class Output {
         System.out.println("6. Save project");
         System.out.println("7. HELP - Function explanation");
         System.out.println("8. Exit");
+    }
 
+    public static void printEmptyCellToChangeInformation(String coor){
+        System.out.println("\nThe Cell chosen " + coor + " is Empty\n\n");
+    }
+
+    public static void printCurrentCellToChangeInformation(CellDTO cell){
+        System.out.println("\nChosen Cell: " + cell.getCoordinate().toString());
+        System.out.println("Current Original value: " + cell.getOriginalValue());
+        System.out.println("Current Effective value: " + cell.getEffectiveValue()+"\n\n");
     }
 
     public static void printAskForVersionNumber(int lastVersionNumber){
@@ -75,6 +84,8 @@ public class Output {
     }
 
     public static void printAskForCellFunction(){
+        System.out.println("Please enter new cell value:");
+        System.out.println("You can add a value or a function to the Cell.");
         System.out.println("A function should be written in the following order: {<function name>,<first argument>,...,<last argument>}" +
                 "\nFor example: {PLUS,1,2} or {MINUS,{PLUS,1,2},1}");
         System.out.println("following functions are posible:" +
@@ -134,6 +145,10 @@ public class Output {
 
     public static void printFinshLoadingFile(){
         System.out.println("File loaded successfully.\n");
+    }
+
+    public static void printExit(){
+        System.out.println("Thank you for using the program.\nBye!");
     }
 
     public static void printAskWichFunctionToHelpWith(){

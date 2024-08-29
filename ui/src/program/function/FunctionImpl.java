@@ -53,7 +53,7 @@ public class FunctionImpl implements ProgramFunctions{
 
     }
 
-    public void printFirstRow(int colLength, int numberOfCols)
+    private void printFirstRow(int colLength, int numberOfCols)
     {
         StringBuilder rowBuilder = new StringBuilder();
         rowBuilder.append("   ").append("|");
@@ -78,7 +78,7 @@ public class FunctionImpl implements ProgramFunctions{
         Output.printSheetRow(rowBuilder.toString());
     }
 
-    public void printEmptyCellRow(int colLength, int numberOfCols)
+    private void printEmptyCellRow(int colLength, int numberOfCols)
     {
         StringBuilder rowBuilder = new StringBuilder();
         rowBuilder.append("   ").append("|");
@@ -88,7 +88,7 @@ public class FunctionImpl implements ProgramFunctions{
         Output.printSheetRow(rowBuilder.toString());
     }
 
-    public void printCellRow(int colLength, int numberOfCols, int rowNumber, SheetDTO sheet)
+    private void printCellRow(int colLength, int numberOfCols, int rowNumber, SheetDTO sheet)
     {
         StringBuilder rowBuilder = new StringBuilder();
         rowBuilder.append((String.format("%02d", rowNumber))).append(" |");
@@ -200,6 +200,13 @@ public class FunctionImpl implements ProgramFunctions{
     public void updateCell(Engine sheetProgram) {
         CoordinateDTO CellCoordinates = getCellCoordinates(sheetProgram.getSheetDTO().getSizeOfRows(),
                 sheetProgram.getSheetDTO().getSizeOfColumns());
+        if(sheetProgram.getSheetDTO().getCellMap().containsKey(CellCoordinates)){
+            Output.printCurrentCellToChangeInformation(sheetProgram.getCellDTO(CellCoordinates));
+        }
+        else{
+            Output.printEmptyCellToChangeInformation(CellCoordinates.toString());
+        }
+
         try{
             sheetProgram.changeCell(CellCoordinates, getExpression());
             showSheet(sheetProgram.getSheetDTO());
@@ -210,7 +217,7 @@ public class FunctionImpl implements ProgramFunctions{
         }
     }
 
-    public String getExpression(){
+    private String getExpression(){
         Output.printAskForCellFunction();
         scanner.nextLine();
         return scanner.nextLine();
@@ -266,15 +273,6 @@ public class FunctionImpl implements ProgramFunctions{
     private void showVersion(Engine sheetProgram) {
         Output.printAskForVersionNumber((sheetProgram.getSheetCurrentVersion()));
         int userChoice = getAndCheckIntInput(1, (sheetProgram.getSheetCurrentVersion()));
-//        try{
-//            userChoice = scanner.nextInt();
-//        }
-//        catch (Exception e) {
-//            throw new IllegalArgumentException("Input must be a number");
-//        }
-//        if (userChoice < 1 || userChoice > sheetProgram.getSheetCurrentVersion() + 1) {
-//            throw new IndexOutOfBoundsException("Input must be a number between 1-" +  (sheetProgram.getSheetCurrentVersion() + 1));
-//        }
         showSheet(sheetProgram.getOldVersionSheet(userChoice));
     }
 
@@ -301,6 +299,7 @@ public class FunctionImpl implements ProgramFunctions{
 
     @Override
     public void exitProgram() {
+        Output.printExit();
         System.exit(0);
     }
 

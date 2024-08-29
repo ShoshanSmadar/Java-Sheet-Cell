@@ -14,4 +14,5 @@ public interface Engine {
     SheetDTO getOldVersionSheet(int versionWanted);
     void changeCell(CoordinateDTO coordinateToChange, String expression) throws Exception;
     void enterNewSheetFromXML(String xmlPath);
+    void saveProgram(String xmlPath);
 }

@@ -24,10 +24,10 @@ public class ConcatExpression implements Expression {
         if(leftValue.getCellType() == CellType.UNDEFINED || rightValue.getCellType() == CellType.UNDEFINED){
             return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
-        if(leftValue.getCellType() == CellType.UNKNOWN && !(leftValue.getValue() instanceof Double)) {
+        if(leftValue.getCellType() == CellType.UNKNOWN && !(leftValue.getValue() instanceof String)) {
             return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
-        if(rightValue.getCellType() == CellType.UNKNOWN && !(rightValue.getValue() instanceof Double)) {
+        if(rightValue.getCellType() == CellType.UNKNOWN && !(rightValue.getValue() instanceof String)) {
             return new EffectiveValueImpl(CellType.UNDEFINED, "!UNDEFINED!");
         }
         String result = leftValue.extractValueWithExpectation(String.class) + rightValue.extractValueWithExpectation(String.class);

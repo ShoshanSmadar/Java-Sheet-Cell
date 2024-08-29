@@ -4,7 +4,7 @@
     <root id="archive" name="dto.jar">
       <element id="module-output" name="dto" />
       <element id="module-output" name="engine" />
-      <element id="library" level="project" name="mod" />
+      <element id="library" level="project" name="lib" />
     </root>
   </artifact>
 </component>

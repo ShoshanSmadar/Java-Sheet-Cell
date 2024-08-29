@@ -83,6 +83,8 @@ public class ProgramImpl implements Program{
             functions.ShowOldVersionTable(sheetProgram);
         else if (userChoice == ProgramOption.EXIT.ordinal())
             functions.exitProgram();
+        else if (userChoice == ProgramOption.SAVE_PROJECT.ordinal())
+            functions.saveFiles(sheetProgram);
         else if (userChoice == ProgramOption.EXPLAIN_FUNCTIONS.ordinal())
             functions.explainFunctions();
         else

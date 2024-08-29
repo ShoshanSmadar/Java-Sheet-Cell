@@ -6,6 +6,7 @@ public enum ProgramOption {
     SHOW_CELL,
     UPDATE_CELL,
     SHOW_VERSION,
-    EXIT,
-    EXPLAIN_FUNCTIONS;
+    SAVE_PROJECT,
+    EXPLAIN_FUNCTIONS,
+    EXIT;
 }

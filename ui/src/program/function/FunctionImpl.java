@@ -316,4 +316,18 @@ public class FunctionImpl implements ProgramFunctions{
         }
 
     }
+
+    @Override
+    public void saveFiles(Engine engine){
+        Output.printAskForXMLFile();
+        try {
+            String fileName = scanner.nextLine().trim();
+            Output.printLoadingFile();
+            engine.saveProgram(fileName);
+            Output.printFinshLoadingFile();
+        }
+        catch(Exception e) {
+            Output.printExeptionMessage(e);
+        }
+    }
 }

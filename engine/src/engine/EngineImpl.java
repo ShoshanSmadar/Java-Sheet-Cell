@@ -3,6 +3,7 @@ package engine;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
 import jakarta.xml.bind.JAXBException;
+import jaxbConvert.classes.ConvertToXML;
 import jaxbConvert.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
@@ -71,11 +72,22 @@ public class EngineImpl implements Engine{
             sheetList.add(newSheet);
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeException("Error acured while loading XML file.\n" +
+            throw new RuntimeException("Error accrued while loading XML file.\n" +
                     "The error accrued because: file wasn't found in given path.");
         }
         catch(Exception e){
-            throw new RuntimeException("Error acured while loading XML file.\n" +
+            throw new RuntimeException("Error accrued while loading XML file.\n" +
+                    "The error accrued because: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void saveProgram(String xmlPath) {
+        try {
+            XmlParser.ConvertSheetToXML(xmlPath, this);
+        }
+        catch (Exception e){
+            throw new RuntimeException("Error accrued while saving files.\n" +
                     "The error accrued because: " + e.getMessage());
         }
     }

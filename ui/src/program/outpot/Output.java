@@ -14,6 +14,14 @@ public class Output {
         System.out.println("Please Enter XML file path: ");
     }
 
+    public static void printSavingFiles(){
+        System.out.println("Saving files...");
+    }
+
+    public static void printFinishedSavingFiles(){
+        System.out.println("Finished Saving files...");
+    }
+
     public static void printMenu(){
         System.out.println("\n*******************************************\n");
         System.out.println("Please choose one of the following options:\n");
@@ -22,8 +30,10 @@ public class Output {
         System.out.println("3. Show a Cell");
         System.out.println("4. Update Cell value");
         System.out.println("5. Show Old Sheet Versions");
-        System.out.println("6. Exit");
-        System.out.println("7. HELP - Function explantion");
+        System.out.println("6. Save project");
+        System.out.println("7. HELP - Function explanation");
+        System.out.println("8. Exit");
+
     }
 
     public static void printAskForVersionNumber(int lastVersionNumber){

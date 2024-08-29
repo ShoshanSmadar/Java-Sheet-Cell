@@ -11,4 +11,6 @@ public interface ProgramFunctions {
     void ShowOldVersionTable(Engine sheetProgram);
     void exitProgram();
     void explainFunctions();
+
+    void saveFiles(Engine engine);
 }

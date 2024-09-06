@@ -14,7 +14,8 @@ public class CellDTO {
     protected List<CoordinateDTO> affectedBy;
     protected List<CoordinateDTO> affecting;
 
-    public CellDTO(CoordinateDTO coordinate, String originalValue, Object effectiveValue, int lastVersionChanged, List<CoordinateDTO> affectedBy, List<CoordinateDTO> affecting) {
+    public CellDTO(CoordinateDTO coordinate, String originalValue, Object effectiveValue,
+                   int lastVersionChanged, List<CoordinateDTO> affectedBy, List<CoordinateDTO> affecting) {
         this.coordinate = coordinate;
         this.originalValue = originalValue;
         this.effectiveValue = effectiveValue;

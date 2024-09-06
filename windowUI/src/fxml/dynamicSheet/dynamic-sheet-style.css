@@ -1,0 +1,34 @@
+.header-cell {
+    -fx-alignment: center; /* Center text alignment */
+    -fx-font-weight: bold; /* Bold font for headers */
+    -fx-border-color: black; /* Border around header cells */
+    -fx-border-width: 1px;
+    -fx-background-color: transparent; /* No background color for headers */
+}
+
+.data-cell {
+    -fx-alignment: center-left; /* Left-aligned text for data cells */
+    -fx-border-color: lightgray;
+    -fx-border-width: 1px;
+    -fx-background-color: white; /* Default white background */
+}
+
+/* Alternating row colors */
+.even-row {
+    -fx-background-color: #f0f8ff; /* Very light blue for even rows */
+}
+
+.odd-row {
+    -fx-background-color: white; /* White for odd rows */
+}
+
+/* Highlight cell on hover */
+.data-cell:hover {
+    -fx-background-color: #d3d3d3; /* Light gray when hovered */
+    -fx-cursor: hand; /* Pointer cursor on hover */
+}
+
+/* Visual feedback on cell click */
+.clicked-cell {
+    -fx-background-color: #add8e6; /* Light blue background when clicked */
+}

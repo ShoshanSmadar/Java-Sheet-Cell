@@ -7,7 +7,9 @@ import program.outpot.Output;
 import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static java.lang.Character.isUpperCase;
@@ -129,7 +131,9 @@ public class FunctionImpl implements ProgramFunctions{
 
         if (cell.getEffectiveValue() instanceof Double)
         {
-            DecimalFormat df = new DecimalFormat("#,###.##");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+
+            DecimalFormat df = new DecimalFormat("#,###.##", symbols);
             cellValue = df.format(cell.getEffectiveValue());
         }
         else if (cell.getEffectiveValue() instanceof Boolean)

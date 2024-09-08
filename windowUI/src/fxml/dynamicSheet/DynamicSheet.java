@@ -10,11 +10,19 @@ import javafx.stage.Stage;
 public class DynamicSheet extends Application {
 
     private GridPane gridPane;
+    public DynamicSheet(int rowSize, int rowHeight, int colSize, int colHeight) {
+        gridPane = new GridPane();
+        initializeSheet(gridPane, rowSize,rowHeight, colSize, colHeight);
+    }
+
+    public javafx.scene.layout.GridPane getGridPane() {
+        return gridPane;
+    }
 
     @Override
     public void start(Stage primaryStage) {
         gridPane = new GridPane();
-        initializeSheet(gridPane, 10, 5); // Initialize grid with 10 rows and 5 columns
+        initializeSheet(gridPane, 10,0 ,5,0); // Initialize grid with 10 rows and 5 columns
 
         Scene scene = new Scene(gridPane, 600, 400);
         scene.getStylesheets().add(getClass().getResource("dynamic-sheet-style.css").toExternalForm()); // Add CSS
@@ -23,7 +31,7 @@ public class DynamicSheet extends Application {
         primaryStage.show();
     }
 
-    private void initializeSheet(GridPane gridPane, int rows, int columns) {
+    private void initializeSheet(GridPane gridPane, int rows,int rowHight, int columns, int columnWidth) {
         // Add column headers (A, B, C, ...)
         for (int col = 1; col <= columns; col++) {
             Label columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
@@ -59,6 +67,8 @@ public class DynamicSheet extends Application {
             }
         }
     }
+
+
 
     // Method to handle cell click events
     private void handleCellClick(Label cell) {

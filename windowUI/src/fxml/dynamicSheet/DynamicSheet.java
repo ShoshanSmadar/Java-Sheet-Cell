@@ -13,6 +13,8 @@ public class DynamicSheet extends Application {
 
     private GridPane gridPane;
     private int row, rowHeight, column, columnHeight;
+    private Label currentClickedLabel;
+
     public DynamicSheet(int rowSize, int rowHeight, int colSize, int colHeight) {
         this.gridPane = new GridPane();
         this.row = rowSize;
@@ -100,13 +102,20 @@ public class DynamicSheet extends Application {
 
     // Method to handle cell click events
     private void handleCellClick(Label cell) {
-        if (cell.getText().isEmpty()) {
-            cell.setText("Clicked!");
-            cell.getStyleClass().add("clicked-cell");
-        } else {
-            cell.setText("");
-            cell.getStyleClass().remove("clicked-cell");
+        if(currentClickedLabel != null){
+            resetClickedLabel(currentClickedLabel);
         }
+        currentClickedLabel = cell;
+        cell.getStyleClass().add("clicked-cell");
+    }
+
+    private void resetClickedLabel(Label currentClickedLabel) {
+        currentClickedLabel.getStyleClass().remove("clicked-cell");
+
+    }
+
+    private boolean hasStyleClass(Label label, String styleClass) {
+        return label.getStyleClass().contains(styleClass);
     }
 
     // Method to programmatically update the content of a specific cell

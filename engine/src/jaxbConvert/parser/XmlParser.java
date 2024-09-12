@@ -27,6 +27,14 @@ public abstract class XmlParser {
         return  ConvertSheet.ConvertSheetFromXML(XMLsheet);
     }
 
+    public static Sheet sheetParser(File file) throws Exception {
+        JAXBContext context = JAXBContext.newInstance(STLSheet.class);
+        Unmarshaller jaxbUnmarshaller = context.createUnmarshaller();
+        STLSheet XMLsheet = (STLSheet) jaxbUnmarshaller.unmarshal(file);
+        return  ConvertSheet.ConvertSheetFromXML(XMLsheet);
+
+    }
+
     public static void ConvertSheetToXML (String filePath, Engine engine) throws Exception {
         JAXBContext context = JAXBContext.newInstance(STLSheet.class);
         Marshaller marshaller = context.createMarshaller();

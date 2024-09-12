@@ -3,11 +3,11 @@ package engine;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
 import jakarta.xml.bind.JAXBException;
-import jaxbConvert.classes.ConvertToXML;
 import jaxbConvert.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +59,24 @@ public class EngineImpl implements Engine{
     @Override
     public void changeCell(CoordinateDTO coordinateToChange, String expression) throws Exception{
         sheetList.add(sheetList.getLast().UpdateCellValueAndSheet(coordinateToChange.getRow(), coordinateToChange.getCol(), expression));
+    }
+
+    @Override
+    public void enterNewSheetFromXML(File file) throws JAXBException, FileNotFoundException {
+        try{
+            Sheet newSheet = XmlParser.sheetParser(file);
+            newSheet.calculateAllSheetAffectiveValue();
+            sheetList.clear();
+            sheetList.add(newSheet);
+        }
+        catch (FileNotFoundException e) {
+            throw new RuntimeException("Error accrued while loading XML file.\n" +
+                    "The error accrued because: file wasn't found in given path.");
+        }
+        catch(Exception e){
+            throw new RuntimeException("Error accrued while loading XML file.\n" +
+                    "The error accrued because: " + e.getMessage());
+        }
     }
 
     @Override

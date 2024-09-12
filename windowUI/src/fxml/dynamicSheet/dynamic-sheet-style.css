@@ -1,6 +1,5 @@
 .header-cell {
     -fx-alignment: center; /* Center text alignment */
-
     -fx-font-weight: bold; /* Bold font for headers */
     -fx-background-color: transparent; /* No background color for headers */
 }
@@ -29,5 +28,15 @@
 
 /* Visual feedback on cell click */
 .clicked-cell {
-    -fx-background-color: #add8e6; /* Light blue background when clicked */
+    -fx-background-color: #b6ade6; /* Light blue background when clicked */
 }
+
+.Affected-cell {
+    -fx-background-color: #53ea4f;
+}
+
+.Depending-cell{
+    -fx-background-color: #4f9dea;
+}
+
+

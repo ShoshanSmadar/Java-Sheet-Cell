@@ -83,8 +83,11 @@ public class SheetDTO {
         return new SheetImpl(this.getSheetName(),this.sizeOfColumns, this.sizeOfRows, this.heightOfRow, this.lengthOfCol);
     }
 
-    public CellDTO getCell(CoordinateDTO coordinate)
-    {
+    public CellDTO getCell(CoordinateDTO coordinate) {
         return cellMap.get(coordinate);
     }
+
+//    public CellDTO getCell(String coordinate){
+//
+//    }
 }

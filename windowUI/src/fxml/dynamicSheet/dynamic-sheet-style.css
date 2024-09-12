@@ -1,8 +1,7 @@
 .header-cell {
     -fx-alignment: center; /* Center text alignment */
+
     -fx-font-weight: bold; /* Bold font for headers */
-    -fx-border-color: black; /* Border around header cells */
-    -fx-border-width: 1px;
     -fx-background-color: transparent; /* No background color for headers */
 }
 

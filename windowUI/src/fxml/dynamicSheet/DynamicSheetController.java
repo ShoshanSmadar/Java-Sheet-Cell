@@ -22,8 +22,8 @@ public class DynamicSheetController {
             System.out.println("FlowPane is null!");
         } else {
             System.out.println("FlowPane is initialized.");
-            DynamicSheet newSheet = new DynamicSheet(10,0 ,5,0);
-            dynamicSheet.getChildren().add((newSheet.getGridPane())); // Replace this with your specific logic
+            DynamicSheet newSheet = new DynamicSheet(10,30 ,5,50);
+            dynamicSheet.getChildren().add((newSheet.getGridPane()));
         }
     }
 }

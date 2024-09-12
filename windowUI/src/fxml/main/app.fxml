@@ -28,13 +28,13 @@
                     </rowConstraints>
                     <children>
                         <VBox prefHeight="247.0" prefWidth="180.0" GridPane.columnIndex="0">
-                            <fx:include source="../sheetSetting/sheetSetting.fxml" />
+                            <fx:include fx:id="sheetSettings" source="../sheetSetting/sheetSetting.fxml" />
                      <padding>
                         <Insets left="20.0" />
                      </padding>
                         </VBox>
                         <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
-                            <fx:include source="../rangeSettings/rangeSetting.fxml" />
+                            <fx:include fx:id="rangeSettings" source="../rangeSettings/rangeSetting.fxml" />
                      <GridPane.margin>
                         <Insets top="10.0" />
                      </GridPane.margin>

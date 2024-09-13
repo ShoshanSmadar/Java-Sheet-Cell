@@ -1,34 +1,48 @@
 package fxml.dynamicSheet;
 
 import cell.CellDTO;
-import coordinate.CoordinateDTO;
+import fxml.CellLabel;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import sheet.SheetDTO;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class DynamicSheetController {
     public FlowPane dynamicSheet;
     @FXML
     private FlowPane flowPane; // Ensure this matches the fx:id in the FXML
     private appController.appController mainController;
+    private DynamicSheet dynamicSheetBuilder;
+
+    public Boolean isDynamicSheetBuilderExist(){
+        return (dynamicSheet != null);
+    }
+
+
 
     public DynamicSheetController() {
-        // Constructor logic, if any
+
     }
 
     @FXML
-    public void initialize() {
-        initializeSheet();
-    }
+//    public void initialize() {
+//        initializeSheet();
+//    }
 
-    public void initializeSheet() {
+    public void initializeSheet(int rowSize, int rowHeight, int colSize, int colHeight) {
         if (dynamicSheet == null) {
             System.out.println("FlowPane is null!");
         } else {
-            DynamicSheet newSheet = new DynamicSheet(10,30 ,5,50);
-            dynamicSheet.getChildren().add((newSheet.getGridPane()));
+            if(isDynamicSheetBuilderExist()){
+                mainController.clearDynamicSheet();
+            }
+            dynamicSheetBuilder = new DynamicSheet(rowSize,  rowHeight,  colSize,  colHeight, this);
+            dynamicSheet.getChildren().add((dynamicSheetBuilder.getGridPane()));
         }
     }
 
@@ -38,9 +52,14 @@ public class DynamicSheetController {
         }
     }
 
-    public void handleCellClick(Label cellLabl) {
-        SheetDTO sheet = mainController.getSheetDTO();
+    public void handleCellClick(CellLabel cell) {
 
+        if(dynamicSheetBuilder.getCurrentClickedCell() != null){
+            dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),
+                    mainController.getSheetDTO().getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
+        }
+        dynamicSheetBuilder.setClickedLabel(cell ,mainController.getSheetDTO().getCell(cell.getCoordinateDTO()));
+        dynamicSheetBuilder.setCurrentClickedCell(cell);
     }
 
     public void setAppControler(appController.appController controller){
@@ -49,18 +68,33 @@ public class DynamicSheetController {
 
     private void setCell(CellDTO cell) {
         Node node = dynamicSheet.lookup("#cell"+ cell.getCoordinate());
-        node.
         if (node != null && node instanceof Label) {
             Label label = (Label) node;
-            label.setText(cell.getOriginalValue());
-            for(CoordinateDTO cellAfected : cell.getAffecting()){
-                Node nodeCellAfected = dynamicSheet.lookup("#cell"+ cellAfected);
-                nodeCellAfected.getStyleClass().add("cell" + cell.getCoordinate() + "Affected");
-            }
-            for(CoordinateDTO cellDepending : cell.getAffectedBy()){
-                Node nodeCellDepending = dynamicSheet.lookup("#cell"+ cellDepending);
-                nodeCellDepending.getStyleClass().add("cell" + cell.getCoordinate() + "Depending");
-            }
+            label.setText(getStringValue(cell));
         }
+    }
+
+
+    private String getStringValue(CellDTO cell)
+    {
+        String cellValue;
+
+        if (cell.getEffectiveValue() instanceof Double)
+        {
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+
+            DecimalFormat df = new DecimalFormat("#,###.##", symbols);
+            cellValue = df.format(cell.getEffectiveValue());
+        }
+        else if (cell.getEffectiveValue() instanceof Boolean)
+        {
+            cellValue = cell.getEffectiveValue().toString().toUpperCase();
+        }
+        else
+        {
+            cellValue = (String) cell.getEffectiveValue();
+        }
+
+        return cellValue;
     }
 }

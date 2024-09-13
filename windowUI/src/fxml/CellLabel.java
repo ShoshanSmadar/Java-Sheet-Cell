@@ -9,4 +9,8 @@ public class CellLabel extends Label {
     public CellLabel(CoordinateDTO coordinateDTO) {
         this.coordinateDTO = coordinateDTO;
     }
+
+    public CoordinateDTO getCoordinateDTO() {
+        return coordinateDTO;
+    }
 }

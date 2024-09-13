@@ -39,12 +39,19 @@ public class appController {
     public void OpenFXMLFile(File file) {
         boolean bool = LoadFXMLHandler.loadXML(file, engine);
         if(bool){
-            showSheet();
+            SheetDTO sheetDTO = engine.getSheetDTO();
+            dynamicSheetController.initializeSheet(sheetDTO.getSizeOfRows(), sheetDTO.getHeightOfRow()
+                    , sheetDTO.getSizeOfColumns(), sheetDTO.getLengthOfCol());
+            showSheet(sheetDTO);
         }
     }
 
-    public void showSheet(){
-        dynamicSheetController.setSheetCells(engine.getSheetDTO());
+    public void clearDynamicSheet() {
+        dynamicSheet.getChildren().clear();
+    }
+
+    public void showSheet(SheetDTO sheetDTO){
+        dynamicSheetController.setSheetCells(sheetDTO);
     }
 
     public SheetDTO getSheetDTO(){

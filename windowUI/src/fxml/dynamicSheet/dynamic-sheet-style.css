@@ -28,15 +28,15 @@
 
 /* Visual feedback on cell click */
 .clicked-cell {
-    -fx-background-color: #b6ade6; /* Light blue background when clicked */
+    -fx-background-color: #b1a6ef; /* Light blue background when clicked */
 }
 
-.Affected-cell {
-    -fx-background-color: #53ea4f;
+.affected-cell {
+    -fx-background-color: #91ed8e;
 }
 
-.Depending-cell{
-    -fx-background-color: #4f9dea;
+.depending-cell{
+    -fx-background-color: #8ebaed;
 }
 
 

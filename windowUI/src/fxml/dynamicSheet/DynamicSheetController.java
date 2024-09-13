@@ -1,6 +1,7 @@
 package fxml.dynamicSheet;
 
 import cell.CellDTO;
+import coordinate.CoordinateDTO;
 import fxml.CellLabel;
 import fxml.headline.HeadlineController;
 import javafx.fxml.FXML;
@@ -52,6 +53,10 @@ public class DynamicSheetController {
         for(CellDTO cell : sheet.getCellMap().values()){
             setCell(cell);
         }
+    }
+
+    public CoordinateDTO getCurrnetClickedCellCoordinateSTO(){
+        return dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO();
     }
 
     public void handleCellClick(CellLabel cell) {

@@ -1,5 +1,6 @@
 package appController;
 
+import coordinate.CoordinateDTO;
 import engine.Engine;
 import engine.EngineImpl;
 import fxml.dynamicSheet.DynamicSheetController;
@@ -28,7 +29,6 @@ public class appController {
     @FXML private Accordion rangeSettings;
     @FXML private RangeSettingController rangeSettingController;
     @FXML private GridPane sheetSettings;
-    //@FXML private
     @FXML private SheetSettingsController sheetSettingsController;
 
     @FXML
@@ -48,8 +48,16 @@ public class appController {
         }
     }
 
+    public void updateCellValue(CoordinateDTO coordinateDTO, String value) throws Exception {
+        engine.changeCell(coordinateDTO, value);
+    }
+
     public void clearDynamicSheet() {
         dynamicSheet.getChildren().clear();
+    }
+
+    public void updateSheet() {
+        showSheet(engine.getSheetDTO());
     }
 
     public void showSheet(SheetDTO sheetDTO){

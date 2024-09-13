@@ -17,7 +17,8 @@ public class SheetDTO {
     protected int sizeOfRows;
     protected int heightOfRow;
 
-    public SheetDTO(String sheetName, int sheetVersion, Map<CoordinateDTO, CellDTO> cellMap, int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
+    public SheetDTO(String sheetName, int sheetVersion, Map<CoordinateDTO, CellDTO> cellMap,
+                    int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
         this.SheetName = sheetName;
         this.sheetVersion = sheetVersion;
         this.cellMap = cellMap;

@@ -53,6 +53,12 @@ public class HeadlineController {
     private javafx.scene.control.Label selectedCellLbl;
 
     @FXML
+    void initialize() {
+        UpdateBtn.disableProperty().bind(ActionLineLbl.textProperty().isEmpty());
+        selectVersionBtn.disableProperty().bind(filePathLbl.textProperty().isEmpty());
+    }
+
+    @FXML
     void openFileBtnAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml");
@@ -71,7 +77,6 @@ public class HeadlineController {
         catch (Exception e){
             showErrorPopup(e);
         }
-
     }
 
     private void setHeaderInformationFromSheet(){
@@ -107,7 +112,13 @@ public class HeadlineController {
 
     @FXML
     void updateValueClicked(MouseEvent event) {
-
+        try{
+            mainController.updateCellValue(dynamicSheetController.getCurrnetClickedCellCoordinateSTO(), ActionLineLbl.getText());
+            mainController.updateSheet();
+        }
+        catch (Exception e){
+            showErrorPopup(e);
+        }
     }
 
     public void setControllers(appController.appController controller, DynamicSheetController dynamicSheetController){

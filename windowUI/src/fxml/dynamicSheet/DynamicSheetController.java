@@ -2,6 +2,7 @@ package fxml.dynamicSheet;
 
 import cell.CellDTO;
 import fxml.CellLabel;
+import fxml.headline.HeadlineController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ public class DynamicSheetController {
     private FlowPane flowPane; // Ensure this matches the fx:id in the FXML
     private appController.appController mainController;
     private DynamicSheet dynamicSheetBuilder;
+    private HeadlineController headlineController;
 
     public Boolean isDynamicSheetBuilderExist(){
         return (dynamicSheet != null);
@@ -53,17 +55,21 @@ public class DynamicSheetController {
     }
 
     public void handleCellClick(CellLabel cell) {
-
         if(dynamicSheetBuilder.getCurrentClickedCell() != null){
             dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),
                     mainController.getSheetDTO().getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
         }
-        dynamicSheetBuilder.setClickedLabel(cell ,mainController.getSheetDTO().getCell(cell.getCoordinateDTO()));
+
+        CellDTO cellDTO = mainController.getSheetDTO().getCell(cell.getCoordinateDTO());
+
+        dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
         dynamicSheetBuilder.setCurrentClickedCell(cell);
+        headlineController.onCellLabelClicked(cellDTO);
     }
 
-    public void setAppControler(appController.appController controller){
+    public void setControllers(appController.appController controller, HeadlineController headlineController ){
         this.mainController = controller;
+        this.headlineController = headlineController;
     }
 
     private void setCell(CellDTO cell) {

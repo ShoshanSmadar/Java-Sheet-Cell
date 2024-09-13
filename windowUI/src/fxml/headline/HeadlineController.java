@@ -1,6 +1,7 @@
 package fxml.headline;
 
-import UIconstant.Constants;
+import cell.CellDTO;
+import fxml.dynamicSheet.DynamicSheetController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,10 +14,13 @@ import sheet.SheetDTO;
 
 import java.io.File;
 
+import static UIconstant.Constants.*;
+
 //import java.awt.*;
 
 public class HeadlineController {
     private appController.appController mainController;
+    private DynamicSheetController dynamicSheetController;
 
     @FXML
     private TextField ActionLineLbl;
@@ -73,7 +77,7 @@ public class HeadlineController {
     private void setHeaderInformationFromSheet(){
         SheetDTO sheet = mainController.getSheetDTO();
         nameLbl.setText(sheet.getSheetName());
-        SheetVersionLbl.setText(Constants.VESION_LABEL + sheet.getSheetVersion());
+        SheetVersionLbl.setText(VERSION_LABEL + sheet.getSheetVersion());
         SheetVersionLbl.setVisible(true);
     }
 
@@ -89,6 +93,13 @@ public class HeadlineController {
         alert.showAndWait();
     }
 
+    public void onCellLabelClicked(CellDTO cell) {
+        selectedCellLbl.setText(SELECTED_CELL + cell.getCoordinate());
+        OriginalValueLbl.setText(cell.getOriginalValue());
+        ActionLineLbl.setDisable(false);
+        cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
+    }
+
     @FXML
     void selectVersionClicked(MouseEvent event) {
 
@@ -99,7 +110,8 @@ public class HeadlineController {
 
     }
 
-    public void setAppController(appController.appController controller){
+    public void setControllers(appController.appController controller, DynamicSheetController dynamicSheetController){
         this.mainController = controller;
+        this.dynamicSheetController = dynamicSheetController;
     }
 }

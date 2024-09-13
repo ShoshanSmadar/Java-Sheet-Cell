@@ -34,7 +34,7 @@ public class appController {
     @FXML
     public void initialize() {
         engine = new EngineImpl();
-        headlineController.setAppControler(this);
+        headlineController.setAppController(this);
         dynamicSheetController.setAppControler(this);
     }
 

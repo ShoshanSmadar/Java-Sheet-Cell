@@ -1,5 +1,6 @@
 package fxml.headline;
 
+import UIconstant.Constants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sheet.SheetDTO;
 
 import java.io.File;
 
@@ -38,7 +40,7 @@ public class HeadlineController {
     private javafx.scene.control.Label filePathLbl;
 
     @FXML
-    private javafx.scene.control.Label nameLal;
+    private javafx.scene.control.Label nameLbl;
 
     @FXML
     private Button selectVersionBtn;
@@ -59,11 +61,20 @@ public class HeadlineController {
         try{
             mainController.OpenFXMLFile(file);
             filePathLbl.setText(file.getAbsolutePath());
+            filePathLbl.setVisible(true);
+            setHeaderInformationFromSheet();
         }
         catch (Exception e){
             showErrorPopup(e);
         }
 
+    }
+
+    private void setHeaderInformationFromSheet(){
+        SheetDTO sheet = mainController.getSheetDTO();
+        nameLbl.setText(sheet.getSheetName());
+        SheetVersionLbl.setText(Constants.VESION_LABEL + sheet.getSheetVersion());
+        SheetVersionLbl.setVisible(true);
     }
 
     public void showErrorPopup(Exception ex) {
@@ -88,7 +99,7 @@ public class HeadlineController {
 
     }
 
-    public void setAppControler(appController.appController controller){
+    public void setAppController(appController.appController controller){
         this.mainController = controller;
     }
 }

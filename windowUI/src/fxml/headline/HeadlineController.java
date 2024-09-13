@@ -2,6 +2,7 @@ package fxml.headline;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -60,9 +61,21 @@ public class HeadlineController {
             filePathLbl.setText(file.getAbsolutePath());
         }
         catch (Exception e){
-
+            showErrorPopup(e);
         }
 
+    }
+
+    public void showErrorPopup(Exception ex) {
+        // Create an alert of type ERROR
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An Error Occurred");
+        alert.setContentText("Something went wrong!\n" +
+                ex.getMessage()+
+                "\nPlease try again.");
+
+        alert.showAndWait();
     }
 
     @FXML

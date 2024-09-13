@@ -59,6 +59,10 @@ public class DynamicSheetController {
         return dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO();
     }
 
+    public CellLabel getCurrnetClickedCellLabel(){
+        return dynamicSheetBuilder.getCurrentClickedCell();
+    }
+
     public void handleCellClick(CellLabel cell) {
         if(dynamicSheetBuilder.getCurrentClickedCell() != null){
             dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),

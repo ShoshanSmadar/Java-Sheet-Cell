@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -56,6 +57,10 @@ public class HeadlineController {
     void initialize() {
         UpdateBtn.disableProperty().bind(ActionLineLbl.textProperty().isEmpty());
         selectVersionBtn.disableProperty().bind(filePathLbl.textProperty().isEmpty());
+        ActionLineLbl.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                updateValue();            }
+        });
     }
 
     @FXML
@@ -112,9 +117,14 @@ public class HeadlineController {
 
     @FXML
     void updateValueClicked(MouseEvent event) {
+        updateValue();
+    }
+
+    private void updateValue(){
         try{
             mainController.updateCellValue(dynamicSheetController.getCurrnetClickedCellCoordinateSTO(), ActionLineLbl.getText());
             mainController.updateSheet();
+            dynamicSheetController.handleCellClick(dynamicSheetController.getCurrnetClickedCellLabel());
         }
         catch (Exception e){
             showErrorPopup(e);

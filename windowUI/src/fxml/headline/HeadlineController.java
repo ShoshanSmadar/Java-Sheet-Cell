@@ -1,6 +1,7 @@
 package fxml.headline;
 
 import cell.CellDTO;
+import coordinate.CoordinateDTO;
 import fxml.dynamicSheet.DynamicSheetController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,11 +104,14 @@ public class HeadlineController {
         alert.showAndWait();
     }
 
-    public void onCellLabelClicked(CellDTO cell) {
-        selectedCellLbl.setText(SELECTED_CELL + cell.getCoordinate());
-        OriginalValueLbl.setText(cell.getOriginalValue());
+    public void onCellLabelClicked(CellDTO cell, CoordinateDTO coordinateDTO) {
+        selectedCellLbl.setText(SELECTED_CELL + coordinateDTO);
         ActionLineLbl.setDisable(false);
-        cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
+        if(cell != null){
+            OriginalValueLbl.setText(cell.getOriginalValue());
+            cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
+        }
+
     }
 
     @FXML
@@ -122,9 +126,9 @@ public class HeadlineController {
 
     private void updateValue(){
         try{
-            mainController.updateCellValue(dynamicSheetController.getCurrnetClickedCellCoordinateSTO(), ActionLineLbl.getText());
+            mainController.updateCellValue(dynamicSheetController.getCurrentClickedCellCoordinateSTO(), ActionLineLbl.getText());
             mainController.updateSheet();
-            dynamicSheetController.handleCellClick(dynamicSheetController.getCurrnetClickedCellLabel());
+            dynamicSheetController.handleCellClick(dynamicSheetController.getCurrentClickedCellLabel());
         }
         catch (Exception e){
             showErrorPopup(e);

@@ -55,11 +55,11 @@ public class DynamicSheetController {
         }
     }
 
-    public CoordinateDTO getCurrnetClickedCellCoordinateSTO(){
+    public CoordinateDTO getCurrentClickedCellCoordinateSTO(){
         return dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO();
     }
 
-    public CellLabel getCurrnetClickedCellLabel(){
+    public CellLabel getCurrentClickedCellLabel(){
         return dynamicSheetBuilder.getCurrentClickedCell();
     }
 
@@ -69,11 +69,10 @@ public class DynamicSheetController {
                     mainController.getSheetDTO().getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
         }
 
-        CellDTO cellDTO = mainController.getSheetDTO().getCell(cell.getCoordinateDTO());
-
-        dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
         dynamicSheetBuilder.setCurrentClickedCell(cell);
-        headlineController.onCellLabelClicked(cellDTO);
+        CellDTO cellDTO = mainController.getSheetDTO().getCell(cell.getCoordinateDTO());
+        dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
+        headlineController.onCellLabelClicked(cellDTO, cell.getCoordinateDTO());
     }
 
     public void setControllers(appController.appController controller, HeadlineController headlineController ){

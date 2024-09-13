@@ -1,19 +1,26 @@
 package fxml.headline;
 
+import cell.CellDTO;
+import fxml.dynamicSheet.DynamicSheetController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sheet.SheetDTO;
 
 import java.io.File;
+
+import static UIconstant.Constants.*;
 
 //import java.awt.*;
 
 public class HeadlineController {
     private appController.appController mainController;
+    private DynamicSheetController dynamicSheetController;
 
     @FXML
     private TextField ActionLineLbl;
@@ -37,13 +44,19 @@ public class HeadlineController {
     private javafx.scene.control.Label filePathLbl;
 
     @FXML
-    private javafx.scene.control.Label nameLal;
+    private javafx.scene.control.Label nameLbl;
 
     @FXML
     private Button selectVersionBtn;
 
     @FXML
     private javafx.scene.control.Label selectedCellLbl;
+
+    @FXML
+    void initialize() {
+        UpdateBtn.disableProperty().bind(ActionLineLbl.textProperty().isEmpty());
+        selectVersionBtn.disableProperty().bind(filePathLbl.textProperty().isEmpty());
+    }
 
     @FXML
     void openFileBtnAction(ActionEvent event) {
@@ -58,11 +71,38 @@ public class HeadlineController {
         try{
             mainController.OpenFXMLFile(file);
             filePathLbl.setText(file.getAbsolutePath());
+            filePathLbl.setVisible(true);
+            setHeaderInformationFromSheet();
         }
         catch (Exception e){
-
+            showErrorPopup(e);
         }
+    }
 
+    private void setHeaderInformationFromSheet(){
+        SheetDTO sheet = mainController.getSheetDTO();
+        nameLbl.setText(sheet.getSheetName());
+        SheetVersionLbl.setText(VERSION_LABEL + sheet.getSheetVersion());
+        SheetVersionLbl.setVisible(true);
+    }
+
+    public void showErrorPopup(Exception ex) {
+        // Create an alert of type ERROR
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An Error Occurred");
+        alert.setContentText("Something went wrong!\n" +
+                ex.getMessage()+
+                "\nPlease try again.");
+
+        alert.showAndWait();
+    }
+
+    public void onCellLabelClicked(CellDTO cell) {
+        selectedCellLbl.setText(SELECTED_CELL + cell.getCoordinate());
+        OriginalValueLbl.setText(cell.getOriginalValue());
+        ActionLineLbl.setDisable(false);
+        cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
     }
 
     @FXML
@@ -72,10 +112,17 @@ public class HeadlineController {
 
     @FXML
     void updateValueClicked(MouseEvent event) {
-
+        try{
+            mainController.updateCellValue(dynamicSheetController.getCurrnetClickedCellCoordinateSTO(), ActionLineLbl.getText());
+            mainController.updateSheet();
+        }
+        catch (Exception e){
+            showErrorPopup(e);
+        }
     }
 
-    public void setAppControler(appController.appController controller){
+    public void setControllers(appController.appController controller, DynamicSheetController dynamicSheetController){
         this.mainController = controller;
+        this.dynamicSheetController = dynamicSheetController;
     }
 }

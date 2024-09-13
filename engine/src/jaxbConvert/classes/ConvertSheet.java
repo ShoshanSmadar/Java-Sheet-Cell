@@ -32,10 +32,10 @@ public abstract class ConvertSheet {
             {
                 throw new IllegalArgumentException("Column input should be one letter but got " + STLcell.getColumn());
             }
-            ConvertSheet.checkIfInSheet(STLcell.getRow() - 1, XMLsheet.getSTLLayout().getRows(), "row");
+            ConvertSheet.checkIfInSheet(STLcell.getRow(), XMLsheet.getSTLLayout().getRows(), "row");
             ConvertSheet.checkIfInSheet(STLcell.getColumn().toUpperCase().charAt(0) - 'A', XMLsheet.getSTLLayout().getColumns(), "column");
 
-            sheet.enterCellFromXML(new CellImpl(sheet, STLcell.getRow() - 1,
+            sheet.enterCellFromXML(new CellImpl(sheet, STLcell.getRow(),
                     STLcell.getColumn().toUpperCase().charAt(0) - 'A', STLcell.getSTLOriginalValue(), 0));
         }
         return sheet;

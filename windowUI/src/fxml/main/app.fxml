@@ -6,19 +6,21 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appController.appController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appController.appController">
     <content>
+        <StackPane>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="1125.0">
             <top>
-                <fx:include fx:id="headline" source="../headline/headline.fxml" />
+                <fx:include fx:id="headline" source="../headline/headline.fxml" BorderPane.alignment="CENTER" />
             </top>
             <center>
-                <fx:include fx:id="dynamicSheet" source="../dynamicSheet/dynamicSheet.fxml" />
+                <fx:include fx:id="dynamicSheet" source="../dynamicSheet/dynamicSheet.fxml" BorderPane.alignment="CENTER" />
             </center>
             <left>
-                <GridPane fx:id="control" prefHeight="423.0" prefWidth="175.0">
+                <GridPane fx:id="control" prefHeight="423.0" prefWidth="175.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -43,5 +45,6 @@
                 </GridPane>
             </left>
         </BorderPane>
+        </StackPane>
     </content>
 </ScrollPane>

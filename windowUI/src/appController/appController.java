@@ -40,12 +40,16 @@ public class appController {
 
     public void OpenFXMLFile(File file) throws JAXBException, FileNotFoundException {
         boolean bool = LoadFXMLHandler.loadXML(file, engine);
-        if(bool){
+    }
+
+    public void buildSheet() {
             SheetDTO sheetDTO = engine.getSheetDTO();
-            dynamicSheetController.initializeSheet(sheetDTO.getSizeOfRows(), sheetDTO.getHeightOfRow()
-                    , sheetDTO.getSizeOfColumns(), sheetDTO.getLengthOfCol());
-            showSheet(sheetDTO);
-        }
+            if(sheetDTO != null) {
+                dynamicSheetController.initializeSheet(sheetDTO.getSizeOfRows(), sheetDTO.getHeightOfRow()
+                        , sheetDTO.getSizeOfColumns(), sheetDTO.getLengthOfCol());
+                showSheet(sheetDTO);
+            }
+
     }
 
     public void updateCellValue(CoordinateDTO coordinateDTO, String value) throws Exception {
@@ -62,10 +66,10 @@ public class appController {
 
     public void showSheet(SheetDTO sheetDTO){
         dynamicSheetController.setSheetCells(sheetDTO);
+        headlineController.setSheetVersionLblText(sheetDTO.getSheetVersion());
     }
 
     public SheetDTO getSheetDTO(){
         return engine.getSheetDTO();
     }
-
 }

@@ -26,7 +26,10 @@ public class EngineImpl implements Engine{
 
     @Override
     public SheetDTO getSheetDTO() {
-        return sheetList.getLast().convertToSheetDTO();
+        if (!sheetList.isEmpty()) {
+            return sheetList.getLast().convertToSheetDTO();
+        }
+        return null;
     }
 
     @Override

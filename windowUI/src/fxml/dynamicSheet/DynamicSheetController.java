@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
 import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
@@ -77,6 +78,7 @@ public class DynamicSheetController {
         CellDTO cellDTO = mainController.getSheetDTO().getCell(cell.getCoordinateDTO());
         dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
         headlineController.onCellLabelClicked(cellDTO, cell.getCoordinateDTO());
+        sheetSettingsController.setColors();
     }
 
     public void setControllers(appController.appController controller, HeadlineController headlineController,SheetSettingsController sheetSettingsController ){
@@ -107,6 +109,8 @@ public class DynamicSheetController {
         dynamicSheetBuilder.showColumnLabeldClicked();
         columnHeader.getStyleClass().add("clicked-header");
         sheetSettingsController.setColumnSpinnerCurValue((int) columnHeader.getWidth());
+        sheetSettingsController.setAlignment();
+
     }
 
 
@@ -163,6 +167,7 @@ public class DynamicSheetController {
             dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),
                     mainController.getSheetDTO().
                             getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
+            sheetSettingsController.disableColorChange();
         }
         if(dynamicSheetBuilder.getCurrentClickedRowLabel() != null){
             dynamicSheetBuilder.resetClickedRowLabel();
@@ -171,8 +176,22 @@ public class DynamicSheetController {
         if(dynamicSheetBuilder.getCurrentClickedColumnLabel() != null){
             dynamicSheetBuilder.resetClickedColumnLabel();
             sheetSettingsController.disableColumnLengthSpinner();
+            sheetSettingsController.anableAlignment();
         }
     }
 
+    public void updateLabelAlignment(String alignment) {
+        switch (alignment) {
+            case "Left":
+                this.getCurrentClickedColumnLabel().changeColumnAlignment(TextAlignment.LEFT);
+                break;
+            case "Center":
+                this.getCurrentClickedColumnLabel().changeColumnAlignment(TextAlignment.CENTER);
+                break;
+            case "Right":
+                this.getCurrentClickedColumnLabel().changeColumnAlignment(TextAlignment.RIGHT);
+                break;
+        }
+    }
 
 }

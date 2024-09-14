@@ -24,10 +24,20 @@ public class ColumnLabel extends HeaderLabel {
     }
 
     public void changeColumnAlignment(TextAlignment newAlignment) {
+        String alignmentStyle = switch (newAlignment) {
+            case LEFT -> "CENTER_LEFT";
+            case CENTER -> "CENTER";
+            case RIGHT -> "CENTER_RIGHT";
+            default -> "CENTER"; // Default fallback
+        };
+
         for (CellLabel label : cellLabels) {
             label.setTextAlignment(newAlignment);
+            label.setStyle("-fx-alignment: " + alignmentStyle + ";"); // Align the label within its container
         }
+
         this.setTextAlignment(newAlignment);
+        this.setStyle("-fx-alignment: " + alignmentStyle + ";");
     }
 
 }

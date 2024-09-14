@@ -1,7 +1,6 @@
 package fxml.labelCreator.header;
 
 import fxml.labelCreator.CellLabel;
-import fxml.sheetSetting.AlignmentOption;
 import javafx.scene.text.TextAlignment;
 
 import javax.swing.*;

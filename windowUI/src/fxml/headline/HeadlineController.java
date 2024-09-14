@@ -182,10 +182,17 @@ public class HeadlineController {
         selectedCellLbl.setText(SELECTED_CELL + coordinateDTO);
         ActionLineLbl.setDisable(false);
         if(cell != null){
-            OriginalValueLbl.setText(cell.getOriginalValue());
+            OriginalValueLbl.setText(ORIGINAL_VALUE + cell.getOriginalValue());
             cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
         }
 
+    }
+
+    public void resetLabelClicked(){
+        selectedCellLbl.setText(SELECTED_CELL);
+        ActionLineLbl.setDisable(true);
+        OriginalValueLbl.setText(ORIGINAL_VALUE);
+        cellVersionLbl.setText(LAST_UPDATED_VERSION);
     }
 
     @FXML

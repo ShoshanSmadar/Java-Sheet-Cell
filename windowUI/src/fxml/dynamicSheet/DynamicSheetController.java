@@ -168,6 +168,7 @@ public class DynamicSheetController {
                     mainController.getSheetDTO().
                             getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
             sheetSettingsController.disableColorChange();
+            headlineController.resetLabelClicked();
         }
         if(dynamicSheetBuilder.getCurrentClickedRowLabel() != null){
             dynamicSheetBuilder.resetClickedRowLabel();

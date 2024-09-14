@@ -35,7 +35,8 @@ public class appController {
     public void initialize() {
         engine = new EngineImpl();
         headlineController.setControllers(this, dynamicSheetController);
-        dynamicSheetController.setControllers(this, headlineController);
+        dynamicSheetController.setControllers(this, headlineController, sheetSettingsController);
+        sheetSettingsController.setControllers(this, dynamicSheetController);
     }
 
     public void OpenFXMLFile(File file) throws JAXBException, FileNotFoundException {

@@ -1,4 +1,4 @@
-package fxml;
+package fxml.labelCreator;
 
 import coordinate.CoordinateDTO;
 import javafx.scene.control.Label;

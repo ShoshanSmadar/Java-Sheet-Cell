@@ -5,7 +5,7 @@
 }
 
 .data-cell {
-    -fx-alignment: center-left; /* Left-aligned text for data cells */
+    -fx-alignment: center; /* Left-aligned text for data cells */
     -fx-border-color: lightgray;
     -fx-border-width: 1px;
     -fx-background-color: white; /* Default white background */
@@ -26,9 +26,18 @@
     -fx-cursor: hand; /* Pointer cursor on hover */
 }
 
+.header-cell:hover{
+    -fx-background-color: #d3d3d3; /* Light gray when hovered */
+    -fx-cursor: hand; /* Pointer cursor on hover */
+}
+
 /* Visual feedback on cell click */
 .clicked-cell {
     -fx-background-color: #b1a6ef; /* Light blue background when clicked */
+}
+
+.clicked-header {
+    -fx-background-color: #dcd5f1;
 }
 
 .affected-cell {
@@ -37,6 +46,10 @@
 
 .depending-cell{
     -fx-background-color: #8ebaed;
+}
+
+.show-pressed-label-children{
+    -fx-background-color: rgba(237, 237, 243, 0.67);
 }
 
 

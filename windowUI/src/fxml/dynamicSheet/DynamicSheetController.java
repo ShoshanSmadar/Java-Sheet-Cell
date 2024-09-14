@@ -2,8 +2,11 @@ package fxml.dynamicSheet;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
-import fxml.CellLabel;
+import fxml.labelCreator.CellLabel;
 import fxml.headline.HeadlineController;
+import fxml.labelCreator.header.ColumnLabel;
+import fxml.labelCreator.header.RowLabel;
+import fxml.sheetSetting.SheetSettingsController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -21,6 +24,7 @@ public class DynamicSheetController {
     private appController.appController mainController;
     private DynamicSheet dynamicSheetBuilder;
     private HeadlineController headlineController;
+    private SheetSettingsController sheetSettingsController;
 
     public Boolean isDynamicSheetBuilderExist(){
         return (dynamicSheet != null);
@@ -47,6 +51,8 @@ public class DynamicSheetController {
             dynamicSheetBuilder = new DynamicSheet(rowSize,  rowHeight,  colSize,  colHeight, this);
             dynamicSheet.getChildren().add((dynamicSheetBuilder.getGridPane()));
         }
+
+
     }
 
     public void setSheetCells(SheetDTO sheet) {
@@ -54,6 +60,8 @@ public class DynamicSheetController {
             setCell(cell);
         }
     }
+
+
 
     public CoordinateDTO getCurrentClickedCellCoordinateSTO(){
         return dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO();
@@ -64,20 +72,17 @@ public class DynamicSheetController {
     }
 
     public void handleCellClick(CellLabel cell) {
-        if(dynamicSheetBuilder.getCurrentClickedCell() != null){
-            dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),
-                    mainController.getSheetDTO().getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
-        }
-
+        resetCurrentClickedLabels();
         dynamicSheetBuilder.setCurrentClickedCell(cell);
         CellDTO cellDTO = mainController.getSheetDTO().getCell(cell.getCoordinateDTO());
         dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
         headlineController.onCellLabelClicked(cellDTO, cell.getCoordinateDTO());
     }
 
-    public void setControllers(appController.appController controller, HeadlineController headlineController ){
+    public void setControllers(appController.appController controller, HeadlineController headlineController,SheetSettingsController sheetSettingsController ){
         this.mainController = controller;
         this.headlineController = headlineController;
+        this.sheetSettingsController = sheetSettingsController;
     }
 
     private void setCell(CellDTO cell) {
@@ -86,6 +91,22 @@ public class DynamicSheetController {
             Label label = (Label) node;
             label.setText(getStringValue(cell));
         }
+    }
+
+    public void handleRowLabelPressed(RowLabel rowHeader) {
+        resetCurrentClickedLabels();
+        dynamicSheetBuilder.setCurrentClickedRowLabel(rowHeader);
+        dynamicSheetBuilder.showRowLabeldClicked();
+        rowHeader.getStyleClass().add("clicked-header");
+        sheetSettingsController.setRowSpinnerCurValue((int) rowHeader.getHeight());
+    }
+
+    public void handleColumnLabelPressed(ColumnLabel columnHeader) {
+        resetCurrentClickedLabels();
+        dynamicSheetBuilder.setCurrentClickedColumnLabel(columnHeader);
+        dynamicSheetBuilder.showColumnLabeldClicked();
+        columnHeader.getStyleClass().add("clicked-header");
+        sheetSettingsController.setColumnSpinnerCurValue((int) columnHeader.getWidth());
     }
 
 
@@ -111,4 +132,47 @@ public class DynamicSheetController {
 
         return cellValue;
     }
+
+    public ColumnLabel getCurrentClickedColumnLabel() {
+        return dynamicSheetBuilder.getCurrentClickedColumnLabel();
+    }
+
+    public void setCurrentClickedColumnLabel(ColumnLabel currentClickedColumnLabel) {
+        dynamicSheetBuilder.setCurrentClickedColumnLabel(currentClickedColumnLabel);
+    }
+
+    public RowLabel getCurrentClickedRowLabel() {
+        return dynamicSheetBuilder.getCurrentClickedRowLabel();
+    }
+
+    public void setCurrentClickedRowLabel(RowLabel currentClickedRowLabel) {
+        dynamicSheetBuilder.setCurrentClickedRowLabel(currentClickedRowLabel);
+    }
+
+    public void handlerHeaderClick(RowLabel row) {
+        setCurrentClickedRowLabel(row);
+    }
+
+    public void handlecolumnHeaderClick(ColumnLabel column) {
+        setCurrentClickedColumnLabel(column);
+
+    }
+
+    public void resetCurrentClickedLabels(){
+        if(dynamicSheetBuilder.getCurrentClickedCell() != null){
+            dynamicSheetBuilder.resetClickedLabel(dynamicSheetBuilder.getCurrentClickedCell(),
+                    mainController.getSheetDTO().
+                            getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
+        }
+        if(dynamicSheetBuilder.getCurrentClickedRowLabel() != null){
+            dynamicSheetBuilder.resetClickedRowLabel();
+            sheetSettingsController.disableRowSpinner();
+        }
+        if(dynamicSheetBuilder.getCurrentClickedColumnLabel() != null){
+            dynamicSheetBuilder.resetClickedColumnLabel();
+            sheetSettingsController.disableColumnLengthSpinner();
+        }
+    }
+
+
 }

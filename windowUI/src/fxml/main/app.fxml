@@ -20,7 +20,7 @@
                 <fx:include fx:id="dynamicSheet" source="../dynamicSheet/dynamicSheet.fxml" BorderPane.alignment="CENTER" />
             </center>
             <left>
-                <GridPane fx:id="control" prefHeight="423.0" prefWidth="175.0" BorderPane.alignment="CENTER">
+                <GridPane fx:id="control" prefHeight="423.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>

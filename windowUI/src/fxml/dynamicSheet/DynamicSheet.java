@@ -2,7 +2,9 @@ package fxml.dynamicSheet;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
-import fxml.CellLabel;
+import fxml.labelCreator.CellLabel;
+import fxml.labelCreator.header.ColumnLabel;
+import fxml.labelCreator.header.RowLabel;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -18,6 +20,8 @@ public class DynamicSheet extends Application {
     private GridPane gridPane;
     private int row, rowHeight, column, columnHeight;
     private CellLabel currentClickedCell;
+    private ColumnLabel currentClickedColumnLabel;
+    private RowLabel currentClickedRowLabel;
     private DynamicSheetController controller;
 
     public DynamicSheet(int rowSize, int rowHeight, int colSize, int colHeight, DynamicSheetController controller) {
@@ -40,7 +44,8 @@ public class DynamicSheet extends Application {
         initializeSheet(gridPane, 10,0 ,5,0); // Initialize grid with 10 rows and 5 columns
 
         Scene scene = new Scene(gridPane, 600, 400);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("dynamic-sheet-style.css")).toExternalForm()); // Add CSS
+        scene.getStylesheets().add(Objects.requireNonNull(getClass()
+                .getResource("dynamic-sheet-style.css")).toExternalForm()); // Add CSS
         primaryStage.setTitle("Dynamic Sheet");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -66,20 +71,22 @@ public class DynamicSheet extends Application {
     }
 
     private Label createColumnHeader(int col, int rowHight, int columnWidth) {
-        Label columnHeader = new Label(Character.toString((char) ('A' + col - 1)));
+        ColumnLabel columnHeader = new ColumnLabel(Character.toString((char) ('A' + col - 1)));
         SetLabelExactSize(columnHeader, rowHight, columnWidth);
         columnHeader.getStyleClass().add("header-cell");
         columnHeader.setId("header-column" + (char) ('A' + col - 1));
+        columnHeader.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> controller.handleColumnLabelPressed(columnHeader));
+
         return columnHeader;
     }
 
-
-
     private Label createRowHeader(int row, int rowHight, int columnWidth) {
-        Label rowHeader = new Label(Integer.toString(row));
+        RowLabel rowHeader = new RowLabel(Integer.toString(row));
         SetLabelExactSize(rowHeader, rowHight, columnWidth);
         rowHeader.getStyleClass().add("header-cell");
         rowHeader.setId("header-row" + row);
+        rowHeader.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> controller.handleRowLabelPressed(rowHeader));
+
         return rowHeader;
     }
 
@@ -88,6 +95,7 @@ public class DynamicSheet extends Application {
         label.setMinHeight(rowHeight);
         label.setMaxWidth(columnWidth);
         label.setMaxHeight(rowHeight);
+
     }
 
     private Label createCellLabel( int row,int rowHight, int col, int columnWidth){
@@ -104,17 +112,18 @@ public class DynamicSheet extends Application {
         } else {
             cell.getStyleClass().add("odd-row");
         }
+        addToRowAndColumnList(row, col, cell);
         cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> controller.handleCellClick(cell));
         return cell;
     }
 
-
-
-    // Method to handle cell click events
-    private void handleCellClick(CellLabel cell) {
-
-
+    private void addToRowAndColumnList(int row, int column, CellLabel cell){
+        ColumnLabel col = (ColumnLabel) gridPane.lookup("#header-column" + (char) ('A' + column - 1));
+        col.addCellLabel(cell);
+        RowLabel rowLbl = (RowLabel) gridPane.lookup("#header-row" + (row));
+        rowLbl.addCellLabel(cell);
     }
+
 
     public void resetClickedLabel(CellLabel currentClickedLabel,CellDTO cell) {
         currentClickedLabel.getStyleClass().remove("clicked-cell");
@@ -170,5 +179,41 @@ public class DynamicSheet extends Application {
 
     public void setCurrentClickedCell(CellLabel currentClickedCell) {
         this.currentClickedCell = currentClickedCell;
+    }
+
+    public ColumnLabel getCurrentClickedColumnLabel() {
+        return currentClickedColumnLabel;
+    }
+
+    public void showColumnLabeldClicked(){
+        currentClickedColumnLabel.showPressedLabelChildren();
+    }
+
+    public void setCurrentClickedColumnLabel(ColumnLabel currentClickedColumnLabel) {
+        this.currentClickedColumnLabel = currentClickedColumnLabel;
+    }
+
+    public RowLabel getCurrentClickedRowLabel() {
+        return currentClickedRowLabel;
+    }
+
+    public void setCurrentClickedRowLabel(RowLabel currentClickedRowLabel) {
+        this.currentClickedRowLabel = currentClickedRowLabel;
+    }
+
+    public void resetClickedRowLabel() {
+        this.currentClickedRowLabel.getStyleClass().remove("clicked-header");
+        this.currentClickedRowLabel.stopPressedLabelChildren();
+        this.currentClickedRowLabel = null;
+    }
+
+    public void resetClickedColumnLabel() {
+        this.currentClickedColumnLabel.getStyleClass().remove("clicked-header");
+        this.currentClickedColumnLabel.stopPressedLabelChildren();
+        this.currentClickedColumnLabel = null;
+    }
+
+    public void showRowLabeldClicked() {
+        currentClickedRowLabel.showPressedLabelChildren();
     }
 }

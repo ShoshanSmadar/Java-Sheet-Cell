@@ -1,6 +1,5 @@
 package fxml.headline;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
@@ -8,10 +7,7 @@ import fxml.dynamicSheet.DynamicSheetController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -21,7 +17,7 @@ import sheet.SheetDTO;
 
 import java.io.File;
 
-import static UIconstant.Constants.*;
+import static UIconstant.TextConstants.*;
 
 //import java.awt.*;
 
@@ -63,12 +59,31 @@ public class HeadlineController {
     private javafx.scene.control.Label selectedCellLbl;
 
     @FXML
+    private Tooltip actionLineExplenation;
+
+    @FXML
+    private Label actionLineQuestionMark;
+
+    @FXML
     void initialize() {
         UpdateBtn.disableProperty().bind(ActionLineLbl.textProperty().isEmpty());
         selectVersionBtn.disableProperty().bind(filePathLbl.textProperty().isEmpty());
         ActionLineLbl.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 updateValue();            }
+        });
+
+        actionLineExplenation.setText(ACTION_LINE_EXPLANATION);
+        actionLineExplenation.setStyle("-fx-font-size: 14px;");
+        actionLineExplenation.setShowDuration(Duration.INDEFINITE);
+
+        actionLineQuestionMark.setOnMouseEntered((MouseEvent event) -> {
+            Tooltip.install(actionLineQuestionMark, actionLineExplenation);  // Show the tooltip
+        });
+
+        // Remove the tooltip when the mouse exits
+        actionLineQuestionMark.setOnMouseExited((MouseEvent event) -> {
+            Tooltip.uninstall(actionLineQuestionMark, actionLineExplenation);  // Hide the tooltip
         });
     }
 

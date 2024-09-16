@@ -153,14 +153,6 @@ public class DynamicSheetController {
         dynamicSheetBuilder.setCurrentClickedRowLabel(currentClickedRowLabel);
     }
 
-    public void handlerHeaderClick(RowLabel row) {
-        setCurrentClickedRowLabel(row);
-    }
-
-    public void handlecolumnHeaderClick(ColumnLabel column) {
-        setCurrentClickedColumnLabel(column);
-
-    }
 
     public void resetCurrentClickedLabels(){
         if(dynamicSheetBuilder.getCurrentClickedCell() != null){

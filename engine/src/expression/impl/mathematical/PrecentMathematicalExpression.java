@@ -33,7 +33,7 @@ public class PrecentMathematicalExpression implements Expression {
             return new EffectiveValueImpl(CellType.NUMERIC, Double.NaN);
         }
 
-        return new EffectiveValueImpl(CellType.NUMERIC, (Double) partValue.getValue() / (Double) wholeValue.getValue());
+        return new EffectiveValueImpl(CellType.NUMERIC, (Double) partValue.getValue() * (Double) wholeValue.getValue() / 100);
     }
 
     @Override

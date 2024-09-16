@@ -7,6 +7,7 @@ import coordinate.CoordinateFactory;
 import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
 import cell.CellDTO;
+import range.Range;
 
 
 import java.util.*;
@@ -23,6 +24,24 @@ public class SheetImpl implements Sheet, Cloneable {
     private final int sizeOfRows;
     private DependencyGraph coordinateGraph;
     private int numberOfCellsChangedInVersion = 0;
+    private HashMap<String, Range>  rangeSet;
+
+
+    @Override
+    public List<Coordinate> getRangeCellList(String rangeName) {
+        return rangeSet.get(rangeName).getCoordinates();
+    }
+
+    @Override
+    public void setRangeSet(HashMap<String, Range> rangeSet) {
+        this.rangeSet = rangeSet;
+    }
+
+    @Override
+    public Boolean isNameInRange(String name){
+        return rangeSet.containsKey(name);
+    }
+
 
     public SheetImpl(String sheetName, int sizeOfColumns, int sizeOfRows,
                      int hightOfRows, int lengthOfColumns) {
@@ -34,6 +53,7 @@ public class SheetImpl implements Sheet, Cloneable {
         this.coordinateGraph = new DependencyGraphImpl();
         this.hightOfRows = hightOfRows;
         this.lengthOfColumns = lengthOfColumns;
+        this.rangeSet = new HashMap<>();
     }
 
     @Override
@@ -52,7 +72,10 @@ public class SheetImpl implements Sheet, Cloneable {
                 newSheet.cellMap.put(coordinate, cell);
             }
             newSheet.coordinateGraph = this.coordinateGraph.clone();
-
+            newSheet.rangeSet = new HashMap<>();
+            for(Range range : this.rangeSet.values()){
+                newSheet.rangeSet.put(range.getName(), range.clone());
+            }
             return newSheet;
         }
         catch(CloneNotSupportedException e){

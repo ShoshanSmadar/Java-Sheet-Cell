@@ -10,8 +10,9 @@ public class TextConstants {
             A function should be written in the following order:
             {<function name>,<first argument>,...,<last argument>}
             For example: {PLUS,1,2} or {MINUS,{PLUS,1,2},1}
-            Following functions are posible:
-            Mathematicl functions: PLUS, MINUS, TIMES, DIVIDE, MOD, POW, ABS.
+            Following functions are possible:
+            Mathematicl functions: PLUS, MINUS, TIMES, DIVIDE, MOD, POW, ABS, SUM, AVERAGE, PERCENT.
+            Boolean(true/false) functions: EQUAL, NOT, OR, AND, BIGGER, LESS, IF.
             Sentence functions: CONCAT, SUB.
             Refrence another cell: REF.
             If you want to clear the cell Leave line empty and press Update value""";
@@ -19,7 +20,6 @@ public class TextConstants {
             To choose a range write:
             <top-left-cell>..<bottom-right-cell>
             for example: A2..D6
-            Do not include headlines in the range.
             """;
 
 }

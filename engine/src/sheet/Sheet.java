@@ -2,11 +2,16 @@ package sheet;
 import cell.Cell;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
+import range.Range;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public interface Sheet {
-
+    List<Coordinate> getRangeCellList(String rangeName);
+    void setRangeSet(HashMap<String, Range> rangeSet);
+    Boolean isNameInRange(String name);
     int getNumberOfCellsChangedInVersion();
     public int getVersion();
     public Cell getCell(int row, int col);

@@ -214,15 +214,17 @@ public enum FunctionParser {
     SUM{
         @Override
         public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(1, arguments.size(), "SUM");
 
-            return new SumMathematicalExpression();
+            return new SumMathematicalExpression(arguments.get(0).trim());
         }
     },
     AVERAGE{
         @Override
         public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(1, arguments.size(), "SUM");
 
-            return new AverageMathematicalExpression();
+            return new AverageMathematicalExpression(arguments.get(0).trim());
         }
     },
     PRECENT{

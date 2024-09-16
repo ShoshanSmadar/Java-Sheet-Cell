@@ -2,9 +2,9 @@ package fxml.sheetSetting;
 
 import fxml.dynamicSheet.DynamicSheetController;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -119,9 +119,10 @@ public class SheetSettingsController {
     }
 
     private void updateLabelBackgroundColor() {
-        // Change only the background color
-        dynamicSheetController.getCurrentClickedCellLabel().setStyle("-fx-background-color: "
-                + toRgbString(BackgroundColorPicker.getValue()) + ";");
+        Label clickedCell = dynamicSheetController.getCurrentClickedCellLabel();
+        String currentStyle = clickedCell.getStyle(); // Get current style if it exists
+        String newStyle = currentStyle + "-fx-background-color: " + toRgbString(BackgroundColorPicker.getValue()) + ";";
+        clickedCell.setStyle(newStyle);
         enableRevertButton();
     }
 

@@ -4,6 +4,7 @@ import cell.cellType.CellType;
 import expression.Expression;
 import expression.impl.BaseExpression;
 import expression.impl.RefExpression;
+import expression.impl.bool.*;
 import expression.impl.mathematical.*;
 import expression.impl.string.ConcatExpression;
 import expression.impl.string.SubExpression;
@@ -16,7 +17,7 @@ import java.util.Stack;
 import static java.lang.Character.isLetter;
 
 public enum FunctionParser {
-    Base {
+    BASE {
         @Override
         public Expression parse(List<String> arguments) {
             if (arguments.size() != 1) {
@@ -209,6 +210,147 @@ public enum FunctionParser {
 
             return new RefExpression(row, col);
         }
+    },
+    SUM{
+        @Override
+        public Expression parse(List<String> arguments) {
+
+            return new SumMathematicalExpression();
+        }
+    },
+    AVERAGE{
+        @Override
+        public Expression parse(List<String> arguments) {
+
+            return new AverageMathematicalExpression();
+        }
+    },
+    PRECENT{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "PRECENT");
+            Expression part = parseExpression(arguments.get(0).trim());
+            Expression whole = parseExpression(arguments.get(1).trim());
+
+            if ((!part.getFunctionResultType().equals(CellType.BOOLEAN) && !part.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!whole.getFunctionResultType().equals(CellType.BOOLEAN)) && !whole.getFunctionResultType()
+                    .equals(CellType.UNKNOWN)) {
+                throw new IllegalArgumentException("Invalid argument types for PRECENT function, Expected NUMERIC but got "
+                        + part.getFunctionResultType() + "as the part and "
+                        + whole.getFunctionResultType() + "as the whole.");
+            }
+
+                return new PrecentMathematicalExpression(part, whole);
+        }
+    },
+    EQUAL{
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "EQUAL");
+            Expression argLeft = parseExpression(arguments.get(0).trim());
+            Expression argRight = parseExpression(arguments.get(1).trim());
+
+            return new EqualExpression(argLeft, argRight);
+        }
+    },
+    NOT{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(1, arguments.size(), "NOT");
+            Expression exp = parseExpression(arguments.get(0).trim());
+            if (!exp.getFunctionResultType().equals(CellType.STRING) && !exp.getFunctionResultType().equals(CellType.UNKNOWN))
+            {
+                throw new IllegalArgumentException("Invalid argument types for NOT function, Expected BOOLEAN but got " + exp.getFunctionResultType() + "as source.");
+            }
+
+            return new NotExpression(exp);
+        }
+    },
+    OR{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "OR");
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            if ((!left.getFunctionResultType().equals(CellType.BOOLEAN) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.BOOLEAN)) && !right.getFunctionResultType()
+                    .equals(CellType.UNKNOWN)) {
+                throw new IllegalArgumentException("Invalid argument types for OR function, Expected BOOLEAN but got "
+                        + left.getFunctionResultType() + "on the left and "
+                        + right.getFunctionResultType() + "on the right.");
+            }
+
+            return new OrExpression(left, right);
+        }
+    },
+    AND{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "AND");
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            if ((!left.getFunctionResultType().equals(CellType.BOOLEAN) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.BOOLEAN)) && !right.getFunctionResultType()
+                    .equals(CellType.UNKNOWN)) {
+                throw new IllegalArgumentException("Invalid argument types for AND function, Expected BOOLEAN but got "
+                        + left.getFunctionResultType() + "on the left and "
+                        + right.getFunctionResultType() + "on the right.");
+            }
+
+            return new AndExpression(left, right);
+        }
+    },
+    BIGGER{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "BIGGER");
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType()
+                    .equals(CellType.UNKNOWN)) {
+                throw new IllegalArgumentException("Invalid argument types for BIGGER function, Expected NUMERIC but got "
+                        + left.getFunctionResultType() + "on the left and "
+                        + right.getFunctionResultType() + "on the right.");
+            }
+
+            return new BiggerExpression(left, right);
+        }
+    },
+    LESS{
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(2, arguments.size(), "LESS");
+            Expression left = parseExpression(arguments.get(0).trim());
+            Expression right = parseExpression(arguments.get(1).trim());
+
+            if ((!left.getFunctionResultType().equals(CellType.NUMERIC) && !left.getFunctionResultType().equals(CellType.UNKNOWN))
+                    || (!right.getFunctionResultType().equals(CellType.NUMERIC)) && !right.getFunctionResultType()
+                    .equals(CellType.UNKNOWN)) {
+                throw new IllegalArgumentException("Invalid argument types for LESS function, Expected NUMERIC but got "
+                        + left.getFunctionResultType() + "on the left and "
+                        + right.getFunctionResultType() + "on the right.");
+            }
+
+            return new LessExpression(left, right);
+        }
+    },
+    IF{
+        @Override
+        public Expression parse(List<String> arguments) {
+            checkNumberOfArguments(3, arguments.size(), "IF");
+            Expression condition = parseExpression(arguments.get(0).trim());
+            Expression then = parseExpression(arguments.get(1).trim());
+            Expression elseExpression = parseExpression(arguments.get(2).trim());
+
+            if (!condition.getFunctionResultType().equals(CellType.STRING) && !condition.getFunctionResultType().equals(CellType.UNKNOWN))
+            {
+                throw new IllegalArgumentException("Invalid argument types for IF function, Expected BOOLEAN but got " + condition.getFunctionResultType() + "as source.");
+            }
+
+            return new IfExpression(condition, then, elseExpression);
+        }
     };
 
     abstract public Expression parse(List<String> arguments);
@@ -246,7 +388,7 @@ public enum FunctionParser {
         }
 
         // handle identity expression
-        return FunctionParser.Base.parse(List.of(input.trim()));
+        return FunctionParser.BASE.parse(List.of(input.trim()));
     }
 
     private static List<String> parseMainParts(String input) {

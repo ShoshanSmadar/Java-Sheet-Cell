@@ -31,21 +31,37 @@
     -fx-cursor: hand; /* Pointer cursor on hover */
 }
 
-/* Visual feedback on cell click */
-.clicked-cell {
-    -fx-background-color: #b1a6ef; /* Light blue background when clicked */
+.clicked-header {
+
+    border: 3px solid #dcd5f1; /* 3px thick red border */
+    padding: 5px; /* optional: adds space between the label content and the border */
+    border-radius: 5px; /* optional: rounds the corners of the border */
+    /*-fx-background-color: #dcd5f1;*/
+
 }
 
-.clicked-header {
-    -fx-background-color: #dcd5f1;
+.clicked-cell {
+    -fx-border-color: #dcd5f1; /* Border color */
+    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-radius: 5px; /* Rounds the corners of the border */
+    -fx-padding: 5px; /* Adds space between the content and the border */
+    /*-fx-background-color: #dcd5f1;*/ /* Uncomment if you want to set the background color */
 }
 
 .affected-cell {
-    -fx-background-color: #91ed8e;
+    -fx-border-color: #91ed8e; /* Border color */
+    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-radius: 5px; /* Rounds the corners of the border */
+    -fx-padding: 5px; /* Adds space between the content and the border */
+    /*-fx-background-color: #91ed8e;*/ /* Uncomment if you want to set the background color */
 }
 
-.depending-cell{
-    -fx-background-color: #8ebaed;
+.depending-cell {
+    -fx-border-color: #8ebaed; /* Border color */
+    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-radius: 5px; /* Rounds the corners of the border */
+    -fx-padding: 5px; /* Adds space between the content and the border */
+    /*-fx-background-color: #8ebaed;*/ /* Uncomment if you want to set the background color */
 }
 
 .show-pressed-label-children{

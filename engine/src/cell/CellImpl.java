@@ -110,21 +110,27 @@ public class CellImpl implements Cell, Cloneable {
                 this.fatherSheet.getCellDependingCoordinatesDTO(this.coordinate),
                 this.fatherSheet.getCellAfctingCoordinates(this.coordinate));
     }
-
     private void calculateDependenciesFromString() {
-        String patternStart = "{REF,";
+        String patternStart = "{ref,";  // lowercase pattern
         char endChar = '}';
         int index = 0;
 
-        while ((index = originalValue.indexOf(patternStart, index)) != -1) {
-            int endIndex = originalValue.indexOf(endChar, index + patternStart.length());
+        // Convert the original value to lowercase for case-insensitive search
+        String lowerCaseOriginal = originalValue.toLowerCase();
+
+        while ((index = lowerCaseOriginal.indexOf(patternStart, index)) != -1) {
+            int endIndex = lowerCaseOriginal.indexOf(endChar, index + patternStart.length());
             if (endIndex != -1) {
                 String extracted = originalValue.substring(index + patternStart.length(), endIndex).trim();
-                char uppercaseLetter = extracted.charAt(0);
+
+                // Extract the first letter and convert to uppercase
+                char letter = extracted.charAt(0);
+                char uppercaseLetter = Character.toUpperCase(letter);
 
                 if (!Character.isUpperCase(uppercaseLetter)) {
                     continue;
                 }
+
                 String number = extracted.substring(1);
 
                 int row;
@@ -133,10 +139,12 @@ public class CellImpl implements Cell, Cloneable {
                 } catch (NumberFormatException e) {
                     continue;
                 }
+
+                // Column based on the uppercase letter
                 int col = uppercaseLetter - 'A';
 
                 Coordinate newCoordinate = CoordinateFactory.createCoordinate(row, col);
-                if(!this.dependsOn.contains(newCoordinate)) {
+                if (!this.dependsOn.contains(newCoordinate)) {
                     this.dependsOn.add(new CoordinateImpl(row, col));
                 }
                 index = endIndex + 1;
@@ -145,4 +153,40 @@ public class CellImpl implements Cell, Cloneable {
             }
         }
     }
+
+
+//    private void calculateDependenciesFromString() {
+//        String patternStart = "(?i)\\{REF,";
+//        char endChar = '}';
+//        int index = 0;
+//
+//        while ((index = originalValue.indexOf(patternStart, index)) != -1) {
+//            int endIndex = originalValue.indexOf(endChar, index + patternStart.length());
+//            if (endIndex != -1) {
+//                String extracted = originalValue.substring(index + patternStart.length(), endIndex).trim();
+//                char uppercaseLetter = extracted.charAt(0);
+//                Character.toUpperCase(uppercaseLetter);
+//                if (!Character.isUpperCase(uppercaseLetter)) {
+//                    continue;
+//                }
+//                String number = extracted.substring(1);
+//
+//                int row;
+//                try {
+//                    row = Integer.parseInt(number) - 1;
+//                } catch (NumberFormatException e) {
+//                    continue;
+//                }
+//                int col = uppercaseLetter - 'A';
+//
+//                Coordinate newCoordinate = CoordinateFactory.createCoordinate(row, col);
+//                if (!this.dependsOn.contains(newCoordinate)) {
+//                    this.dependsOn.add(new CoordinateImpl(row, col));
+//                }
+//                index = endIndex + 1;
+//            } else {
+//                break; // No more closing braces found
+//            }
+//        }
+//    }
 }

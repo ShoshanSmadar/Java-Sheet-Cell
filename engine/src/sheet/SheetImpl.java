@@ -86,8 +86,11 @@ public class SheetImpl implements Sheet, Cloneable {
 //            }
 //        }
         newSheetVersion.cellMap.put(coordinate, newCell);
+
+        newSheetVersion.coordinateGraph = new DependencyGraphImpl();
         for(Cell cell : newSheetVersion.cellMap.values()){
             cell.setFatherSheet(newSheetVersion);
+            newSheetVersion.enterCoordinateAndDependenciesToGraph(cell.getCoordinate(), cell.getdependingOn());
         }
 
         List<Cell> cellsThatHaveChanged = newSheetVersion.calculateAllSheetAffectiveValue();

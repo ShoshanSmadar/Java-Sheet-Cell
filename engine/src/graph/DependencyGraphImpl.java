@@ -128,28 +128,4 @@ public class DependencyGraphImpl implements DependencyGraph, Serializable {
         order.add(node);
         return true;
     }
-
-    private void topologicalSortUtil(Coordinate coord, Map<Coordinate, Boolean> visited,
-                                     Map<Coordinate, Boolean> inRecStack, Stack<Coordinate> stack) throws Exception {
-        if (inRecStack.getOrDefault(coord, false)) {
-            throw new Exception("A Cycle was detected in the sheet, cells are depending on each other. Command was cancelled.");
-        }
-
-        if (visited.getOrDefault(coord, false)) {
-            return;
-        }
-
-        visited.put(coord, true);
-        inRecStack.put(coord, true);
-
-        List<Coordinate> dependencies = adjList.get(coord);
-        if (dependencies != null) {
-            for (Coordinate dependent : dependencies) {
-                topologicalSortUtil(dependent, visited, inRecStack, stack);
-            }
-        }
-
-        inRecStack.put(coord, false);
-        stack.push(coord);
-    }
 }

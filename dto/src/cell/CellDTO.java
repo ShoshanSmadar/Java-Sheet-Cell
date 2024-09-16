@@ -1,6 +1,5 @@
 package cell;
 
-import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 
 import java.util.ArrayList;

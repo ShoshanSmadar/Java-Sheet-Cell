@@ -32,11 +32,7 @@
 }
 
 .clicked-header {
-
-    border: 3px solid #dcd5f1; /* 3px thick red border */
-    padding: 5px; /* optional: adds space between the label content and the border */
-    border-radius: 5px; /* optional: rounds the corners of the border */
-    /*-fx-background-color: #dcd5f1;*/
+    -fx-background-color: #dcd5f1;
 
 }
 

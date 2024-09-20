@@ -227,17 +227,17 @@ public enum FunctionParser {
             return new AverageMathematicalExpression(arguments.get(0).trim());
         }
     },
-    PRECENT{
+    PERCENT{
         @Override
         public Expression parse(List<String> arguments) {
-            checkNumberOfArguments(2, arguments.size(), "PRECENT");
+            checkNumberOfArguments(2, arguments.size(), "PERCENT");
             Expression part = parseExpression(arguments.get(0).trim());
             Expression whole = parseExpression(arguments.get(1).trim());
 
             if ((!part.getFunctionResultType().equals(CellType.BOOLEAN) && !part.getFunctionResultType().equals(CellType.UNKNOWN))
                     || (!whole.getFunctionResultType().equals(CellType.BOOLEAN)) && !whole.getFunctionResultType()
                     .equals(CellType.UNKNOWN)) {
-                throw new IllegalArgumentException("Invalid argument types for PRECENT function, Expected NUMERIC but got "
+                throw new IllegalArgumentException("Invalid argument types for PERCENT function, Expected NUMERIC but got "
                         + part.getFunctionResultType() + "as the part and "
                         + whole.getFunctionResultType() + "as the whole.");
             }
@@ -346,7 +346,8 @@ public enum FunctionParser {
             Expression then = parseExpression(arguments.get(1).trim());
             Expression elseExpression = parseExpression(arguments.get(2).trim());
 
-            if (!condition.getFunctionResultType().equals(CellType.STRING) && !condition.getFunctionResultType().equals(CellType.UNKNOWN))
+            if (!condition.getFunctionResultType().equals(CellType.BOOLEAN) &&
+                    !condition.getFunctionResultType().equals(CellType.UNKNOWN))
             {
                 throw new IllegalArgumentException("Invalid argument types for IF function, Expected BOOLEAN but got " + condition.getFunctionResultType() + "as source.");
             }

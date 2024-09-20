@@ -20,5 +20,10 @@ public interface Engine {
     void enterNewSheetFromXML(File file) throws JAXBException, FileNotFoundException;
 
     void enterNewSheetFromXML(String xmlPath);
+
+    void addRange(String rangeName, String rangeValues);
+
+    void deleteRange(String rangeName);
+
     void saveProgram(String xmlPath);
 }

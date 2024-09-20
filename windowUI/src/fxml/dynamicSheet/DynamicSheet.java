@@ -6,6 +6,7 @@ import fxml.labelCreator.CellLabel;
 import fxml.labelCreator.header.ColumnLabel;
 import fxml.labelCreator.header.RowLabel;
 import javafx.application.Application;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -13,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class DynamicSheet extends Application {
@@ -22,7 +25,45 @@ public class DynamicSheet extends Application {
     private CellLabel currentClickedCell;
     private ColumnLabel currentClickedColumnLabel;
     private RowLabel currentClickedRowLabel;
+    private List<CellLabel> currentClickedRange;
     private DynamicSheetController controller;
+
+
+    public List<CellLabel> getCurrentClickedRange() {
+        return currentClickedRange;
+    }
+
+    public void makeCellLabelRangeList(List<CoordinateDTO> range) {
+        currentClickedRange = new ArrayList<>();
+        for(CoordinateDTO coordinate : range) {
+            currentClickedRange.add(getLabelById("cell" + coordinate.toString()));
+        }
+        for(CellLabel cellLabel : currentClickedRange) {
+            cellLabel.getStyleClass().add("range");
+        }
+    }
+
+    private CellLabel getLabelById(String id) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Label && id.equals(node.getId())) {
+                return (CellLabel) node;
+            }
+        }
+        return null;  // Return null if no matching label is found
+    }
+
+    public void resetCurrentClickedCellRange() {
+        for(CellLabel label : currentClickedRange){
+            label.getStyleClass().remove("range");
+        }
+        currentClickedCell = null;
+    }
+
+    public void setCurrentClickedRange(List<CellLabel> currentClickedRange) {
+        this.currentClickedRange = currentClickedRange;
+    }
+
+
 
     public DynamicSheet(int rowSize, int rowHeight, int colSize, int colHeight, DynamicSheetController controller) {
         this.gridPane = new GridPane();
@@ -137,10 +178,8 @@ public class DynamicSheet extends Application {
 //                DependingCell.getStyleClass().remove("depending-cell");
 //            }
             for (Node node : gridPane.getChildren()) {
-                if (node instanceof CellLabel && node.getStyleClass().contains("affected-cell")) {
-                    node.getStyleClass().remove("clicked-cell");
-                }
-                if (node instanceof CellLabel && node.getStyleClass().contains("depending-cell")) {
+                if (node instanceof CellLabel) {
+                    node.getStyleClass().remove("affected-cell");
                     node.getStyleClass().remove("depending-cell");
                 }
             }

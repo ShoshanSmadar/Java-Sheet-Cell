@@ -2,6 +2,8 @@ package range;
 
 
 import coordinate.Coordinate;
+import coordinate.CoordinateDTO;
+import coordinate.CoordinateFactory;
 import coordinate.CoordinateImpl;
 
 
@@ -12,17 +14,30 @@ import java.util.Objects;
 public class RangeImpl implements Range, Cloneable{
     private String name;
     private List<Coordinate> coordinates;
+    private List<Coordinate> cellsDependingOnRange;
 
     public RangeImpl() {}
 
     public RangeImpl(String name, List<Coordinate> coordinates) {
         this.name = name;
         this.coordinates = coordinates;
+        this.cellsDependingOnRange = new ArrayList<>();
+    }
+
+    public void addToDependingList(Coordinate coordinate) {
+        this.cellsDependingOnRange.add(coordinate);
     }
 
     public RangeImpl(String name, String topAndLowerCoordinates) {
         this.name = name;
         coordinates = getAllCellsInRange(topAndLowerCoordinates);
+        this.cellsDependingOnRange = new ArrayList<>();
+    }
+
+    public RangeImpl(String name, Coordinate from, Coordinate to) {
+        this.name = name;
+        this.coordinates = getAllCellsInRange(from, to);
+        this.cellsDependingOnRange = new ArrayList<>();
     }
 
     @Override
@@ -30,6 +45,7 @@ public class RangeImpl implements Range, Cloneable{
         try {
             RangeImpl range1 = (RangeImpl) super.clone();
             List<Coordinate> newCoordinates = new ArrayList<>();
+            cellsDependingOnRange = new ArrayList<>();
             range1.name = this.name;
             for (Coordinate coordinate : coordinates) {
                 newCoordinates.add(coordinate.clone());
@@ -50,6 +66,39 @@ public class RangeImpl implements Range, Cloneable{
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public RangeDTO getRangeDTO() {
+        List<CoordinateDTO> DTOCoordinates = new ArrayList<>();
+        for (Coordinate coor : coordinates){
+            DTOCoordinates.add(coor.convertToDTO());
+        }
+        return new RangeDTO(DTOCoordinates,this.name);
+    }
+
+    @Override
+    public void checkIfRangeCanBeDeleted() throws RuntimeException{
+        if(!cellsDependingOnRange.isEmpty()) {
+            if (cellsDependingOnRange.size() == 1)
+                throw new RuntimeException("The range " + name + " has the cell "
+                        + cellsDependingOnRange
+                        + " depending on it.\nCan not be deleted.");
+            else
+                throw new RuntimeException("The range " + name + " has the cells: "
+                        + cellsDependingOnRange
+                        + " depending on it.\nCan not be deleted.");
+        }
+    }
+
+    @Override
+    public void addCellToDependencies(Coordinate coordinate) {
+        cellsDependingOnRange.add(coordinate);
+    }
+
+    @Override
+    public void removeCellFromDependencies(Coordinate coordinate) {
+        cellsDependingOnRange.remove(coordinate);
     }
 
 
@@ -104,6 +153,18 @@ public class RangeImpl implements Range, Cloneable{
             }
         }
 
+        return cellsInRange;
+    }
+
+
+    public List<Coordinate> getAllCellsInRange(Coordinate coordinateFrom, Coordinate CoordinateTo ) {
+        List<Coordinate> cellsInRange = new ArrayList<>();
+
+        for(int i = coordinateFrom.getRow(); i<= CoordinateTo.getRow(); i++) {
+            for(int j = coordinateFrom.getColumn(); j<= CoordinateTo.getColumn(); j++) {
+                cellsInRange.add( CoordinateFactory.createCoordinate(i , j));
+            }
+        }
         return cellsInRange;
     }
 

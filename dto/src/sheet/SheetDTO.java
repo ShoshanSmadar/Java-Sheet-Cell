@@ -3,7 +3,10 @@ package sheet;
 import coordinate.Coordinate;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import range.RangeDTO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,9 +19,10 @@ public class SheetDTO {
     protected int lengthOfCol;
     protected int sizeOfRows;
     protected int heightOfRow;
+    protected Map<String, RangeDTO> rangeMap;
 
     public SheetDTO(String sheetName, int sheetVersion, Map<CoordinateDTO, CellDTO> cellMap,
-                    int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow){
+                    int sizeOfColumns, int lengthOfCol, int sizeOfRows, int heightOfRow, Map<String, RangeDTO> rangeMap){
         this.SheetName = sheetName;
         this.sheetVersion = sheetVersion;
         this.cellMap = cellMap;
@@ -26,6 +30,19 @@ public class SheetDTO {
         this.lengthOfCol = lengthOfCol;
         this.sizeOfRows = sizeOfRows;
         this.heightOfRow = heightOfRow;
+        this.rangeMap = rangeMap;
+    }
+
+    public List<String> getRangeNames(){
+        List<String> rangeNames = new ArrayList<>();
+        for(RangeDTO rangeDTO : rangeMap.values()){
+            rangeNames.add(rangeDTO.getName());
+        }
+        return rangeNames;
+    }
+
+    public List<CoordinateDTO> getRangeCoordinates(String name){
+        return rangeMap.get(name).getCoordinates();
     }
 
     public String getSheetName() {

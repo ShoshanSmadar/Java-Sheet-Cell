@@ -28,6 +28,6 @@ public class NotExpression implements Expression {
 
     @Override
     public CellType getFunctionResultType() {
-        return null;
+        return CellType.BOOLEAN;
     }
 }

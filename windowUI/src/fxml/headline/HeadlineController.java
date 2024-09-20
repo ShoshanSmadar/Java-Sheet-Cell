@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import sheet.SheetDTO;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import static UIconstant.TextConstants.*;
 
@@ -110,65 +111,138 @@ public class HeadlineController {
 //            showErrorPopup(e);
 //        }
     }
-
-
     private void processFileInBackground(File file) {
         // Create a Task to process the file in the background
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 try {
-                    fileLoadProgressBar.setVisible(true);
+                    Platform.runLater(() -> fileLoadProgressBar.setVisible(true));
                     mainController.OpenFXMLFile(file);
-                    Thread.sleep(1000); // Simulate processing time
-                    updateProgress(100, 100); // Fill progress to 90%
 
+                    // Simulate processing time
+                    for (int i = 0; i <= 90; i += 10) {
+                        updateProgress(i, 100);
+                        Thread.sleep(100); // Simulate gradual file loading progress
+                    }
 
+                    // File loaded, now set progress to 90%
+                    updateProgress(90, 100);
+
+                    // Run UI updates on the JavaFX Application Thread
                     Platform.runLater(() -> {
                         mainController.buildSheet();
                         filePathLbl.setText(file.getAbsolutePath());
                         setHeaderInformationFromSheet();
                         filePathLbl.setVisible(true);
+                        mainController.makeRangesEnabled();
                     });
 
                     // Simulate additional work to reach 100% progress
-                    //Thread.sleep(500); // Simulate delay for reaching 100%
-                    //updateProgress(100, 100); // Fill progress to 100%
+                    for (int i = 90; i <= 100; i += 2) {
+                        updateProgress(i, 100);
+                        Thread.sleep(50); // Slow down progress to simulate more work
+                    }
 
+                } catch (FileNotFoundException e) {
+                    Platform.runLater(() -> mainController.showErrorPopup(
+                            new RuntimeException("No file given, please try again.")));
                 } catch (Exception e) {
-                    Thread.sleep(1000); // Simulate processing time
-                    updateProgress(50, 100);
-                    Platform.runLater(() -> showErrorPopup(e));
+                    updateProgress(50, 100); // In case of error, set progress to 50%
+                    Platform.runLater(() -> mainController.showErrorPopup(e));
+                } finally {
+                    updateProgress(100, 100); // Ensure progress finishes even if there's an error
                 }
                 return null;
             }
         };
 
+        // Bind the ProgressBar to the task's progress property
         fileLoadProgressBar.progressProperty().bind(task.progressProperty());
 
         // Handle task completion
         task.setOnSucceeded(e -> {
-            // Unbind progress property and hide progress bar after delay
             Platform.runLater(() -> {
-                // Run another task to introduce a delay before hiding the progress bar
+                // Add a short delay before hiding the progress bar
                 new Thread(() -> {
                     try {
-                        Thread.sleep(500); // Wait for 500 milliseconds
+                        Thread.sleep(500); // 500ms delay after completion
                     } catch (InterruptedException interruptedException) {
                         Thread.currentThread().interrupt();
+                    } finally {
+                        Platform.runLater(() -> fileLoadProgressBar.setVisible(false));
                     }
-                    Platform.runLater(() -> fileLoadProgressBar.setVisible(false));
                 }).start();
             });
         });
 
-        task.setOnFailed(e -> {
-            fileLoadProgressBar.progressProperty().unbind();
-        });
-
-        // Run the task in a new Thread
+        // Start the task in a background thread
         new Thread(task).start();
     }
+
+
+//    private void processFileInBackground(File file) {
+//        // Create a Task to process the file in the background
+//        Task<Void> task = new Task<>() {
+//            @Override
+//            protected Void call() throws Exception {
+//                try {
+//                    fileLoadProgressBar.setVisible(true);
+//                    mainController.OpenFXMLFile(file);
+//                    Thread.sleep(1000); // Simulate processing time
+//                    updateProgress(100, 100); // Fill progress to 90%
+//
+//
+//                    Platform.runLater(() -> {
+//                        mainController.buildSheet();
+//                        filePathLbl.setText(file.getAbsolutePath());
+//                        setHeaderInformationFromSheet();
+//                        filePathLbl.setVisible(true);
+//                        mainController.makeRangesEnabled();
+//                    });
+//
+//                    // Simulate additional work to reach 100% progress
+//                    //Thread.sleep(500); // Simulate delay for reaching 100%
+//                    //updateProgress(100, 100); // Fill progress to 100%
+//
+//                }
+//                catch (FileNotFoundException e) {
+//                    Platform.runLater(() -> mainController.showErrorPopup(new RuntimeException("No file given, please try again.")));
+//                }
+//                catch (Exception e) {
+//                    Thread.sleep(1000); // Simulate processing time
+//                    updateProgress(50, 100);
+//                    Platform.runLater(() -> mainController.showErrorPopup(e));
+//                }
+//                return null;
+//            }
+//        };
+//
+//        fileLoadProgressBar.progressProperty().bind(task.progressProperty());
+//
+//        // Handle task completion
+//        task.setOnSucceeded(e -> {
+//            // Unbind progress property and hide progress bar after delay
+//            Platform.runLater(() -> {
+//                // Run another task to introduce a delay before hiding the progress bar
+//                new Thread(() -> {
+//                    try {
+//                        Thread.sleep(500); // Wait for 500 milliseconds
+//                    } catch (InterruptedException interruptedException) {
+//                        Thread.currentThread().interrupt();
+//                    }
+//                    Platform.runLater(() -> fileLoadProgressBar.setVisible(false));
+//                }).start();
+//            });
+//        });
+//
+//        task.setOnFailed(e -> {
+//            fileLoadProgressBar.progressProperty().unbind();
+//        });
+//
+//        // Run the task in a new Thread
+//        new Thread(task).start();
+//    }
 
     private void setHeaderInformationFromSheet(){
         SheetDTO sheet = mainController.getSheetDTO();
@@ -181,17 +255,7 @@ public class HeadlineController {
         SheetVersionLbl.setText(VERSION_LABEL + sheetVersion);
     }
 
-    public void showErrorPopup(Exception ex) {
-        // Create an alert of type ERROR
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("An Error Occurred");
-        alert.setContentText("Something went wrong!\n" +
-                ex.getMessage()+
-                "\nPlease try again.");
 
-        alert.showAndWait();
-    }
 
     public void onCellLabelClicked(CellDTO cell, CoordinateDTO coordinateDTO) {
         selectedCellLbl.setText(SELECTED_CELL + coordinateDTO);
@@ -227,7 +291,7 @@ public class HeadlineController {
             dynamicSheetController.handleCellClick(dynamicSheetController.getCurrentClickedCellLabel());
         }
         catch (Exception e){
-            showErrorPopup(e);
+            mainController.showErrorPopup(e);
         }
         ActionLineLbl.setText(null);
     }

@@ -5,7 +5,7 @@
 //
 
 
-package jaxb;
+package jaxb.xmlTwo;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;

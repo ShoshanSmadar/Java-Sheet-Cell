@@ -8,6 +8,7 @@ import fxml.labelCreator.header.ColumnLabel;
 import fxml.labelCreator.header.RowLabel;
 import fxml.sheetSetting.SheetSettingsController;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -16,6 +17,7 @@ import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.List;
 import java.util.Locale;
 
 public class DynamicSheetController {
@@ -32,6 +34,9 @@ public class DynamicSheetController {
     }
 
 
+    public DynamicSheet getDynamicSheetBuilder() {
+        return dynamicSheetBuilder;
+    }
 
     public DynamicSheetController() {
 
@@ -63,7 +68,6 @@ public class DynamicSheetController {
     }
 
 
-
     public CoordinateDTO getCurrentClickedCellCoordinateSTO(){
         return dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO();
     }
@@ -85,6 +89,11 @@ public class DynamicSheetController {
         this.mainController = controller;
         this.headlineController = headlineController;
         this.sheetSettingsController = sheetSettingsController;
+    }
+
+    public void handleRangeClickedLabel(List<CoordinateDTO> range){
+        resetCurrentClickedLabels();
+        dynamicSheetBuilder.makeCellLabelRangeList(range);
     }
 
     private void setCell(CellDTO cell) {
@@ -170,6 +179,9 @@ public class DynamicSheetController {
             dynamicSheetBuilder.resetClickedColumnLabel();
             sheetSettingsController.disableColumnLengthSpinner();
             sheetSettingsController.anableAlignment();
+        }
+        if(dynamicSheetBuilder.getCurrentClickedRange() != null){
+            dynamicSheetBuilder.resetCurrentClickedCellRange();
         }
     }
 

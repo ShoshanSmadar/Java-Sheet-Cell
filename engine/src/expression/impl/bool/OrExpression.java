@@ -33,6 +33,6 @@ public class OrExpression implements Expression {
 
     @Override
     public CellType getFunctionResultType() {
-        return null;
+        return CellType.BOOLEAN;
     }
 }

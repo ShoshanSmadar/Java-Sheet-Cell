@@ -6,12 +6,12 @@ import range.Range;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public interface Sheet {
     List<Coordinate> getRangeCellList(String rangeName);
     void setRangeSet(HashMap<String, Range> rangeSet);
     Boolean isNameInRange(String name);
+    void addRange(String rangeName, String range);
     int getNumberOfCellsChangedInVersion();
     public int getVersion();
     public Cell getCell(int row, int col);
@@ -23,6 +23,11 @@ public interface Sheet {
     public void increaseVersion();
     public Sheet UpdateCellValueAndSheet(int row, int col, String value) throws Exception;
     List<Cell> calculateAllSheetAffectiveValue() throws Exception;
+    public void addRangeFromXML(Range range);
+    public void addCellToRangeDepndingOn(Coordinate coordinate, String rangeName);
+
+    void deleteRange(String name);
+
     public SheetDTO convertToSheetDTO();
     public List<CoordinateDTO> getCellDependingCoordinatesDTO(Coordinate cellCoordinate);
     public List<CoordinateDTO> getCellAfctingCoordinates(Coordinate cellCoordinate);

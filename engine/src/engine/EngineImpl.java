@@ -3,7 +3,7 @@ package engine;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
 import jakarta.xml.bind.JAXBException;
-import jaxbConvert.parser.XmlParser;
+import jaxbConvert.xmlTwo.parser.XmlParser;
 import sheet.Sheet;
 import sheet.SheetDTO;
 
@@ -103,13 +103,24 @@ public class EngineImpl implements Engine{
     }
 
     @Override
+    public void addRange(String rangeName, String rangeValues){
+        sheetList.getLast().addRange(rangeName, rangeValues);
+    }
+
+    @Override
+    public void deleteRange(String rangeName){
+        sheetList.getLast().deleteRange(rangeName);
+    }
+
+
+    @Override
     public void saveProgram(String xmlPath) {
-        try {
+        /*try {
             XmlParser.ConvertSheetToXML(xmlPath, this);
         }
         catch (Exception e){
             throw new RuntimeException("Error accrued while saving files.\n" +
                     "The error accrued because: " + e.getMessage());
-        }
+        }*/
     }
 }

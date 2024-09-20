@@ -11,6 +11,8 @@ import fxml.sheetSetting.SheetSettingsController;
 import jakarta.xml.bind.JAXBException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import sheet.SheetDTO;
@@ -20,23 +22,28 @@ import java.io.FileNotFoundException;
 
 public class appController {
     Engine engine;
-
+    @FXML private ScrollPane scrollPane;
     @FXML private GridPane headline;
     @FXML private HeadlineController headlineController;
     @FXML private FlowPane dynamicSheet;
     @FXML private DynamicSheetController dynamicSheetController;
     @FXML private GridPane control;
     @FXML private Accordion rangeSettings;
-    @FXML private RangeSettingController rangeSettingController;
+    @FXML private RangeSettingController rangeSettingsController;
     @FXML private GridPane sheetSettings;
     @FXML private SheetSettingsController sheetSettingsController;
 
     @FXML
     public void initialize() {
+        // Ensure the GridPane resizes with the BorderPane and ScrollPane
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+
         engine = new EngineImpl();
         headlineController.setControllers(this, dynamicSheetController);
         dynamicSheetController.setControllers(this, headlineController, sheetSettingsController);
         sheetSettingsController.setControllers(this, dynamicSheetController);
+        rangeSettingsController.setControllers(this, dynamicSheetController);
     }
 
     public void OpenFXMLFile(File file) throws JAXBException, FileNotFoundException {
@@ -57,6 +64,10 @@ public class appController {
         engine.changeCell(coordinateDTO, value);
     }
 
+    public void makeRangesEnabled(){
+        rangeSettingsController.makeRangeEnabled();
+    }
+
     public void clearDynamicSheet() {
         dynamicSheet.getChildren().clear();
     }
@@ -68,6 +79,36 @@ public class appController {
     public void showSheet(SheetDTO sheetDTO){
         dynamicSheetController.setSheetCells(sheetDTO);
         headlineController.setSheetVersionLblText(sheetDTO.getSheetVersion());
+    }
+
+    public void showErrorPopup(Exception ex) {
+        // Create an alert of type ERROR
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An Error Occurred");
+        alert.setContentText("Something went wrong!\n" +
+                ex.getMessage()+
+                "\nPlease try again.");
+
+        alert.showAndWait();
+    }
+
+    public void deleteRange(String rangeName){
+        try{
+            engine.deleteRange(rangeName);
+        }
+        catch(Exception e){
+            showErrorPopup(e);
+        }
+    }
+
+    public void addRange(String rangeName, String rangeValue){
+        try {
+            engine.addRange(rangeName, rangeValue);
+        }
+        catch (Exception e) {
+            showErrorPopup(e);
+        }
     }
 
     public SheetDTO getSheetDTO(){

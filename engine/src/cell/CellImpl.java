@@ -27,6 +27,8 @@ public class CellImpl implements Cell, Cloneable {
         this.lastVersionChanged = version;
         this.dependsOn = new ArrayList<>();
         calculateDependenciesFromString();
+        calculateRangeDependencies("{average,");
+        calculateRangeDependencies("{sum,");
         sheet.enterCoordinateAndDependenciesToGraph(coordinate, this.dependsOn);
     }
 
@@ -110,6 +112,7 @@ public class CellImpl implements Cell, Cloneable {
                 this.fatherSheet.getCellDependingCoordinatesDTO(this.coordinate),
                 this.fatherSheet.getCellAfctingCoordinates(this.coordinate));
     }
+
     private void calculateDependenciesFromString() {
         String patternStart = "{ref,";  // lowercase pattern
         char endChar = '}';
@@ -155,38 +158,33 @@ public class CellImpl implements Cell, Cloneable {
     }
 
 
-//    private void calculateDependenciesFromString() {
-//        String patternStart = "(?i)\\{REF,";
-//        char endChar = '}';
-//        int index = 0;
-//
-//        while ((index = originalValue.indexOf(patternStart, index)) != -1) {
-//            int endIndex = originalValue.indexOf(endChar, index + patternStart.length());
-//            if (endIndex != -1) {
-//                String extracted = originalValue.substring(index + patternStart.length(), endIndex).trim();
-//                char uppercaseLetter = extracted.charAt(0);
-//                Character.toUpperCase(uppercaseLetter);
-//                if (!Character.isUpperCase(uppercaseLetter)) {
-//                    continue;
-//                }
-//                String number = extracted.substring(1);
-//
-//                int row;
-//                try {
-//                    row = Integer.parseInt(number) - 1;
-//                } catch (NumberFormatException e) {
-//                    continue;
-//                }
-//                int col = uppercaseLetter - 'A';
-//
-//                Coordinate newCoordinate = CoordinateFactory.createCoordinate(row, col);
-//                if (!this.dependsOn.contains(newCoordinate)) {
-//                    this.dependsOn.add(new CoordinateImpl(row, col));
-//                }
-//                index = endIndex + 1;
-//            } else {
-//                break; // No more closing braces found
-//            }
-//        }
-//    }
+
+    private void calculateRangeDependencies(String patternStart){
+            char endChar = '}';
+            int index = 0;
+
+            // Convert the original value to lowercase for case-insensitive search
+            String lowerCaseOriginal = originalValue.toLowerCase();
+
+            while ((index = lowerCaseOriginal.indexOf(patternStart, index)) != -1) {
+                int endIndex = lowerCaseOriginal.indexOf(endChar, index + patternStart.length());
+                if (endIndex != -1) {
+                    String extracted = originalValue.substring(index + patternStart.length(), endIndex).trim();
+
+                    if(fatherSheet.isNameInRange(extracted)) {
+                        fatherSheet.addCellToRangeDepndingOn(this.coordinate, extracted);
+                        List<Coordinate> rangeList = fatherSheet.getRangeCellList(extracted);
+                        for (Coordinate coordinate : rangeList) {
+                            if (!this.dependsOn.contains(coordinate)) {
+                                this.dependsOn.add(new CoordinateImpl(coordinate.getRow(), coordinate.getColumn()));
+                            }
+                        }
+                    }
+
+                    index = endIndex + 1;
+                } else {
+                    break; // No more closing braces found
+                }
+            }
+    }
 }

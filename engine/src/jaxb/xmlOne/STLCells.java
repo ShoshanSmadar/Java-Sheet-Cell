@@ -5,7 +5,7 @@
 //
 
 
-package jaxb;
+package jaxb.xmlOne;
 
 import java.util.ArrayList;
 import java.util.List;

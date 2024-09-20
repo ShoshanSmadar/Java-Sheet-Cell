@@ -37,27 +37,34 @@
 }
 
 .clicked-cell {
-    -fx-border-color: #dcd5f1; /* Border color */
-    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-color: #f60808; /* Border color */
+    -fx-border-width: 2px; /* Border thickness */
     -fx-border-radius: 5px; /* Rounds the corners of the border */
     -fx-padding: 5px; /* Adds space between the content and the border */
     /*-fx-background-color: #dcd5f1;*/ /* Uncomment if you want to set the background color */
 }
 
 .affected-cell {
-    -fx-border-color: #91ed8e; /* Border color */
-    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-color: #06fb00; /* Border color */
+    -fx-border-width: 2px; /* Border thickness */
     -fx-border-radius: 5px; /* Rounds the corners of the border */
     -fx-padding: 5px; /* Adds space between the content and the border */
-    /*-fx-background-color: #91ed8e;*/ /* Uncomment if you want to set the background color */
+    -fx-background-color: #91ed8e; /* Uncomment if you want to set the background color */
 }
 
 .depending-cell {
-    -fx-border-color: #8ebaed; /* Border color */
-    -fx-border-width: 3px; /* Border thickness */
+    -fx-border-color: #0076ff; /* Border color */
+    -fx-border-width: 2px; /* Border thickness */
     -fx-border-radius: 5px; /* Rounds the corners of the border */
     -fx-padding: 5px; /* Adds space between the content and the border */
-    /*-fx-background-color: #8ebaed;*/ /* Uncomment if you want to set the background color */
+    -fx-background-color: #8ebaed; /* Uncomment if you want to set the background color */
+}
+
+.range {
+    -fx-border-color: black;
+    -fx-background-color: #ddff57;
+    -fx-border-width: 1px;
+    -fx-border-style: dashed;
 }
 
 .show-pressed-label-children{

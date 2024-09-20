@@ -32,6 +32,6 @@ public class EqualExpression implements Expression {
 
     @Override
     public CellType getFunctionResultType() {
-        return null;
+        return CellType.BOOLEAN;
     }
 }

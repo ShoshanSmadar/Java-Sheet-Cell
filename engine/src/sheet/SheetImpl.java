@@ -8,6 +8,8 @@ import graph.DependencyGraph;
 import graph.DependencyGraphImpl;
 import cell.CellDTO;
 import range.Range;
+import range.RangeDTO;
+import range.RangeImpl;
 
 
 import java.util.*;
@@ -40,6 +42,14 @@ public class SheetImpl implements Sheet, Cloneable {
     @Override
     public Boolean isNameInRange(String name){
         return rangeSet.containsKey(name);
+    }
+
+    @Override
+    public void addRange(String rangeName, String range) {
+        if(rangeSet.containsKey(rangeName)){
+            throw new IllegalArgumentException("Range name already exists");
+        }
+        rangeSet.put(rangeName, new RangeImpl(rangeName, range));
     }
 
 
@@ -147,6 +157,22 @@ public class SheetImpl implements Sheet, Cloneable {
     }
 
     @Override
+    public void addRangeFromXML(Range range){
+        this.rangeSet.put(range.getName(), range);
+    }
+
+    @Override
+    public void addCellToRangeDepndingOn(Coordinate coordinate, String rangeName) {
+        rangeSet.get(rangeName).addCellToDependencies(coordinate);
+    }
+
+    @Override
+    public void deleteRange(String name){
+        rangeSet.get(name).checkIfRangeCanBeDeleted();
+        rangeSet.remove(name);
+    }
+
+    @Override
     public SheetDTO convertToSheetDTO() {
         Map<CoordinateDTO, CellDTO> cellDTOMap = new HashMap<>();
         for (Map.Entry<Coordinate, Cell> entry : cellMap.entrySet()) {
@@ -155,8 +181,13 @@ public class SheetImpl implements Sheet, Cloneable {
             CellDTO cellDTO = cell.getConvertToCellDTO();
             cellDTOMap.put(coord, cellDTO);
         }
+        Map<String, RangeDTO> rangeDTOMap = new HashMap<>();
+        for (Map.Entry<String, Range> entry : rangeSet.entrySet()) {
+            rangeDTOMap.put(entry.getKey(), entry.getValue().getRangeDTO());
+        }
 
-        return new SheetDTO(this.sheetName, this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns, this.sizeOfRows, this.hightOfRows);
+        return new SheetDTO(this.sheetName, this.version, cellDTOMap, this.sizeOfColumns, this.lengthOfColumns,
+                this.sizeOfRows, this.hightOfRows, rangeDTOMap);
     }
 
     @Override

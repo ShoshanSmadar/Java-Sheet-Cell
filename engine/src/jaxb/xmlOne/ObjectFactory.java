@@ -5,7 +5,7 @@
 //
 
 
-package jaxb;
+package jaxb.xmlOne;
 
 import javax.xml.namespace.QName;
 import jakarta.xml.bind.JAXBElement;

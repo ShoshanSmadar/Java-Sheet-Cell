@@ -3,7 +3,6 @@ package expression.impl.mathematical;
 import cell.cellType.CellType;
 import cell.cellType.EffectiveValue;
 import cell.cellType.EffectiveValueImpl;
-import constant.Constants;
 import expression.Expression;
 import sheet.Sheet;
 
@@ -38,6 +37,6 @@ public class PrecentMathematicalExpression implements Expression {
 
     @Override
     public CellType getFunctionResultType() {
-        return null;
+        return CellType.NUMERIC;
     }
 }

@@ -7,6 +7,7 @@ import coordinate.Coordinate;
 import expression.Expression;
 import sheet.Sheet;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class AverageMathematicalExpression implements Expression {
@@ -22,14 +23,17 @@ public class AverageMathematicalExpression implements Expression {
             throw new IllegalArgumentException("Range name given does not exist in sheet");
         }
         List<Coordinate> cellsInRange = sheet.getRangeCellList(rangeName);
-        Double sum = 0.0;
-        Integer count = 0;
-        for (Coordinate coordinate : cellsInRange) {
+        double sum = 0.0;
+        int count = 0;
+        for(int i = 0; i < cellsInRange.size(); i++) {
+            Coordinate coordinate = cellsInRange.get(i);
             EffectiveValue result = sheet.getCell(coordinate).getEffectiveValue();
-            if(result.getCellType() == CellType.NUMERIC
-                    || (result.getCellType() == CellType.UNKNOWN && result.getValue() instanceof Double))
+            if (result.getCellType() == CellType.NUMERIC
+                    || (result.getCellType() == CellType.UNKNOWN && result.getValue() instanceof Double)) {
                 sum += (double) result.getValue();
-            count++;
+                count++;
+            }
+
         }
         if(count == 0){
             throw new IllegalArgumentException("There are no numbers in range given, using function AVERAGE on range is not legal");
@@ -39,6 +43,6 @@ public class AverageMathematicalExpression implements Expression {
 
     @Override
     public CellType getFunctionResultType() {
-        return null;
+        return CellType.NUMERIC;
     }
 }

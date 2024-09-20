@@ -2,13 +2,11 @@ package fxml.sheetSetting;
 
 import fxml.dynamicSheet.DynamicSheetController;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-import static java.awt.Color.black;
 
 public class SheetSettingsController {
     private appController.appController mainController;

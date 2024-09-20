@@ -131,14 +131,14 @@ public class RangeImpl implements Range, Cloneable{
 
         // Extract the column letters and row numbers
         String topLeftColumn = topLeft.replaceAll("\\d", "");  // Extract the letters (column)
-        int topLeftRow = Integer.parseInt(topLeft.replaceAll("\\D", ""));  // Extract the numbers (row)
+        int topLeftRow = Integer.parseInt(topLeft.replaceAll("\\D", "")) - 1;  // Extract the numbers (row)
 
         String bottomRightColumn = bottomRight.replaceAll("\\d", "");  // Extract the letters (column)
-        int bottomRightRow = Integer.parseInt(bottomRight.replaceAll("\\D", ""));  // Extract the numbers (row)
+        int bottomRightRow = Integer.parseInt(bottomRight.replaceAll("\\D", "")) - 1;  // Extract the numbers (row)
 
         // Convert the column letters to indices
-        int startColumnIndex = letterToIndex(topLeftColumn);
-        int endColumnIndex = letterToIndex(bottomRightColumn);
+        int startColumnIndex = letterToIndex(topLeftColumn) - 1;
+        int endColumnIndex = letterToIndex(bottomRightColumn) - 1;
 
         // List to store all cells in the range
         List<Coordinate> cellsInRange = new ArrayList<>();

@@ -47,6 +47,9 @@ public class appController {
     }
 
     public void OpenFXMLFile(File file) throws JAXBException, FileNotFoundException {
+        if(file == null){
+            throw new FileNotFoundException();
+        }
         boolean bool = LoadFXMLHandler.loadXML(file, engine);
     }
 

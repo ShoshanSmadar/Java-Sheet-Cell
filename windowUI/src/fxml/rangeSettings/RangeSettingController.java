@@ -55,7 +55,6 @@ public class RangeSettingController {
         rangeNameTextBar.textProperty().addListener((observable, oldValue, newValue) -> checkTextFields());
         rangeValueTextBar.textProperty().addListener((observable, oldValue, newValue) -> checkTextFields());
 
-        addRangeButton.setOnMouseClicked(mouseEvent -> handleAddRangeButtonClick());
     }
 
     public void makeRangeEnabled(){
@@ -83,9 +82,6 @@ public class RangeSettingController {
         // Clear text fields after button is clicked (optional)
         rangeNameTextBar.clear();
         rangeValueTextBar.clear();
-
-        // Disable the button again after clearing
-        addRangeButton.setDisable(true);
     }
 
     public void setControllers(appController appController, DynamicSheetController dynamicSheetController) {

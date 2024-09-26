@@ -71,6 +71,7 @@ public class LineSortController {
     @FXML
     void sortRange(ActionEvent event) {
         showSortedSheet(engine.sortColumns());
+        columnFilterChooser.setDisable(true);
     }
 
     private void showSortedSheet(List<List<String>> newSheet){
@@ -95,6 +96,7 @@ public class LineSortController {
                 columnFilterChooser.getItems().add(column);
             }
             columnFilterChooser.setDisable(false);
+            submitFillterEreaBtn.setDisable(true);
         }
     }
 
@@ -217,7 +219,7 @@ public class LineSortController {
     private Label createCellLabel( int row,int rowHight, int col, int columnWidth){
         CellLabel cell = new CellLabel(new CoordinateDTO(row -1, col -1));
         SetLabelExactSize(cell, rowHight, columnWidth);
-        cell.getStyleClass().add("data-cell");// Add CSS cell class
+        cell.getStyleClass().add("data-cell");//// Add CSS cell class
         cell.setId("cell" + (char) ('A' + col - 1) + Integer.toString(row)); //
         cell.getStyleClass().add("column" + (char) ('A' + col - 1)); // add CSS column class
         cell.getStyleClass().add("row" + row);

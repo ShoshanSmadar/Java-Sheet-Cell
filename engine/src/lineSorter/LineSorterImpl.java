@@ -32,7 +32,7 @@ public class LineSorterImpl implements LineSorter{
         List<Coordinate> coordinates = rangeToSort.getCoordinates();
         rows = new ArrayList<>();
 
-        int numberOfColumns = coordinates.getLast().getColumn() - coordinates.get(0).getColumn() + 1;
+        int numberOfColumns = coordinates.getLast().getColumn() - coordinates.getFirst().getColumn() + 1;
         isNumericColumn = new ArrayList<>();
         for(int i = 0; i < numberOfColumns; i++){
             isNumericColumn.add(true);
@@ -68,14 +68,14 @@ public class LineSorterImpl implements LineSorter{
     @Override
     public List<Character> getPossibleColumnsToSortBy(){
         int columnStart = rangeToSort.getCoordinates().getFirst().getColumn();
-        List<Character> posibleColumnsToSort = new ArrayList<>();
+        List<Character> possibleColumnsToSort = new ArrayList<>();
         for (Boolean column : isNumericColumn){
             if(column){
-                posibleColumnsToSort.add((char) (columnStart + 'A'));
+                possibleColumnsToSort.add((char) (columnStart + 'A'));
             }
             columnStart++;
         }
-        return posibleColumnsToSort;
+        return possibleColumnsToSort;
     }
 
     @Override
@@ -137,7 +137,8 @@ public class LineSorterImpl implements LineSorter{
                     if (rows.get(i -  rangeToSort.getRowStart()).getCell(j - rangeToSort.getColStart()) == null) {
                         rowList.add(""); // or add some placeholder if needed
                     } else {
-                        rowList.add(String.valueOf(rows.get(i -  rangeToSort.getRowStart()).getCell(j - rangeToSort.getColStart()).getValue()));
+                        rowList.add(String.valueOf(rows.get(i -  rangeToSort.getRowStart())
+                                .getCell(j - rangeToSort.getColStart()).getValue()));
                     }
                 }
                 else {

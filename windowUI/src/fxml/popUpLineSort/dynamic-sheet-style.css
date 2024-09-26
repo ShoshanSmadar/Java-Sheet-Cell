@@ -23,7 +23,6 @@
 /* Highlight cell on hover */
 .data-cell:hover {
     -fx-background-color: #d3d3d3; /* Light gray when hovered */
-    -fx-cursor: hand; /* Pointer cursor on hover */
 }
 
 .header-cell:hover{

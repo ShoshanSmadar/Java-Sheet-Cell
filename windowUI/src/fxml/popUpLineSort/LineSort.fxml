@@ -93,7 +93,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="startSortBtn" disable="true" mnemonicParsing="false" text="Sort" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <Button fx:id="startSortBtn" disable="true" mnemonicParsing="false" onAction="#sortRange" text="Sort" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                      </children>

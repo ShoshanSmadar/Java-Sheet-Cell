@@ -65,6 +65,21 @@ public class LineSortController {
     @FXML
     public void initialize() {
         filterHelp.setText(TextConstants.EREA_CHOOSING_EXPLANATION);
+        columnFilterChooser.setOnAction(event -> chooseColumnFilterOrder());
+    }
+
+    @FXML
+    void sortRange(ActionEvent event) {
+        showSortedSheet(engine.sortColumns());
+    }
+
+    private void showSortedSheet(List<List<String>> newSheet){
+        for (int i = 0; i < newSheet.size(); i++){
+            for (int j = 0; j < newSheet.get(i).size(); j++){
+                Node node = gridPane.lookup("#cell" + (char)('A' + j) + (i + 1));
+                setLabelText(node, newSheet.get(i).get(j));
+            }
+        }
     }
 
     @FXML
@@ -80,6 +95,22 @@ public class LineSortController {
                 columnFilterChooser.getItems().add(column);
             }
             columnFilterChooser.setDisable(false);
+        }
+    }
+
+    private void chooseColumnFilterOrder(){
+        Character selectedOption = columnFilterChooser.getSelectionModel().getSelectedItem();
+        if (selectedOption != null) {
+            if(chosenColumnsShower.getText().isEmpty()){
+                chosenColumnsShower.setText(selectedOption.toString());
+            }
+            else {
+                chosenColumnsShower.setText(chosenColumnsShower.getText() + ", " + selectedOption);
+            }
+            engine.addColumnToSortingOrder(selectedOption);
+            startSortBtn.setDisable(false);
+
+            columnFilterChooser.getItems().remove(selectedOption);
         }
     }
 
@@ -107,9 +138,13 @@ public class LineSortController {
 
     private void setCell(CellDTO cell) {
         Node node = gridPane.lookup("#cell"+ cell.getCoordinate());
+        setLabelText(node, getStringValue(cell));
+    }
+
+    private void setLabelText(Node node, String text) {
         if (node != null && node instanceof Label) {
             Label label = (Label) node;
-            label.setText(getStringValue(cell));
+            label.setText(text);
         }
     }
 

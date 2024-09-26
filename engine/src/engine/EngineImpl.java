@@ -44,7 +44,12 @@ public class EngineImpl implements Engine{
 
     @Override
     public List<List<String>> sortColumns(){
-        return lineSorter.getSortedSheetStrings();
+        return lineSorter.sortByColumns();
+    }
+
+    @Override
+    public void addColumnToSortingOrder(char column) {
+        lineSorter.setColumnSortingOrder(column);
     }
 
 

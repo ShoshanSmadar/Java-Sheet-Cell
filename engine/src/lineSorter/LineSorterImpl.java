@@ -2,7 +2,6 @@ package lineSorter;
 
 import cell.cellType.CellType;
 import coordinate.Coordinate;
-import coordinate.CoordinateDTO;
 import range.Range;
 import range.RangeImpl;
 import row.Row;
@@ -17,6 +16,7 @@ public class LineSorterImpl implements LineSorter{
     Sheet sortingSheet;
     List<Row> rows;
     List<Character> columnsToSortBy;
+    List<Character> orderOfColumnsToSortBy;
     List<Boolean> isNumericColumn;
     Range rangeToSort;
 
@@ -59,7 +59,7 @@ public class LineSorterImpl implements LineSorter{
 
     @Override
     public void setColumnToSortBy(int column){
-        if(columnsToSortBy == null){
+       if(columnsToSortBy == null){
             columnsToSortBy = new ArrayList<>();
         }
         columnsToSortBy.add((char) ('A' + column));
@@ -68,33 +68,42 @@ public class LineSorterImpl implements LineSorter{
     @Override
     public List<Character> getPossibleColumnsToSortBy(){
         int columnStart = rangeToSort.getCoordinates().getFirst().getColumn();
+        List<Character> posibleColumnsToSort = new ArrayList<>();
         for (Boolean column : isNumericColumn){
             if(column){
-                setColumnToSortBy(columnStart);
+                posibleColumnsToSort.add((char) (columnStart + 'A'));
             }
             columnStart++;
         }
-        return columnsToSortBy;
+        return posibleColumnsToSort;
+    }
+
+    @Override
+    public void setColumnSortingOrder(char column){
+        if(orderOfColumnsToSortBy == null){
+            orderOfColumnsToSortBy = new ArrayList<>();
+        }
+        orderOfColumnsToSortBy.addLast(column);
     }
 
 
-    @Override
-    public List<List<String>> sortByColumns() {
+    public static void sortByColumns(List<Row> rows, List<Character> columnsToSortBy, int colStart) {
         Collections.sort(rows, (list1, list2) -> {
             // Compare based on the indices in comparisonOrder
-            for (int index : columnsToSortBy) {
+            for (char column : columnsToSortBy) {
+                int index = column - 'A' - colStart;
                 Double value1, value2;
                 if(list1.getCell(index) == null){
                     value1 = Double.MAX_VALUE;
                 }
                 else{
-                    value1 = (Double) (list1.getCell(index));
+                    value1 = (Double) (list1.getCell(index).getValue());
                 }
                 if(list2.getCell(index) == null){
                     value2 = Double.MAX_VALUE;
                 }
                 else{
-                    value2 = (Double) (list2.getCell(index));
+                    value2 = (Double) (list2.getCell(index).getValue());
                 }
                 int compare = value1.compareTo(value2);
                 if (compare != 0) {
@@ -103,36 +112,50 @@ public class LineSorterImpl implements LineSorter{
             }
             return 0;  // Return 0 if all compared values are equal
         });
+    }
 
+    @Override
+    public List<List<String>> sortByColumns() {
+        sortByColumns(rows, orderOfColumnsToSortBy, rangeToSort.getColStart());
         return getSortedSheetStrings();
     }
 
     @Override
-    public List<List<String>> getSortedSheetStrings(){
+    public List<List<String>> getSortedSheetStrings() {
         List<List<String>> sortedSheetStrings = new ArrayList<>();
 
-        for(int i = 0; i < sortingSheet.getSizeOfRows(); i++){
-            sortedSheetStrings.add(new ArrayList<>());
-            for (int j = 0; j< sortingSheet.getSizeOfColumns(); j++){
-                if(i >= rangeToSort.getRowStart() && i <= rangeToSort.getRowEnd()
-                        && j >= rangeToSort.getColStart() && j <= rangeToSort.getColEnd()){
-                    if(rows.get(i).getCell(j) == null){
-                        sortedSheetStrings.get(i).add(null);
-                    }
-                    else {
-                        sortedSheetStrings.getLast().add((String) rows.get(i).getCell(j));
+        // Iterate over the rows of the sorting sheet
+        for (int i = 0; i < sortingSheet.getSizeOfRows(); i++) {
+            // Initialize a new row list
+            List<String> rowList = new ArrayList<>();
+
+            for (int j = 0; j < sortingSheet.getSizeOfColumns(); j++) {
+                // Check if the current cell is within the range to sort
+                if (i >= rangeToSort.getRowStart() && i <= rangeToSort.getRowEnd()
+                        && j >= rangeToSort.getColStart() && j <= rangeToSort.getColEnd()) {
+                    // Handle the cell's value
+                    if (rows.get(i -  rangeToSort.getRowStart()).getCell(j - rangeToSort.getColStart()) == null) {
+                        rowList.add(""); // or add some placeholder if needed
+                    } else {
+                        rowList.add(String.valueOf(rows.get(i -  rangeToSort.getRowStart()).getCell(j - rangeToSort.getColStart()).getValue()));
                     }
                 }
                 else {
-                    if(sortingSheet.getCell(i, j) == null){
-                        sortedSheetStrings.get(i).add("");
-                    }
-                    else {
-                        sortedSheetStrings.getLast().add((String) sortingSheet.getCell(i,j).getEffectiveValue().getValue());
+                    // Outside the sorting range, fill with values accordingly
+                    if (sortingSheet.getCell(i, j) == null) {
+                        rowList.add(""); // Or use null if that's your intent
+                    } else {
+                        rowList.add(String.valueOf( sortingSheet.getCell(i, j).getEffectiveValue().getValue()));
                     }
                 }
             }
+
+            // Add the constructed row list to the sorted sheet strings
+            sortedSheetStrings.add(rowList);
         }
+
         return sortedSheetStrings;
     }
+
+
 }

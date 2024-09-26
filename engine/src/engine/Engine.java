@@ -18,6 +18,8 @@ public interface Engine {
 
     List<List<String>> sortColumns();
 
+    void addColumnToSortingOrder(char column);
+
     SheetDTO getSheetDTO();
     CellDTO getCellDTO(CoordinateDTO coordinate);
     int getSheetCurrentVersion();

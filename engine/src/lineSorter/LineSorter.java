@@ -10,6 +10,8 @@ public interface LineSorter {
 
     List<Character> getPossibleColumnsToSortBy();
 
+    void setColumnSortingOrder(char column);
+
     List<List<String>> sortByColumns();
 
     List<List<String>> getSortedSheetStrings();

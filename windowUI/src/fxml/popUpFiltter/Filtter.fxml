@@ -79,7 +79,7 @@
                               </Label>
                               <ChoiceBox fx:id="columnFilterChooser" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <ChoiceBox fx:id="valueToFillterBy" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Button fx:id="submitFillterEreaBtn" mnemonicParsing="false" text="Submit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Button fx:id="submitFillterEreaBtn" mnemonicParsing="false" onAction="#submitBtnPressed" text="Submit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>

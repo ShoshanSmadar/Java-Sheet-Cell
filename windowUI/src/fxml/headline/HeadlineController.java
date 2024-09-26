@@ -136,6 +136,7 @@ public class HeadlineController {
                         setHeaderInformationFromSheet();
                         filePathLbl.setVisible(true);
                         mainController.makeRangesEnabled();
+                        mainController.makePopUpsEnabled();
                     });
 
                     // Simulate additional work to reach 100% progress
@@ -146,12 +147,10 @@ public class HeadlineController {
 
                 } catch (FileNotFoundException e) {
                     Platform.runLater(() -> mainController.showErrorPopup(
-                            new RuntimeException("No file given, please try again.")));
+                            new RuntimeException("No file given.")));
                 } catch (Exception e) {
                     updateProgress(50, 100); // In case of error, set progress to 50%
                     Platform.runLater(() -> mainController.showErrorPopup(e));
-                } finally {
-                    updateProgress(100, 100); // Ensure progress finishes even if there's an error
                 }
                 return null;
             }
@@ -180,70 +179,6 @@ public class HeadlineController {
         new Thread(task).start();
     }
 
-
-//    private void processFileInBackground(File file) {
-//        // Create a Task to process the file in the background
-//        Task<Void> task = new Task<>() {
-//            @Override
-//            protected Void call() throws Exception {
-//                try {
-//                    fileLoadProgressBar.setVisible(true);
-//                    mainController.OpenFXMLFile(file);
-//                    Thread.sleep(1000); // Simulate processing time
-//                    updateProgress(100, 100); // Fill progress to 90%
-//
-//
-//                    Platform.runLater(() -> {
-//                        mainController.buildSheet();
-//                        filePathLbl.setText(file.getAbsolutePath());
-//                        setHeaderInformationFromSheet();
-//                        filePathLbl.setVisible(true);
-//                        mainController.makeRangesEnabled();
-//                    });
-//
-//                    // Simulate additional work to reach 100% progress
-//                    //Thread.sleep(500); // Simulate delay for reaching 100%
-//                    //updateProgress(100, 100); // Fill progress to 100%
-//
-//                }
-//                catch (FileNotFoundException e) {
-//                    Platform.runLater(() -> mainController.showErrorPopup(new RuntimeException("No file given, please try again.")));
-//                }
-//                catch (Exception e) {
-//                    Thread.sleep(1000); // Simulate processing time
-//                    updateProgress(50, 100);
-//                    Platform.runLater(() -> mainController.showErrorPopup(e));
-//                }
-//                return null;
-//            }
-//        };
-//
-//        fileLoadProgressBar.progressProperty().bind(task.progressProperty());
-//
-//        // Handle task completion
-//        task.setOnSucceeded(e -> {
-//            // Unbind progress property and hide progress bar after delay
-//            Platform.runLater(() -> {
-//                // Run another task to introduce a delay before hiding the progress bar
-//                new Thread(() -> {
-//                    try {
-//                        Thread.sleep(500); // Wait for 500 milliseconds
-//                    } catch (InterruptedException interruptedException) {
-//                        Thread.currentThread().interrupt();
-//                    }
-//                    Platform.runLater(() -> fileLoadProgressBar.setVisible(false));
-//                }).start();
-//            });
-//        });
-//
-//        task.setOnFailed(e -> {
-//            fileLoadProgressBar.progressProperty().unbind();
-//        });
-//
-//        // Run the task in a new Thread
-//        new Thread(task).start();
-//    }
-
     private void setHeaderInformationFromSheet(){
         SheetDTO sheet = mainController.getSheetDTO();
         nameLbl.setText(sheet.getSheetName());
@@ -263,6 +198,7 @@ public class HeadlineController {
         if(cell != null){
             OriginalValueLbl.setText(ORIGINAL_VALUE + cell.getOriginalValue());
             cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
+
         }
 
     }

@@ -85,7 +85,8 @@ public class DynamicSheetController {
         sheetSettingsController.setColors();
     }
 
-    public void setControllers(appController.appController controller, HeadlineController headlineController,SheetSettingsController sheetSettingsController ){
+    public void setControllers(appController.appController controller,
+                               HeadlineController headlineController,SheetSettingsController sheetSettingsController ){
         this.mainController = controller;
         this.headlineController = headlineController;
         this.sheetSettingsController = sheetSettingsController;
@@ -99,8 +100,10 @@ public class DynamicSheetController {
     private void setCell(CellDTO cell) {
         Node node = dynamicSheet.lookup("#cell"+ cell.getCoordinate());
         if (node != null && node instanceof Label) {
-            Label label = (Label) node;
+            CellLabel label = (CellLabel) node;
             label.setText(getStringValue(cell));
+            label.setVisible(true);
+            label.setStyle("-fx-font-size: 12px");
         }
     }
 
@@ -170,6 +173,7 @@ public class DynamicSheetController {
                             getCell(dynamicSheetBuilder.getCurrentClickedCell().getCoordinateDTO()));
             sheetSettingsController.disableColorChange();
             headlineController.resetLabelClicked();
+            setSheetCells(mainController.getSheetDTO());
         }
         if(dynamicSheetBuilder.getCurrentClickedRowLabel() != null){
             dynamicSheetBuilder.resetClickedRowLabel();

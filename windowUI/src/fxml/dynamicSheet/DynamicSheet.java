@@ -168,15 +168,6 @@ public class DynamicSheet extends Application {
 
     public void resetClickedLabel(CellLabel currentClickedLabel,CellDTO cell) {
         currentClickedLabel.getStyleClass().remove("clicked-cell");
-        //if(cell != null){
-//            for(CoordinateDTO cellAffected : cell.getAffecting()){
-//                Node affectedCell = gridPane.lookup("#cell" + cellAffected);
-//                affectedCell.getStyleClass().remove("affected-cell");
-//            }
-//            for(CoordinateDTO cellDepending : cell.getAffectedBy()){
-//                Node DependingCell = gridPane.lookup("#cell" + cellDepending);
-//                DependingCell.getStyleClass().remove("depending-cell");
-//            }
             for (Node node : gridPane.getChildren()) {
                 if (node instanceof CellLabel) {
                     node.getStyleClass().remove("affected-cell");

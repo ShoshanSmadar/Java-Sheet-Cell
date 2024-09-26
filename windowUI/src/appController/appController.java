@@ -6,13 +6,16 @@ import engine.EngineImpl;
 import fxml.dynamicSheet.DynamicSheetController;
 import fxml.eventHandler.LoadFXMLHandler;
 import fxml.headline.HeadlineController;
+import fxml.popUpLineSort.LineSortController;
 import fxml.rangeSettings.RangeSettingController;
 import fxml.sheetSetting.SheetSettingsController;
+import fxml.sorter.PopUpSorterController;
 import jakarta.xml.bind.JAXBException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import sheet.SheetDTO;
@@ -32,6 +35,9 @@ public class appController {
     @FXML private RangeSettingController rangeSettingsController;
     @FXML private GridPane sheetSettings;
     @FXML private SheetSettingsController sheetSettingsController;
+    @FXML private AnchorPane popUpSorter;
+    @FXML private PopUpSorterController popUpSorterController;
+
 
     @FXML
     public void initialize() {
@@ -44,6 +50,8 @@ public class appController {
         dynamicSheetController.setControllers(this, headlineController, sheetSettingsController);
         sheetSettingsController.setControllers(this, dynamicSheetController);
         rangeSettingsController.setControllers(this, dynamicSheetController);
+        popUpSorterController.setMainController(this);
+
     }
 
     public void OpenFXMLFile(File file) throws JAXBException, FileNotFoundException {
@@ -63,12 +71,20 @@ public class appController {
 
     }
 
+    public Engine getEngine(){
+        return engine;
+    }
+
     public void updateCellValue(CoordinateDTO coordinateDTO, String value) throws Exception {
         engine.changeCell(coordinateDTO, value);
     }
 
     public void makeRangesEnabled(){
         rangeSettingsController.makeRangeEnabled();
+    }
+
+    public void makePopUpsEnabled(){
+        popUpSorterController.enableButtons();
     }
 
     public void clearDynamicSheet() {

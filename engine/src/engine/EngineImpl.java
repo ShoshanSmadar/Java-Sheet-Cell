@@ -4,6 +4,8 @@ import cell.CellDTO;
 import coordinate.CoordinateDTO;
 import jakarta.xml.bind.JAXBException;
 import jaxbConvert.xmlTwo.parser.XmlParser;
+import lineSorter.LineSorter;
+import lineSorter.LineSorterImpl;
 import sheet.Sheet;
 import sheet.SheetDTO;
 
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class EngineImpl implements Engine{
     private List<Sheet> sheetList;
+    private LineSorter lineSorter;
 
     public EngineImpl() {
         sheetList = new ArrayList<>();
@@ -25,12 +28,36 @@ public class EngineImpl implements Engine{
     }
 
     @Override
+    public void startLineSorter(){
+        lineSorter = new LineSorterImpl(sheetList.getLast());
+    }
+
+    @Override
+    public void setSortingRange(String rangeValue){
+        lineSorter.setRangeToSort(rangeValue);
+    }
+
+    @Override
+    public List<Character> getPossibleSortingColumns(){
+        return lineSorter.getPossibleColumnsToSortBy();
+    }
+
+    @Override
+    public List<List<String>> sortColumns(){
+        return lineSorter.getSortedSheetStrings();
+    }
+
+
+
+    @Override
     public SheetDTO getSheetDTO() {
         if (!sheetList.isEmpty()) {
             return sheetList.getLast().convertToSheetDTO();
         }
         return null;
     }
+
+
 
     @Override
     public CellDTO getCellDTO(CoordinateDTO coordinate) {

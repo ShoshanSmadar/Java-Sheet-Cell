@@ -5,6 +5,7 @@ import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 import coordinate.CoordinateFactory;
 import coordinate.CoordinateImpl;
+import row.Row;
 
 
 import java.util.ArrayList;
@@ -15,6 +16,29 @@ public class RangeImpl implements Range, Cloneable{
     private String name;
     private List<Coordinate> coordinates;
     private List<Coordinate> cellsDependingOnRange;
+
+    @Override
+    public int getRowStart() {
+        return rowStart;
+    }
+
+    @Override
+    public int getRowEnd() {
+        return rowEnd;
+    }
+
+    @Override
+    public int getColStart() {
+        return colStart;
+    }
+
+    @Override
+    public int getColEnd() {
+        return colEnd;
+    }
+
+    private int rowStart, rowEnd, colStart, colEnd;
+
 
     public RangeImpl() {}
 
@@ -77,6 +101,8 @@ public class RangeImpl implements Range, Cloneable{
         return new RangeDTO(DTOCoordinates,this.name);
     }
 
+
+
     @Override
     public void checkIfRangeCanBeDeleted() throws RuntimeException{
         if(!cellsDependingOnRange.isEmpty()) {
@@ -123,7 +149,7 @@ public class RangeImpl implements Range, Cloneable{
     }
 
     // Extracts all cells in the given range, for example "A1..B5"
-    public static List<Coordinate> getAllCellsInRange(String range) {
+    public List<Coordinate> getAllCellsInRange(String range) {
         // Split the range into the top-left and bottom-right parts
         String[] parts = range.split("\\.\\.");
         String topLeft = parts[0];
@@ -142,9 +168,14 @@ public class RangeImpl implements Range, Cloneable{
 
         // List to store all cells in the range
         List<Coordinate> cellsInRange = new ArrayList<>();
+        rowStart = topLeftRow;
+        rowEnd = bottomRightRow;
+        colStart = startColumnIndex;
+        colEnd = endColumnIndex;
 
         // Loop through the rows and columns and add each cell to the list
         for (int row = topLeftRow; row <= bottomRightRow; row++) {
+            List<Row> rowsInRange = new ArrayList<>();
             for (int col = startColumnIndex; col <= endColumnIndex; col++) {
                 Coordinate coordinate = new CoordinateImpl(row, col);
 

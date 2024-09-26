@@ -10,6 +10,14 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface Engine {
+    void startLineSorter();
+
+    void setSortingRange(String rangeValue);
+
+    List<Character> getPossibleSortingColumns();
+
+    List<List<String>> sortColumns();
+
     SheetDTO getSheetDTO();
     CellDTO getCellDTO(CoordinateDTO coordinate);
     int getSheetCurrentVersion();

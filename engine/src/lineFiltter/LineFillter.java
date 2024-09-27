@@ -1,11 +1,12 @@
 package lineFiltter;
 
 import cell.cellType.CellType;
+import sheet.SheetDTO;
 
 import java.util.List;
 
 public interface LineFillter {
-    void setColToFilter(Character colToFilterBy);
+    List<Character> getPossibleColumns();
 
     void setRowsToFilter(String rangeValue);
 
@@ -16,4 +17,6 @@ public interface LineFillter {
     void setFilterBy(CellType cellType);
 
     void filter();
+
+    SheetDTO getFilterdSheet();
 }

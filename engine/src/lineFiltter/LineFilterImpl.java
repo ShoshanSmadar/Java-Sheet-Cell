@@ -2,13 +2,13 @@ package lineFiltter;
 
 import cell.CellDTO;
 import cell.cellType.CellType;
-import cell.cellType.EffectiveValue;
 import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 import range.Range;
 import range.RangeImpl;
 import row.Row;
 import row.RowImpl;
+import sheet.Sheet;
 import sheet.SheetDTO;
 
 import java.util.ArrayList;
@@ -17,19 +17,25 @@ import java.util.List;
 public class LineFilterImpl implements LineFillter{
     Character colToFilterBy;
     List<Row> rowsToFilter;
-    SheetDTO sheet;
+    SheetDTO sheetDTO;
+    Sheet sheet;
     Range rangeToFilter;
     List<CellType> cellTypeInColumn;
     Boolean isNumericInColumn = false, isBooleanInColumn = false, isStringInColumn = false;
     Boolean filterByNumeric = false, filterByBoolean = false, filterByString = false;
 
-    public LineFilterImpl(SheetDTO sheet){
+    public LineFilterImpl(SheetDTO sheetDTO, Sheet sheet){
+        this.sheetDTO = sheetDTO;
         this.sheet = sheet;
     }
 
     @Override
-    public void setColToFilter(Character colToFilterBy){
-        this.colToFilterBy = colToFilterBy;
+    public List<Character> getPossibleColumns() {
+        List<Character> possibleColumns = new ArrayList<>();
+        for(int i = rangeToFilter.getColStart(); i <= rangeToFilter.getColEnd(); i++){
+            possibleColumns.add((char) (i + 'A'));
+        }
+        return possibleColumns;
     }
 
     @Override
@@ -45,17 +51,17 @@ public class LineFilterImpl implements LineFillter{
         int numberOfColumns = coordinates.getLast().getColumn() - coordinates.getFirst().getColumn() + 1;
         int columnsAdded = 0;
         rowsToFilter.add(new RowImpl());
-        for(CoordinateDTO coordinate : coordinateDTOs){
+        for(Coordinate coordinate : coordinates){
             if(columnsAdded == numberOfColumns){
                 columnsAdded = 0;
                 rowsToFilter.add(new RowImpl());
             }
-            if(sheet.getCell(coordinate) == null){
+            if(sheetDTO.getCell(coordinate.convertToDTO()) == null){
                 rowsToFilter.getLast().addCell(null);
                 columnsAdded ++;
                 continue;
             }
-            rowsToFilter.getLast().addCell((EffectiveValue) sheet.getCell(coordinate).getEffectiveValue());
+            rowsToFilter.getLast().addCell(sheet.getCell(coordinate).getEffectiveValue());
             columnsAdded++;
         }
     }
@@ -84,7 +90,7 @@ public class LineFilterImpl implements LineFillter{
     private void setCellTypeInColumn(){
         cellTypeInColumn = new ArrayList<>();
         for(int i = rangeToFilter.getRowStart(); i <= rangeToFilter.getRowEnd(); i++){
-            CellDTO cell = sheet.getCell(new CoordinateDTO(i, colToFilterBy));
+            CellDTO cell = sheetDTO.getCell(new CoordinateDTO(i, colToFilterBy - 'A'));
             if(cell == null){
                 cellTypeInColumn.add(null);
             }
@@ -120,8 +126,8 @@ public class LineFilterImpl implements LineFillter{
 
     @Override
     public void filter(){
-        for(int i = 0; i <= rangeToFilter.getColEnd() - rangeToFilter.getColStart(); i++){
-            Boolean deleteRow = false;
+        for(int i = 0; i < cellTypeInColumn.size(); i++){
+            boolean deleteRow = false;
             if(!filterByNumeric && cellTypeInColumn.get(i) == CellType.NUMERIC){
                 deleteRow = true;
             }
@@ -132,12 +138,17 @@ public class LineFilterImpl implements LineFillter{
                 deleteRow = true;
             }
             if(deleteRow){
-                for(int row = rangeToFilter.getRowStart(); row <= rangeToFilter.getRowEnd(); row++){
                     for(int col = rangeToFilter.getColStart(); col <= rangeToFilter.getColEnd(); col++){
-                        sheet.getCell(new CoordinateDTO(row, col)).setEffectiveValue("");
+                        if(sheetDTO.getCell(new CoordinateDTO(i + rangeToFilter.getRowStart(), col)) != null){
+                            sheetDTO.getCell(new CoordinateDTO(i + rangeToFilter.getRowStart(), col)).setEffectiveValue("");
+                        }
                     }
-                }
             }
         }
+    }
+
+    @Override
+    public SheetDTO getFilterdSheet(){
+        return sheetDTO;
     }
 }

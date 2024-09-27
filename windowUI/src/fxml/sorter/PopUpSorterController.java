@@ -1,5 +1,6 @@
 package fxml.sorter;
 
+import fxml.popUpFiltter.FilterContoller;
 import fxml.popUpLineSort.LineSortController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,7 +41,35 @@ public class PopUpSorterController {
 
     @FXML
     void HandleFiltterLinePressed(ActionEvent event) {
+        try {
+            // Load the FXML file for the popup
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/popUpFiltter/Filtter.fxml"));
+            Parent popupRoot = fxmlLoader.load();
 
+            FilterContoller filterContoller = fxmlLoader.getController();
+            filterContoller.setEngine(mainController.getEngine());
+            mainController.getEngine().setLineFilter();
+
+            // Create a new stage (popup window)
+            Stage popupStage = new Stage();
+
+            // Set the modality (optional) - makes the popup block interaction with the main window
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Set the title of the popup window
+            popupStage.setTitle("filter Lines");
+
+
+            // Set the scene for the popup
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+
+            // Show the popup window
+            popupStage.showAndWait();  // Show and wait will block the parent window until the popup is closed
+
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle the exception properly in your app
+        }
     }
 
     @FXML

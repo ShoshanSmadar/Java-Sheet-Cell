@@ -1,9 +1,12 @@
 package engine;
 
 import cell.CellDTO;
+import cell.cellType.CellType;
 import coordinate.CoordinateDTO;
 import jakarta.xml.bind.JAXBException;
 import jaxbConvert.xmlTwo.parser.XmlParser;
+import lineFiltter.LineFillter;
+import lineFiltter.LineFilterImpl;
 import lineSorter.LineSorter;
 import lineSorter.LineSorterImpl;
 import sheet.Sheet;
@@ -13,10 +16,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EngineImpl implements Engine{
     private List<Sheet> sheetList;
     private LineSorter lineSorter;
+    private LineFillter lineFillter;
 
     public EngineImpl() {
         sheetList = new ArrayList<>();
@@ -144,15 +149,53 @@ public class EngineImpl implements Engine{
         sheetList.getLast().deleteRange(rangeName);
     }
 
+    @Override
+    public void setLineFilter(){
+        lineFillter = new LineFilterImpl(sheetList.getLast().convertToSheetDTO(), sheetList.getLast());
+    }
+
+
 
     @Override
-    public void saveProgram(String xmlPath) {
-        /*try {
-            XmlParser.ConvertSheetToXML(xmlPath, this);
+    public void setRowsToFilter(String rangeValue) {
+        lineFillter.setRowsToFilter(rangeValue);
+    }
+
+    @Override
+    public void setColToFilterBy(Character colToFilterBy) {
+        lineFillter.setColToFilterBy(colToFilterBy);
+    }
+
+    @Override
+    public List<String> getValueTypesPossibleInColumn() {
+        return lineFillter.getValueTypesPossibleInColumn();
+    }
+
+    @Override
+    public void setFilterBy(String cellType) {
+        if(Objects.equals(cellType, "Numeric")){
+            lineFillter.setFilterBy(CellType.NUMERIC);
         }
-        catch (Exception e){
-            throw new RuntimeException("Error accrued while saving files.\n" +
-                    "The error accrued because: " + e.getMessage());
-        }*/
+        else if(Objects.equals(cellType, "String")){
+            lineFillter.setFilterBy(CellType.STRING);
+        }
+        else if(Objects.equals(cellType, "Boolean")){
+            lineFillter.setFilterBy(CellType.BOOLEAN);
+        }
+    }
+
+    @Override
+    public void filter() {
+        lineFillter.filter();
+    }
+
+    @Override
+    public List<Character> getColumnsToFiltter() {
+        return lineFillter.getPossibleColumns();
+    }
+
+    @Override
+    public SheetDTO getNewFilterdSheet(){
+        return lineFillter.getFilterdSheet();
     }
 }

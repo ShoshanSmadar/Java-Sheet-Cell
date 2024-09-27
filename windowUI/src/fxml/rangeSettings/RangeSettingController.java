@@ -1,15 +1,11 @@
 package fxml.rangeSettings;
 
 import appController.appController;
-import coordinate.CoordinateDTO;
 import fxml.dynamicSheet.DynamicSheetController;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
 
 import java.util.List;
 

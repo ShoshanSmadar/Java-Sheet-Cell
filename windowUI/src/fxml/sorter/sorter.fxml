@@ -20,7 +20,7 @@
          <children>
             <Button fx:id="sortLineBtn" mnemonicParsing="false" onAction="#handleSortLinePressed" prefHeight="25.0" prefWidth="104.0" text="Sort Lines" />
             <Button fx:id="filtterLineBtn" mnemonicParsing="false" onAction="#HandleFiltterLinePressed" prefHeight="25.0" prefWidth="106.0" text="Filtter Lines" GridPane.rowIndex="1" />
-            <Button fx:id="makeGraphBtn" mnemonicParsing="false" onAction="#HandleFiltterLinePressed" prefHeight="25.0" prefWidth="106.0" text="Make Graph" GridPane.rowIndex="2" />
+            <Button fx:id="makeGraphBtn" mnemonicParsing="false" onAction="#HandleMakeGraphBtnPressed" prefHeight="25.0" prefWidth="106.0" text="Make Graph" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

@@ -258,4 +258,8 @@ public class DynamicSheet extends Application {
     public void showRowLabeldClicked() {
         currentClickedRowLabel.showPressedLabelChildren();
     }
+
+    public Label getColumnLabel(char column) {
+        return (Label) gridPane.lookup("#header-column" + column);
+    }
 }

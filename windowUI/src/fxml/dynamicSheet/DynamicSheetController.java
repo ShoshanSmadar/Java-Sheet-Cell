@@ -70,6 +70,14 @@ public class DynamicSheetController {
 
     }
 
+    public GridPane getGridPane(){
+        return dynamicSheetBuilder.getGridPane();
+    }
+
+    public Label getColumnLabel(int colNumber){
+        return dynamicSheetBuilder.getColumnLabel((char) ('A' + (colNumber - 1)));
+    }
+
     public void setSheetCells(SheetDTO sheet) {
         for(CellDTO cell : sheet.getCellMap().values()){
             setCell(cell);

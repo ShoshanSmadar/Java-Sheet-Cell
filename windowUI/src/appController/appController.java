@@ -51,6 +51,7 @@ public class appController {
         sheetSettingsController.setControllers(this, dynamicSheetController);
         rangeSettingsController.setControllers(this, dynamicSheetController);
         popUpSorterController.setMainController(this);
+        popUpSorterController.addDynamicSheetController(dynamicSheetController);
 
     }
 

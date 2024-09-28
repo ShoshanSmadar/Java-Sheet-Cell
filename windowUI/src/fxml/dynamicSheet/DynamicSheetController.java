@@ -7,18 +7,25 @@ import fxml.headline.HeadlineController;
 import fxml.labelCreator.header.ColumnLabel;
 import fxml.labelCreator.header.RowLabel;
 import fxml.sheetSetting.SheetSettingsController;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class DynamicSheetController {
     public FlowPane dynamicSheet;
@@ -57,7 +64,9 @@ public class DynamicSheetController {
             dynamicSheetBuilder = new DynamicSheet(rowSize,  rowHeight,  colSize,  colHeight, this);
             dynamicSheet.getChildren().add((dynamicSheetBuilder.getGridPane()));
         }
-
+        if(headlineController.makeAnimation()){
+            makeGridPaneFirework();
+        }
 
     }
 
@@ -83,6 +92,7 @@ public class DynamicSheetController {
         dynamicSheetBuilder.setClickedLabel(cell ,cellDTO);
         headlineController.onCellLabelClicked(cellDTO, cell.getCoordinateDTO());
         sheetSettingsController.setColors();
+
     }
 
     public void setControllers(appController.appController controller,
@@ -103,7 +113,7 @@ public class DynamicSheetController {
             CellLabel label = (CellLabel) node;
             label.setText(getStringValue(cell));
             label.setVisible(true);
-            label.setStyle("-fx-font-size: 12px");
+            label.setStyle("-fx-font-size: 12px;");
         }
     }
 
@@ -203,4 +213,100 @@ public class DynamicSheetController {
         }
     }
 
+    public void animateLabelPopOut() {
+        // Move the label to the front so nothing overlaps it
+        Label label = dynamicSheetBuilder.getCurrentClickedCell();
+        label.toFront();
+
+        // Create the scale transition for the "pop-out" effect
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.2), label);
+        scaleTransition.setByX(1.2); // Grow 20% in width
+        scaleTransition.setByY(1.2); // Grow 20% in height
+        scaleTransition.setAutoReverse(true); // Shrink back to original size
+        scaleTransition.setCycleCount(2); // Play forward and then backward (pop and return)
+
+        // Create a Timeline to change the text color
+        Timeline colorChangeTimeline = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> label.setTextFill(Color.RED)), // Change color to red at the start
+                new KeyFrame(Duration.seconds(1), e -> label.setTextFill(Color.BLACK)) // Revert color to black after 1 second
+        );
+        colorChangeTimeline.setCycleCount(1); // Only one cycle
+
+        // Play both transitions
+        scaleTransition.play();
+        colorChangeTimeline.play();
+
+        // When the scale transition finishes, bring the label back to its original depth
+        scaleTransition.setOnFinished(e -> {
+            label.toBack();
+        });
+    }
+
+    public void startLabelColorAnimation() {
+        Timeline timeline = new Timeline();
+        Random random = new Random();
+
+        for (Node node : dynamicSheetBuilder.getSheetGridPane().getChildren()) {
+            if (node instanceof Label) {
+                Label label = (Label) node;
+                Paint originalColor = label.getTextFill(); // Store the original text color
+
+                // Create a keyframe to change color
+                KeyFrame changeColorFrame = new KeyFrame(Duration.seconds(0.5), e -> {
+                    label.setTextFill(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                });
+
+                // Create another keyframe to revert to the original color after 2 seconds
+                KeyFrame revertColorFrame = new KeyFrame(Duration.seconds(2), e -> {
+                    label.setTextFill(originalColor);
+                });
+
+                timeline.getKeyFrames().addAll(changeColorFrame, revertColorFrame);
+            }
+        }
+        timeline.setCycleCount(1); // Run once
+        timeline.play();
+    }
+
+    public void startGridPaneDance() {
+        TranslateTransition dance = new TranslateTransition();
+        dance.setDuration(Duration.millis(500)); // Speed of the dance
+        dance.setNode(dynamicSheetBuilder.getSheetGridPane());
+        dance.setByX(10); // Move by 10 pixels
+        dance.setCycleCount(6); // Number of times to move back and forth
+        dance.setAutoReverse(true); // Revert to the original position
+        dance.play();
+    }
+
+    public void makeGridPaneFirework() {
+        GridPane gridPane = dynamicSheetBuilder.getSheetGridPane();
+        // Create a ScaleTransition to make the GridPane shrink (disappear)
+        ScaleTransition shrinkTransition = new ScaleTransition(Duration.seconds(0.3), gridPane);
+        shrinkTransition.setToX(0); // Shrink to 0 in X (disappear horizontally)
+        shrinkTransition.setToY(0); // Shrink to 0 in Y (disappear vertically)
+
+        // Create a ScaleTransition to make the GridPane grow (pop up)
+        ScaleTransition popUpTransition = new ScaleTransition(Duration.seconds(0.3), gridPane);
+        popUpTransition.setToX(1); // Grow back to its original width
+        popUpTransition.setToY(1); // Grow back to its original height
+
+        // Create a FadeTransition to fade out the GridPane
+        FadeTransition fadeOutTransition = new FadeTransition(Duration.seconds(0.2), gridPane);
+        fadeOutTransition.setToValue(0); // Fully invisible
+
+        // Create a FadeTransition to fade in the GridPane
+        FadeTransition fadeInTransition = new FadeTransition(Duration.seconds(0.2), gridPane);
+        fadeInTransition.setToValue(1); // Fully visible
+
+        // Combine all transitions into a sequential order
+        SequentialTransition sequentialTransition = new SequentialTransition(
+                fadeOutTransition, shrinkTransition, popUpTransition, fadeInTransition
+        );
+
+        // Set the number of cycles for the animation (e.g., 3 times)
+        sequentialTransition.setCycleCount(3); // You can adjust this to make the fireworks repeat
+
+        // Start the animation
+        sequentialTransition.play();
+    }
 }

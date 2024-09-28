@@ -165,6 +165,10 @@ public class DynamicSheet extends Application {
         rowLbl.addCellLabel(cell);
     }
 
+    public GridPane getSheetGridPane(){
+        return gridPane;
+    }
+
 
     public void resetClickedLabel(CellLabel currentClickedLabel,CellDTO cell) {
         currentClickedLabel.getStyleClass().remove("clicked-cell");

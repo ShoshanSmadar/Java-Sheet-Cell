@@ -28,7 +28,8 @@ public class LineSorterImpl implements LineSorter{
 
     @Override
     public void setRangeToSort(String rangeValue){
-        rangeToSort = new RangeImpl("", rangeValue);
+        rangeToSort = new RangeImpl("", rangeValue,
+                sortingSheet.getSizeOfRows(), sortingSheet.getSizeOfColumns());
         List<Coordinate> coordinates = rangeToSort.getCoordinates();
         rows = new ArrayList<>();
 

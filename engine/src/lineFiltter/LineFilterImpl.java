@@ -40,7 +40,7 @@ public class LineFilterImpl implements LineFillter{
 
     @Override
     public void setRowsToFilter(String rangeValue){
-        rangeToFilter = new RangeImpl("", rangeValue);
+        rangeToFilter = new RangeImpl("", rangeValue, sheet.getSizeOfRows(), sheet.getSizeOfColumns());
         List<Coordinate> coordinates = rangeToFilter.getCoordinates();
         List<CoordinateDTO> coordinateDTOs = new ArrayList<CoordinateDTO>();
         for (Coordinate coordinate : coordinates) {

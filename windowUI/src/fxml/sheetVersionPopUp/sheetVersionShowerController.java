@@ -1,132 +1,52 @@
-package fxml.popUpLineSort;
+package fxml.sheetVersionPopUp;
 
-import UIconstant.TextConstants;
 import cell.CellDTO;
-import constant.Constants;
 import coordinate.CoordinateDTO;
 import engine.Engine;
 import fxml.labelCreator.CellLabel;
 import fxml.labelCreator.header.ColumnLabel;
 import fxml.labelCreator.header.RowLabel;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import sheet.SheetDTO;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.List;
 import java.util.Locale;
 
-public class LineSortController {
-    private Engine engine;
-    private GridPane gridPane;
-
-    @FXML
-    private Label chosenColumnsShower;
-
-    @FXML
-    private ChoiceBox<Character> columnFilterChooser;
-
-    @FXML
-    private TextField filterEreaChooser;
-
-    @FXML
-    private Tooltip filterHelp;
-
-    @FXML
-    private Label filtterEreaExplenetion;
-
-    @FXML
-    private Button startSortBtn;
-
-    @FXML
-    private Button submitFillterEreaBtn;
-
+public class sheetVersionShowerController {
+    Engine engine;
     @FXML
     private AnchorPane sheetAnchorPane;
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private Label sheetVersionTxb;
 
     @FXML
-    void popHelpMessege(MouseEvent event) {
-
-    }
-
-    @FXML
-    void stopHelpMessege(MouseEvent event) {
-
-    }
+    private ChoiceBox<Integer> versionChooser;
 
     @FXML
     public void initialize() {
-        filterHelp.setText(TextConstants.EREA_CHOOSING_EXPLANATION);
-        columnFilterChooser.setOnAction(event -> chooseColumnFilterOrder());
+        versionChooser.setOnAction(event -> showVersion());
     }
 
-    @FXML
-    void sortRange(ActionEvent event) {
-        showSortedSheet(engine.sortColumns());
-        columnFilterChooser.setDisable(true);
+    private void showVersion() {
+        int selectedVersion = versionChooser.getValue();
+        addSheet(engine.getOldVersionSheet(selectedVersion));
+        sheetVersionTxb.setText("Sheet Version "+selectedVersion);
     }
 
-    private void showSortedSheet(List<List<String>> newSheet){
-        for (int i = 0; i < newSheet.size(); i++){
-            for (int j = 0; j < newSheet.get(i).size(); j++){
-                Node node = gridPane.lookup("#cell" + (char)('A' + j) + (i + 1));
-                setLabelText(node, newSheet.get(i).get(j));
-            }
+    public void addSheet(SheetDTO sheet){
+        if(gridPane != null){
+            sheetAnchorPane.getChildren().clear();
         }
-    }
 
-    @FXML
-    void submitBtnPressed(ActionEvent event) {
-        String range = filterEreaChooser.getText();
-        engine.setSortingRange(range);
-        List<Character> possibleColumns = engine.getPossibleSortingColumns();
-        if(possibleColumns == null || possibleColumns.size() == 0) {
-            filterEreaChooser.setText("Range is empty, try again");
-        }
-        else{
-            for(Character column : possibleColumns) {
-                columnFilterChooser.getItems().add(column);
-            }
-            columnFilterChooser.setDisable(false);
-            submitFillterEreaBtn.setDisable(true);
-        }
-    }
-
-    private void chooseColumnFilterOrder(){
-        Character selectedOption = columnFilterChooser.getSelectionModel().getSelectedItem();
-        if (selectedOption != null) {
-            if(chosenColumnsShower.getText().isEmpty()){
-                chosenColumnsShower.setText(selectedOption.toString());
-            }
-            else {
-                chosenColumnsShower.setText(chosenColumnsShower.getText() + ", " + selectedOption);
-            }
-            engine.addColumnToSortingOrder(selectedOption);
-            startSortBtn.setDisable(false);
-
-            columnFilterChooser.getItems().remove(selectedOption);
-        }
-    }
-
-
-
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-        addSheet();
-    }
-
-    public void addSheet(){
-        SheetDTO sheet = engine.getSheetDTO();
-        engine.startLineSorter();
         gridPane = new GridPane();
-
 
         initializeSheet(gridPane, sheet.getSizeOfRows(), sheet.getHeightOfRow(),
                 sheet.getSizeOfColumns(), sheet.getLengthOfCol());
@@ -231,5 +151,13 @@ public class LineSortController {
         return cell;
     }
 
-}
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+        Integer numberOfVersions = engine.getSheetCurrentVersion();
+        for (int i = 0; i < numberOfVersions; i++) {
+            versionChooser.getItems().add(i + 1);
+        }
 
+        versionChooser.setDisable(false);
+    }
+}

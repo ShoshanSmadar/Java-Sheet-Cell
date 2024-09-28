@@ -41,7 +41,7 @@ public abstract class ConvertSheet {
                     XMLsheet.getSTLLayout().getRows(), XMLsheet.getSTLLayout().getColumns());
             Coordinate to = getCoordinateFromString(boundaries.getTo(),
                     XMLsheet.getSTLLayout().getRows(), XMLsheet.getSTLLayout().getColumns());
-            sheet.addRangeFromXML(new RangeImpl(name, from, to));
+            sheet.addRangeFromXML(new RangeImpl(name, from, to,XMLsheet.getSTLLayout().getRows(), XMLsheet.getSTLLayout().getColumns()));
         }
 
         for(STLCell STLcell : XMLsheet.getSTLCells().getSTLCell())

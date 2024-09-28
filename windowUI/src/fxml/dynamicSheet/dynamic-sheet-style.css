@@ -71,4 +71,8 @@
     -fx-background-color: rgba(237, 237, 243, 0.67);
 }
 
+.custom-background {
+    -fx-background-color: transparent; /* Default or reset */
+}
+
 

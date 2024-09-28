@@ -117,10 +117,31 @@ public class SheetSettingsController {
     }
 
     private void updateLabelBackgroundColor() {
-        Label clickedCell = dynamicSheetController.getCurrentClickedCellLabel();
-        String currentStyle = clickedCell.getStyle(); // Get current style if it exists
-        String newStyle = currentStyle + "-fx-background-color: " + toRgbString(BackgroundColorPicker.getValue()) + ";";
-        clickedCell.setStyle(newStyle);
+        // Get the current label
+        Label label = dynamicSheetController.getCurrentClickedCellLabel();
+
+        // Remove any previous background color styles if needed
+        label.getStyleClass().remove("custom-background");
+
+        // Get the selected color from the BackgroundColorPicker
+        Color color = BackgroundColorPicker.getValue();
+
+        // Convert the Color to a CSS-compatible string
+        String colorAsCss = String.format("rgba(%d, %d, %d, %f);",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255),
+                color.getOpacity());
+
+        // Apply the new background color
+        label.setStyle("-fx-background-color: " + colorAsCss);
+
+        // Add a custom class for unchangeable style
+        label.getStyleClass().add("custom-background");
+//        Label clickedCell = dynamicSheetController.getCurrentClickedCellLabel();
+//        String currentStyle = clickedCell.getStyle(); // Get current style if it exists
+//        String newStyle = currentStyle + "; -fx-background-color: " + toRgbString(BackgroundColorPicker.getValue()) + ";";
+//        clickedCell.setStyle(newStyle);
         enableRevertButton();
     }
 
@@ -157,9 +178,9 @@ public class SheetSettingsController {
 
     private String toRgbString(Color color) {
         return String.format("rgb(%d, %d, %d)",
-                (int)(color.getRed() * 255),
-                (int)(color.getGreen() * 255),
-                (int)(color.getBlue() * 255));
+                Math.round(color.getRed() * 255),
+                Math.round(color.getGreen() * 255),
+                Math.round(color.getBlue() * 255));
     }
 
     public void setColors() {

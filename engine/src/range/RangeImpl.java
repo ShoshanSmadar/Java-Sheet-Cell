@@ -5,6 +5,7 @@ import coordinate.Coordinate;
 import coordinate.CoordinateDTO;
 import coordinate.CoordinateFactory;
 import coordinate.CoordinateImpl;
+import engine.Engine;
 import row.Row;
 
 
@@ -36,7 +37,7 @@ public class RangeImpl implements Range, Cloneable{
     public int getColEnd() {
         return colEnd;
     }
-
+    private int maxColumn, maxRows;
     private int rowStart, rowEnd, colStart, colEnd;
 
 
@@ -52,13 +53,17 @@ public class RangeImpl implements Range, Cloneable{
         this.cellsDependingOnRange.add(coordinate);
     }
 
-    public RangeImpl(String name, String topAndLowerCoordinates) {
+    public RangeImpl(String name, String topAndLowerCoordinates, int MaxRow, int MaxColumn) {
+        maxRows = MaxRow;
+        maxColumn = MaxColumn;
         this.name = name;
         coordinates = getAllCellsInRange(topAndLowerCoordinates);
         this.cellsDependingOnRange = new ArrayList<>();
     }
 
-    public RangeImpl(String name, Coordinate from, Coordinate to) {
+    public RangeImpl(String name, Coordinate from, Coordinate to, int MaxRow, int MaxColumn) {
+        maxRows = MaxRow;
+        maxColumn = MaxColumn;
         this.name = name;
         this.coordinates = getAllCellsInRange(from, to);
         this.cellsDependingOnRange = new ArrayList<>();
@@ -172,6 +177,7 @@ public class RangeImpl implements Range, Cloneable{
         rowEnd = bottomRightRow;
         colStart = startColumnIndex;
         colEnd = endColumnIndex;
+        checkIfRangeIsInSheetBound();
 
         // Loop through the rows and columns and add each cell to the list
         for (int row = topLeftRow; row <= bottomRightRow; row++) {
@@ -185,6 +191,12 @@ public class RangeImpl implements Range, Cloneable{
         }
 
         return cellsInRange;
+    }
+
+    private void checkIfRangeIsInSheetBound(){
+        if(rowStart > rowEnd || rowEnd > maxRows || colStart > colEnd || colEnd > maxColumn){
+            throw new RuntimeException("The range given is not in sheet bound.");
+        }
     }
 
 

@@ -49,7 +49,12 @@ public class SheetImpl implements Sheet, Cloneable {
         if(rangeSet.containsKey(rangeName)){
             throw new IllegalArgumentException("Range name already exists");
         }
-        rangeSet.put(rangeName, new RangeImpl(rangeName, range));
+        try{
+            rangeSet.put(rangeName, new RangeImpl(rangeName, range, sizeOfRows, sizeOfColumns));
+        }
+        catch (Exception e){
+            throw new RuntimeException("Range given is incorrect.");
+        }
     }
 
 

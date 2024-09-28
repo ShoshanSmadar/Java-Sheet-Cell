@@ -1,5 +1,7 @@
 package fxml.headline;
 
+import fxml.popUpFiltter.FilterContoller;
+import fxml.sheetVersionPopUp.sheetVersionShowerController;
 import javafx.application.Platform;
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
@@ -7,16 +9,21 @@ import fxml.dynamicSheet.DynamicSheetController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sheet.SheetDTO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static UIconstant.TextConstants.*;
 
@@ -66,6 +73,9 @@ public class HeadlineController {
     private Label actionLineQuestionMark;
 
     @FXML
+    private CheckBox animationCheckBox;
+
+    @FXML
     void initialize() {
         UpdateBtn.disableProperty().bind(ActionLineLbl.textProperty().isEmpty());
         selectVersionBtn.disableProperty().bind(filePathLbl.textProperty().isEmpty());
@@ -89,6 +99,38 @@ public class HeadlineController {
     }
 
     @FXML
+    void showVersion(ActionEvent event) {
+        try {
+            // Load the FXML file for the popup
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/sheetVersionPopUp/sheetVersionPopUp.fxml"));
+            Parent popupRoot = fxmlLoader.load();
+
+            sheetVersionShowerController sheetVersionController = fxmlLoader.getController();
+            sheetVersionController.setEngine(mainController.getEngine());
+
+            // Create a new stage (popup window)
+            Stage popupStage = new Stage();
+
+            // Set the modality (optional) - makes the popup block interaction with the main window
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Set the title of the popup window
+            popupStage.setTitle("Sheet versions");
+
+
+            // Set the scene for the popup
+            Scene popupScene = new Scene(popupRoot);
+            popupStage.setScene(popupScene);
+
+            // Show the popup window
+            popupStage.showAndWait();  // Show and wait will block the parent window until the popup is closed
+
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle the exception properly in your app
+        }
+    }
+
+    @FXML
     void openFileBtnAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml");
@@ -99,6 +141,7 @@ public class HeadlineController {
 
         processFileInBackground(file);
         mainController.buildSheet();
+
 
 
 //        try{
@@ -198,9 +241,10 @@ public class HeadlineController {
         if(cell != null){
             OriginalValueLbl.setText(ORIGINAL_VALUE + cell.getOriginalValue());
             cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
-
         }
-
+        if(animationCheckBox.isSelected()){
+            dynamicSheetController.animateLabelPopOut();
+        }
     }
 
     public void resetLabelClicked(){
@@ -216,7 +260,7 @@ public class HeadlineController {
     }
 
     @FXML
-    void updateValueClicked(MouseEvent event) {
+    void updateValueClicked() {
         updateValue();
     }
 
@@ -224,16 +268,25 @@ public class HeadlineController {
         try{
             mainController.updateCellValue(dynamicSheetController.getCurrentClickedCellCoordinateSTO(), ActionLineLbl.getText());
             mainController.updateSheet();
-            dynamicSheetController.handleCellClick(dynamicSheetController.getCurrentClickedCellLabel());
+            //dynamicSheetController.handleCellClick(dynamicSheetController.getCurrentClickedCellLabel());
+            dynamicSheetController.resetCurrentClickedLabels();
+            if(animationCheckBox.isSelected()){
+                dynamicSheetController.startGridPaneDance();
+            }
         }
         catch (Exception e){
             mainController.showErrorPopup(e);
         }
         ActionLineLbl.setText(null);
+
     }
 
     public void setControllers(appController.appController controller, DynamicSheetController dynamicSheetController){
         this.mainController = controller;
         this.dynamicSheetController = dynamicSheetController;
+    }
+
+    public boolean makeAnimation() {
+        return animationCheckBox.isSelected();
     }
 }

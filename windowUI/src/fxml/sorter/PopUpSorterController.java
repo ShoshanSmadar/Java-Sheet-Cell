@@ -17,13 +17,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PopUpSorterController {
     @FXML

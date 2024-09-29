@@ -1,6 +1,7 @@
 package fxml.sheetSetting;
 
 import fxml.dynamicSheet.DynamicSheetController;
+import fxml.labelCreator.CellLabel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -118,7 +119,7 @@ public class SheetSettingsController {
 
     private void updateLabelBackgroundColor() {
         // Get the current label
-        Label label = dynamicSheetController.getCurrentClickedCellLabel();
+        CellLabel label = dynamicSheetController.getCurrentClickedCellLabel();
 
         // Remove any previous background color styles if needed
         label.getStyleClass().remove("custom-background");
@@ -135,6 +136,8 @@ public class SheetSettingsController {
 
         // Apply the new background color
         label.setStyle("-fx-background-color: " + colorAsCss);
+        label.setNewBackroundColorStyle("-fx-background-color: " + colorAsCss);
+        label.setBackroundColorStyle();
 
         // Add a custom class for unchangeable style
         label.getStyleClass().add("custom-background");
@@ -164,9 +167,10 @@ public class SheetSettingsController {
 
     private void resetColors() {
         // Remove any inline styles and reapply default CSS class
-        Label label = dynamicSheetController.getCurrentClickedCellLabel();
+        CellLabel label = dynamicSheetController.getCurrentClickedCellLabel();
         if(label.getStyleClass().contains("even-row")){
             label.setStyle("-fx-background-color: #f0f8ff;");
+            label.setNewBackroundColorStyle(null);
         }
         else{
             label.setStyle("-fx-background-color: white;");

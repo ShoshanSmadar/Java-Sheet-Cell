@@ -9,9 +9,7 @@ import fxml.labelCreator.header.RowLabel;
 import fxml.sheetSetting.SheetSettingsController;
 import javafx.animation.*;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -205,6 +203,7 @@ public class DynamicSheetController {
         if(dynamicSheetBuilder.getCurrentClickedRange() != null){
             dynamicSheetBuilder.resetCurrentClickedCellRange();
         }
+        setBackroundColors();
     }
 
     public void updateLabelAlignment(String alignment) {
@@ -232,11 +231,13 @@ public class DynamicSheetController {
         scaleTransition.setByY(1.2); // Grow 20% in height
         scaleTransition.setAutoReverse(true); // Shrink back to original size
         scaleTransition.setCycleCount(2); // Play forward and then backward (pop and return)
+        Paint oldColor = label.getTextFill();
 
         // Create a Timeline to change the text color
         Timeline colorChangeTimeline = new Timeline(
+
                 new KeyFrame(Duration.ZERO, e -> label.setTextFill(Color.RED)), // Change color to red at the start
-                new KeyFrame(Duration.seconds(1), e -> label.setTextFill(Color.BLACK)) // Revert color to black after 1 second
+                new KeyFrame(Duration.seconds(1), e -> label.setTextFill(oldColor)) // Revert color to black after 1 second
         );
         colorChangeTimeline.setCycleCount(1); // Only one cycle
 
@@ -248,6 +249,15 @@ public class DynamicSheetController {
         scaleTransition.setOnFinished(e -> {
             label.toBack();
         });
+    }
+
+    public void setBackroundColors(){
+        for (Node node: dynamicSheetBuilder.getSheetGridPane().getChildren()){
+            if(node instanceof CellLabel){
+                CellLabel cellLabel = (CellLabel) node;
+                cellLabel.setBackroundColorStyle();
+            }
+        }
     }
 
     public void startLabelColorAnimation() {

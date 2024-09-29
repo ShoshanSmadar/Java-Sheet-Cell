@@ -278,7 +278,7 @@ public class HeadlineController {
             mainController.showErrorPopup(e);
         }
         ActionLineLbl.setText(null);
-
+        dynamicSheetController.setBackroundColors();
     }
 
     public void setControllers(appController.appController controller, DynamicSheetController dynamicSheetController){

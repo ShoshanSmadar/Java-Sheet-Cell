@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact name="UI">
+    <output-path>$PROJECT_DIR$/out/artifacts/UI</output-path>
+    <root id="root">
+      <element id="archive" name="windowUI.jar">
+        <element id="module-output" name="windowUI" />
+        <element id="module-output" name="dto" />
+        <element id="module-output" name="engine" />
+      </element>
+      <element id="library" level="project" name="lib" />
+      <element id="library" level="project" name="javafx-sdk-22.0" />
+      <element id="library" level="project" name="lib1" />
+    </root>
+  </artifact>
+</component>

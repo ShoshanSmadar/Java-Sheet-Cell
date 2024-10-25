@@ -1,4 +1,5 @@
 package permissionManger.fxml;
+import okhttp3.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public class PermissionManagerController implements Closeable, HttpStatusUpdate {
+    OkHttpClient client;
 
     @FXML
     private Button DnyAckPermissionBtn;
@@ -35,6 +37,11 @@ public class PermissionManagerController implements Closeable, HttpStatusUpdate 
 
     @FXML
     private Button ViewSheetBtn;
+
+    @FXML
+    void initialize() {
+        client = new OkHttpClient();
+    }
 
     @FXML
     void DnyAckPermissionAction(ActionEvent event) {

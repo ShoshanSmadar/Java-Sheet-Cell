@@ -1,0 +1,13 @@
+.row:hover {
+    -fx-background-color: lightblue; /* Color on hover */
+}
+
+.row.clicked {
+    -fx-background-color: blue; /* Color when clicked */
+}
+
+.row {
+    -fx-background-color: transparent; /* Default background */
+    -fx-padding: 0; /* Remove padding */
+    -fx-min-height: 0; /* Min height to zero */
+}

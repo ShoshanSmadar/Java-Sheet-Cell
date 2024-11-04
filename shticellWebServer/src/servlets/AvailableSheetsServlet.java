@@ -54,7 +54,7 @@ public class AvailableSheetsServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-
+        String userName = request.getParameter("userName");
 
         try (PrintWriter out = response.getWriter()) {
             if (engineMap == null || engineMap.isEmpty()) {
@@ -69,12 +69,13 @@ public class AvailableSheetsServlet extends HttpServlet {
                 out.write("[]");
             } else {
                 // Serialize the map if it's not null or empty
-                out.write(serializeMap());
+                out.write(serializeMap(userName));
             }
         }
     }
 
-    public String serializeMap() {
+
+    public String serializeMap(String userName) {
         List<Map<String, Object>> sheetInfoList = new ArrayList<>();
 
         for (Map.Entry<String, EngineInformation> entry : engineMap.entrySet()) {
@@ -82,6 +83,7 @@ public class AvailableSheetsServlet extends HttpServlet {
             sheetInfo.put("key", entry.getKey());
             sheetInfo.put("sheetOwner", entry.getValue().getSheetOwner());
             sheetInfo.put("fileSize", entry.getValue().getFileSize());
+            sheetInfo.put("userPermission", entry.getValue().getCurrentUserPermission(userName));
 
             sheetInfoList.add(sheetInfo);
         }

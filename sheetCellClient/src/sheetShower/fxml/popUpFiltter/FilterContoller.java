@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class FilterContoller {
     //private Engine engine;
+    private String valueToFilterBy;
     private GridPane gridPane;
     @FXML
     private Label choosenValuesShower;
@@ -88,6 +89,7 @@ public class FilterContoller {
             choosenValuesShower.setText(choosenValuesShower.getText() + ", " + value);
         }
         valueToFillterBy.getItems().remove(value);
+
         //engine.setFilterBy(value);
         startFilterBtn.setDisable(false);
     }

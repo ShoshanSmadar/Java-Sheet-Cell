@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="229.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="permissionManger.fxml.permissionRequest.PermissionRequestPopupController">
+    <Label fx:id="requestLabel" text="Request permission for:">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font></Label>
+    <HBox alignment="CENTER" spacing="20">
+        <Button fx:id="readButton" onAction="#handleReadRequest" text="Read" />
+        <Button fx:id="writeButton" onAction="#handleWriteRequest" text="Write" />
+    </HBox>
+    <Label fx:id="statusLabel" visible="false">
+      <font>
+         <Font size="18.0" />
+      </font></Label>
+    <Button fx:id="closeButton" onAction="#handleClose" text="Close" visible="false" />
+</VBox>

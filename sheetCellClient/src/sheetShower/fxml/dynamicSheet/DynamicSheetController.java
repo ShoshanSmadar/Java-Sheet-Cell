@@ -65,7 +65,6 @@ public class DynamicSheetController {
         if(headlineController.makeAnimation()){
             makeGridPaneFirework();
         }
-
     }
 
     public GridPane getGridPane(){
@@ -99,6 +98,9 @@ public class DynamicSheetController {
         headlineController.onCellLabelClicked(cellDTO, cell.getCoordinateDTO());
         sheetSettingsController.setColors();
 
+        if(!mainController.hasWritingPermission()){
+            headlineController.disableWritingActions();
+        }
     }
 
     public void setControllers(sheetShower.appController.appController controller,

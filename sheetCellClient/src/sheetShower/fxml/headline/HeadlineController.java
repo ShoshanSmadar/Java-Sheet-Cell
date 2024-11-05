@@ -86,9 +86,12 @@ public class HeadlineController {
     private Label userUpdatingName;
 
     public void disableWritingActions() {
-        UpdateBtn.setDisable(true);
-        ActionLineLbl.setDisable(true);
+        //UpdateBtn.setDisable(true);
+        //ActionLineLbl.setDisable(true);
+        ActionLineLbl.setVisible(false);
+        UpdateBtn.setVisible(false);
         noWritingPermissioonLbl.setVisible(true);
+        //noWritingPermissioonLbl.setText("No writing permissioon");
     }
 
 
@@ -175,9 +178,6 @@ public class HeadlineController {
         }
         if(animationCheckBox.isSelected()){
             dynamicSheetController.animateLabelPopOut();
-        }
-        if (!mainController.hasWritingPermission()){
-            disableWritingActions();
         }
     }
 

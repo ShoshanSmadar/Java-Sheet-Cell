@@ -143,7 +143,9 @@ public class RangeSettingController {
 
 
     public void disableWritingActions() {
-        deleteRangesPane.setDisable(true);
-        addRangesPane.setDisable(true);
+        //deleteRangesPane.setDisable(true);
+        //addRangesPane.setDisable(true);
+        deleteRangesPane.setVisible(false);
+        addRangesPane.setVisible(false);
     }
 }

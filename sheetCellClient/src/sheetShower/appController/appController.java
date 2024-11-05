@@ -9,10 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import coordinate.CoordinateDTO;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import okhttp3.*;
 import range.RangeDTO;
 import sheetShower.fxml.dynamicSheet.DynamicSheetController;
 import sheetShower.fxml.headline.HeadlineController;
@@ -31,6 +30,9 @@ import sheet.SheetDTO;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static constants.Constants.*;
 import static http.HttpClientUtil.HTTP_CLIENT;
@@ -39,6 +41,7 @@ public class appController {
     SheetDTO currentSheet;
     String sheetName;
     boolean writingPermission;
+    int currentSheetVersion;
     @FXML private ScrollPane scrollPane;
     @FXML private GridPane headline;
     @FXML private HeadlineController headlineController;
@@ -56,6 +59,7 @@ public class appController {
         sheetName = newSheetName;
         this.writingPermission = writingPermission;
 
+
         if (!writingPermission) {
             disableAllWritingActions();
         }
@@ -66,6 +70,8 @@ public class appController {
     public boolean hasWritingPermission() {
         return writingPermission;
     }
+
+
 
     @FXML
     public void initialize() {
@@ -82,7 +88,7 @@ public class appController {
         popUpSorterController.setMainController(this);
         popUpSorterController.addDynamicSheetController(dynamicSheetController);
 
-
+        startListening();
     }
 
     private void disableAllWritingActions() {
@@ -99,7 +105,7 @@ public class appController {
             }
     }
 
-    private void getSheetDTOFromServer(){
+    public void getSheetDTOFromServer(){
         String encodedParam = URLEncoder.encode(sheetName, StandardCharsets.UTF_8);
         String fullUrl = GET_SHEET_DTO_PATH + "?sheetName=" + encodedParam;
 //        Gson gson = new GsonBuilder()
@@ -127,6 +133,7 @@ public class appController {
 
                 try {
                     currentSheet = gson.fromJson(jsonResponse, SheetDTO.class);
+                    currentSheetVersion = currentSheet.getSheetVersion() - 1;
                 } catch (JsonSyntaxException e) {
                     System.err.println("Failed to parse JSON: " + jsonResponse);
                     e.printStackTrace();
@@ -209,7 +216,7 @@ public class appController {
 
     public void showSheet(SheetDTO sheetDTO){
         dynamicSheetController.setSheetCells(sheetDTO);
-        headlineController.setSheetVersionLblText(sheetDTO.getSheetVersion());
+        headlineController.setSheetVersionLblText(sheetDTO.getSheetVersion() - 1);
     }
 
     public void showErrorPopup(Exception ex) {
@@ -307,4 +314,48 @@ public class appController {
     public SheetDTO getSheetDTO(){
         return currentSheet;
     }
+
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    public void startListening() {
+        scheduler.scheduleAtFixedRate(() -> sendGetRequest(sheetName), 0, 1, TimeUnit.SECONDS);
+    }
+
+    private void sendGetRequest(String sheetName) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(CHECK_SHEET_VERSION_PATH).newBuilder();
+        urlBuilder.addQueryParameter("sheetName", sheetName);
+
+        Request request = new Request.Builder()
+                .url(urlBuilder.build())
+                .build();
+
+        HTTP_CLIENT.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.err.println("Request failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    int number = Integer.parseInt(responseBody);
+                    if (number != currentSheetVersion){
+                        Platform.runLater(() -> sheetIsOutDated());
+                    }
+                } else {
+                    System.err.println("Server returned error: " + response.code());
+                }
+            }
+        });
+    }
+
+    public void sheetIsOutDated(){
+        headlineController.sheetIsOutOfDate();
+    }
+
+    public void stopListening() {
+        scheduler.shutdown();
+    }
+
 }

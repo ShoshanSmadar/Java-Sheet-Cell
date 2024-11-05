@@ -69,6 +69,7 @@ public class EngineInformationImpl implements EngineInformation {
         if(allow){
             readingRights.replace(userAskingPermission, SheetRights.APPROVED);
             history.add(sheetOwner + READING_PERMISSION_APPROVED + userAskingPermission);
+            writingRights.replace(userAskingPermission, SheetRights.NONE);
         }
         else {
             readingRights.replace(userAskingPermission, SheetRights.REJECTED);
@@ -81,6 +82,7 @@ public class EngineInformationImpl implements EngineInformation {
         if(allow){
             writingRights.replace(userAskingPermission, SheetRights.APPROVED);
             history.add(sheetOwner + WRITING_PERMISSION_APPROVED + userAskingPermission);
+            readingRights.replace(userAskingPermission, SheetRights.NONE);
         }
         else {
             writingRights.replace(userAskingPermission, SheetRights.REJECTED);

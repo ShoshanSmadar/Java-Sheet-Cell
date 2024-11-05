@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" prefHeight="645.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="permissionManger.fxml.ownerPermissionManager.OwnerManagerController">
+<VBox fx:id="root" prefHeight="645.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="permissionManger.fxml.ownerPermissionManager.OwnerManagerController">
     <children>
         <GridPane alignment="CENTER" prefHeight="633.0" prefWidth="1099.0" VBox.vgrow="ALWAYS">
             <columnConstraints>
@@ -32,17 +37,6 @@
                                                 <RowConstraints maxHeight="560.0" minHeight="10.0" prefHeight="560.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label alignment="CENTER" style="" text="Pending Requests" textAlignment="CENTER" wrapText="false">
-                                                    <font>
-                                                        <Font size="18.0" />
-                                                    </font>
-                                                    <textFill>
-                                                        <Color red="0.624" green="0.624" blue="0.624" />
-                                                    </textFill>
-                                                    <GridPane.margin>
-                                                        <Insets top="5.0" />
-                                                    </GridPane.margin>
-                                                </Label>
                                                 <GridPane fx:id="requestsGridPane" GridPane.rowIndex="1">
                                                     <columnConstraints>
                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="204.0" />
@@ -55,22 +49,6 @@
                                                         <RowConstraints maxHeight="528.0" minHeight="10.0" prefHeight="516.0" vgrow="SOMETIMES" />
                                                     </rowConstraints>
                                                     <children>
-                                                        <Label alignment="CENTER" text="User asking permission" textAlignment="CENTER" wrapText="false">
-                                                            <font>
-                                                                <Font size="18.0" />
-                                                            </font>
-                                                            <textFill>
-                                                                <Color red="0.624" green="0.624" blue="0.624" />
-                                                            </textFill>
-                                                        </Label>
-                                                        <Label alignment="CENTER" text="Permission asked" textAlignment="CENTER" wrapText="false" GridPane.columnIndex="1">
-                                                            <font>
-                                                                <Font size="18.0" />
-                                                            </font>
-                                                            <textFill>
-                                                                <Color red="0.624" green="0.624" blue="0.624" />
-                                                            </textFill>
-                                                        </Label>
                                                         <Label fx:id="sheetName3" alignment="CENTER" textAlignment="CENTER" wrapText="false" GridPane.columnIndex="2">
                                                             <font>
                                                                 <Font size="18.0" />
@@ -100,17 +78,6 @@
                                                 <RowConstraints maxHeight="545.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label alignment="CENTER" text="Sheet Requests History" textAlignment="CENTER" wrapText="false">
-                                                    <font>
-                                                        <Font size="18.0" />
-                                                    </font>
-                                                    <textFill>
-                                                        <Color red="0.624" green="0.624" blue="0.624" />
-                                                    </textFill>
-                                                    <GridPane.margin>
-                                                        <Insets left="5.0" top="5.0" />
-                                                    </GridPane.margin>
-                                                </Label>
                                     <GridPane fx:id="historyGridPane" prefHeight="17.0" prefWidth="429.0" GridPane.rowIndex="1">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -127,14 +94,62 @@
                         </ScrollPane>
                     </items>
                 </SplitPane>
-                <Label fx:id="sheetNameLbl" alignment="TOP_CENTER" contentDisplay="CENTER" text="Sheet Name" textAlignment="CENTER" wrapText="false">
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                    <textFill>
+            <GridPane>
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.0" minWidth="204.0" prefWidth="204.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="195.0" prefWidth="195.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="273.0" minWidth="10.0" prefWidth="273.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="236.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="454.0" prefWidth="454.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                      <Label fx:id="sheetNameLbl" alignment="TOP_CENTER" contentDisplay="CENTER" text="Sheet Name" textAlignment="CENTER" wrapText="false" GridPane.columnIndex="2" GridPane.columnSpan="3">
+                          <font>
+                              <Font name="System Bold" size="24.0" />
+                          </font>
+                          <textFill>
+                              <Color red="0.624" green="0.624" blue="0.624" />
+                          </textFill>
+                      </Label>
+                  <Label alignment="CENTER" text="Sheet Requests History" textAlignment="CENTER" wrapText="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <textFill>
                         <Color red="0.624" green="0.624" blue="0.624" />
-                    </textFill>
-                </Label>
+                     </textFill>
+                  </Label>
+                  <Label alignment="CENTER" text="User asking permission" textAlignment="CENTER" wrapText="false" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <textFill>
+                        <Color red="0.624" green="0.624" blue="0.624" />
+                     </textFill>
+                  </Label>
+                  <Label alignment="CENTER" text="Permission asked" textAlignment="CENTER" wrapText="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <textFill>
+                        <Color red="0.624" green="0.624" blue="0.624" />
+                     </textFill>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label alignment="CENTER" style="" text="Pending Requests" textAlignment="CENTER" wrapText="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <textFill>
+                  <Color red="0.624" green="0.624" blue="0.624" />
+               </textFill>
+            </Label>
             </children>
         </GridPane>
     </children>

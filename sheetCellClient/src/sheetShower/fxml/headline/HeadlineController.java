@@ -85,6 +85,11 @@ public class HeadlineController {
     @FXML
     private Label userUpdatingName;
 
+    @FXML
+    void updateSheetAction(ActionEvent event) {
+        mainController.getSheetDTOFromServer();
+    }
+
     public void disableWritingActions() {
         //UpdateBtn.setDisable(true);
         //ActionLineLbl.setDisable(true);
@@ -92,6 +97,24 @@ public class HeadlineController {
         UpdateBtn.setVisible(false);
         noWritingPermissioonLbl.setVisible(true);
         //noWritingPermissioonLbl.setText("No writing permissioon");
+    }
+
+    public void enableWritingActions() {
+        ActionLineLbl.setVisible(true);
+        UpdateBtn.setVisible(true);
+    }
+
+    public void sheetIsOutOfDate(){
+        isSheetUpdatedLbl.setVisible(true);
+        ActionLineLbl.setVisible(false);
+        UpdateBtn.setVisible(false);
+    }
+
+    public void sheetIsUpToDate(){
+        isSheetUpdatedLbl.setVisible(false);
+        if(mainController.hasWritingPermission()){
+            enableWritingActions();
+        }
     }
 
 
@@ -154,7 +177,7 @@ public class HeadlineController {
     private void setHeaderInformationFromSheet(){
         SheetDTO sheet = mainController.getSheetDTO();
         nameLbl.setText(sheet.getSheetName());
-        setSheetVersionLblText(sheet.getSheetVersion());
+        setSheetVersionLblText(sheet.getSheetVersion() - 1);
         SheetVersionLbl.setVisible(true);
     }
 

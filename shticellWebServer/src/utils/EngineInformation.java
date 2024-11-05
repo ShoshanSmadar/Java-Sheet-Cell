@@ -15,6 +15,8 @@ public interface EngineInformation {
 
     void addNewUser(String newUser);
 
+    void addOldUser(String oldUser);
+
     void allowReadingPermission(String userAskingPermission, boolean allow);
 
     void allowWritingPermission(String userAskingPermission, boolean allow);

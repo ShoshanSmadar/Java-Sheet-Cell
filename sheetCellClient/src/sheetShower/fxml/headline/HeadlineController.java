@@ -112,6 +112,7 @@ public class HeadlineController {
         actionLineQuestionMark.setOnMouseExited((MouseEvent event) -> {
             Tooltip.uninstall(actionLineQuestionMark, actionLineExplenation);  // Hide the tooltip
         });
+
     }
 
     @FXML
@@ -159,14 +160,24 @@ public class HeadlineController {
     }
 
     public void onCellLabelClicked(CellDTO cell, CoordinateDTO coordinateDTO) {
+
         selectedCellLbl.setText(SELECTED_CELL + coordinateDTO);
-        ActionLineLbl.setDisable(false);
+        if(mainController.hasWritingPermission()){
+            ActionLineLbl.setDisable(false);
+        }
+        else {
+            ActionLineLbl.clear();
+            ActionLineLbl.setDisable(true);
+        }
         if(cell != null){
             OriginalValueLbl.setText(ORIGINAL_VALUE + cell.getOriginalValue());
             cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
         }
         if(animationCheckBox.isSelected()){
             dynamicSheetController.animateLabelPopOut();
+        }
+        if (!mainController.hasWritingPermission()){
+            disableWritingActions();
         }
     }
 
@@ -184,7 +195,9 @@ public class HeadlineController {
 
     @FXML
     void updateValueClicked() {
-        updateValue();
+        if(mainController.hasWritingPermission()){
+            updateValue();
+        }
     }
 
     private void updateValue(){

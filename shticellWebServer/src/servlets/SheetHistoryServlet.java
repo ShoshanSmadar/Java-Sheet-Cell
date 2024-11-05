@@ -2,6 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @WebServlet(name = "SheetHistoryServlet", urlPatterns = {"/sheet/history/get"})
+@MultipartConfig
 public class SheetHistoryServlet extends HttpServlet {
     private HashMap<String, EngineInformation> engineMap;
 

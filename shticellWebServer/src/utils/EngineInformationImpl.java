@@ -59,6 +59,12 @@ public class EngineInformationImpl implements EngineInformation {
     }
 
     @Override
+    public void addOldUser(String oldUser) {
+        writingRights.put(oldUser, SheetRights.NONE);
+        readingRights.put(oldUser, SheetRights.NONE);
+    }
+
+    @Override
     public void allowReadingPermission(String userAskingPermission, boolean allow){
         if(allow){
             readingRights.replace(userAskingPermission, SheetRights.APPROVED);

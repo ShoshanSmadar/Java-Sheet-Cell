@@ -63,6 +63,10 @@ public class appController {
         getSheetDTOFromServer();
     }
 
+    public boolean hasWritingPermission() {
+        return writingPermission;
+    }
+
     @FXML
     public void initialize() {
         // Ensure the GridPane resizes with the BorderPane and ScrollPane
@@ -146,6 +150,9 @@ public class appController {
     }
 
     public void updateCellValue(CoordinateDTO coordinateDTO, String value) throws Exception {
+        if (writingPermission) {
+
+
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(CoordinateDTO.class, new CoordinateDTOAdapter())
                 .registerTypeAdapter(CellDTO.class, new CellDTOAdapter())
@@ -179,6 +186,7 @@ public class appController {
         }
         catch (IOException e) {
             showErrorPopup(e);
+        }
         }
         //engine.changeCell(coordinateDTO, value);
     }
@@ -217,39 +225,39 @@ public class appController {
     }
 
     public void deleteRange(String rangeName){
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(CoordinateDTO.class, new CoordinateDTOAdapter())
-                .registerTypeAdapter(CellDTO.class, new CellDTOAdapter())
-                .registerTypeAdapter(RangeDTO.class, new RangeDTOAdapter())
-                .registerTypeAdapter(SheetDTO.class, new SheetDTOAdapter())
-                .create();
+        if(writingPermission) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(CoordinateDTO.class, new CoordinateDTOAdapter())
+                    .registerTypeAdapter(CellDTO.class, new CellDTOAdapter())
+                    .registerTypeAdapter(RangeDTO.class, new RangeDTOAdapter())
+                    .registerTypeAdapter(SheetDTO.class, new SheetDTOAdapter())
+                    .create();
 
-        RangeDTO range = new RangeDTO(rangeName, sheetName);
+            RangeDTO range = new RangeDTO(rangeName, sheetName);
 
-        RequestBody body = RequestBody.create(gson.toJson(range), MediaType.get("application/json; charset=utf-8"));
+            RequestBody body = RequestBody.create(gson.toJson(range), MediaType.get("application/json; charset=utf-8"));
 
-        Request request = new Request.Builder()
-                .url(DELETE_RANGE_PATH)
-                .delete(body)
-                .build();
+            Request request = new Request.Builder()
+                    .url(DELETE_RANGE_PATH)
+                    .delete(body)
+                    .build();
 
-        try (Response response = HTTP_CLIENT.newCall(request).execute()){
-            if(response.isSuccessful() && response.body() != null){
-                String jsonResponse = response.body().string();
-                currentSheet = gson.fromJson(jsonResponse, SheetDTO.class);
-                updateSheet();
+            try (Response response = HTTP_CLIENT.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String jsonResponse = response.body().string();
+                    currentSheet = gson.fromJson(jsonResponse, SheetDTO.class);
+                    updateSheet();
+                } else {
+                    String errorResponse = response.body() != null ? response.body().string() : "No error message";
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText(errorResponse);
+                    alert.showAndWait();
+                }
+            } catch (IOException e) {
+                showErrorPopup(e);
             }
-            else{
-                String errorResponse = response.body() != null ? response.body().string() : "No error message";
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText(errorResponse);
-                alert.showAndWait();
-            }
-        }
-        catch (IOException e) {
-            showErrorPopup(e);
         }
 //        try{
 //            engine.deleteRange(rangeName);
@@ -260,6 +268,7 @@ public class appController {
     }
 
     public void addRange(String rangeName, String rangeValue){
+        if(writingPermission){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(CoordinateDTO.class, new CoordinateDTOAdapter())
                 .registerTypeAdapter(CellDTO.class, new CellDTOAdapter())
@@ -292,6 +301,7 @@ public class appController {
             } catch (IOException e) {
                 showErrorPopup(e);
             }
+        }
     }
 
     public SheetDTO getSheetDTO(){

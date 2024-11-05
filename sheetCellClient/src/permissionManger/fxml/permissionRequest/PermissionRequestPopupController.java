@@ -8,7 +8,10 @@ import javafx.stage.Stage;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
+import static constants.Constants.GET_HISTORY_PATH;
 import static constants.Constants.GET_PERMISSION_PATH;
 import static http.HttpClientUtil.HTTP_CLIENT;
 
@@ -30,6 +33,7 @@ public class PermissionRequestPopupController {
     public void initialize(String item, String userName) {
         this.sheetName = item;
         this.userName = userName;
+
         requestLabel.setText("Request permission for " + sheetName +":");
     }
 
@@ -44,16 +48,22 @@ public class PermissionRequestPopupController {
     }
 
     private void doRequest(String requestType) {
-        RequestBody formBody = new FormBody.Builder()
-                .add("sheetName", sheetName)
-                .add("requestType", requestType)
-                .add("userName", userName)
-                .build();
+        try{
+        String urlWithParams = GET_PERMISSION_PATH + "?sheetName=" +
+                URLEncoder.encode(sheetName, "UTF-8") +
+                "&requestType=" + URLEncoder.encode(requestType, "UTF-8") +
+                "&userName=" + URLEncoder.encode(userName, "UTF-8");
+        RequestBody emptyBody = RequestBody.create(null, new byte[0]);
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("sheetName", sheetName)
+//                .add("requestType", requestType)
+//                .add("userName", userName)
+//                .build();
 
         // Build the PUT request
         Request request = new Request.Builder()
-                .url(GET_PERMISSION_PATH)
-                .put(formBody)
+                .url(urlWithParams)
+                .put(emptyBody)
                 .build();
 
         // Execute the request
@@ -75,7 +85,10 @@ public class PermissionRequestPopupController {
                 // Update UI on the JavaFX Application Thread
                 Platform.runLater(() -> updateStatus(requestType, "NOT successful!"));
             }
-        });
+        });}
+        catch (Exception e){
+            Platform.runLater(() -> updateStatus(requestType, "NOT successful!"));
+        }
     }
 
     private void updateStatus(String requestType, String status) {

@@ -82,13 +82,15 @@ public class OwnerManagerController {
     private Color x623;
 
     @FXML
-    public void initialize() {
+    public void initialize(String sheetName) {
         startDataRefresh();
+        currentSheetInformation = sheetName;
+        sheetNameLbl.setText("Set Permissions for "+sheetName);
     }
 
-    public OwnerManagerController(String sheetName){
-        currentSheetInformation = sheetName;
-    }
+//    public OwnerManagerController(String sheetName){
+//        currentSheetInformation = sheetName;
+//    }
 
     public void populateHistoryGridPane(List<String> historyList) {
         while (numberOfRowsInHistory < historyList.size()) {
@@ -135,7 +137,7 @@ public class OwnerManagerController {
     private void startDataRefresh() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             // Fetch history
-            FetchHistoryTask fetchHistoryTask = new FetchHistoryTask();
+            FetchHistoryTask fetchHistoryTask = new FetchHistoryTask(currentSheetInformation);
             fetchHistoryTask.setOnSucceeded(e -> {
                 List<String> historyList = fetchHistoryTask.getValue();
                 populateHistoryGridPane(historyList);
@@ -147,7 +149,7 @@ public class OwnerManagerController {
             new Thread(fetchHistoryTask).start();
 
             // Fetch requests
-            FetchRequestsTask fetchRequestsTask = new FetchRequestsTask();
+            FetchRequestsTask fetchRequestsTask = new FetchRequestsTask(currentSheetInformation);
             fetchRequestsTask.setOnSucceeded(e -> {
                 Map<String, String> requestsMap = fetchRequestsTask.getValue();
                 populateRequestsGridPane(requestsMap);
@@ -203,7 +205,7 @@ public class OwnerManagerController {
     }
 
     private void handlePermissionAction(String name, String permission, boolean isAllow) {
-        String jsonData = "{\"name\":\"" + name + "\"sheetName\":\"" + currentSheetInformation + "\",\"permission\":\"" + permission + "\",\"isAllow\":" + isAllow + "}";
+        String jsonData = "{\"name\":\"" + name + "\",\"sheetName\":\"" + currentSheetInformation + "\",\"permission\":\"" + permission + "\",\"isAllow\":" + isAllow + "}";
         // Build request body
         RequestBody body = RequestBody.create(jsonData, MediaType.get("application/json; charset=utf-8"));
 

@@ -46,39 +46,39 @@ public class PermissionsRequestsServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String sheetName = request.getParameter("sheetName");
-//        String requestType = request.getParameter("requestType");
-//        String userName = request.getParameter("userName");
-        BufferedReader reader = request.getReader();
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
+        String sheetName = request.getParameter("sheetName");
+        String requestType = request.getParameter("requestType");
+        String userName = request.getParameter("userName");
+//        BufferedReader reader = request.getReader();
+//        StringBuilder sb = new StringBuilder();
+//        String line;
+//        while ((line = reader.readLine()) != null) {
+//            sb.append(line);
+//        }
 
         // Now you can parse the parameters from the request body
-        String[] params = sb.toString().split("&");
-        String sheetName = null;
-        String requestType = null;
-        String userName = null;
-
-        for (String param : params) {
-            String[] pair = param.split("=");
-            if (pair.length == 2) {
-                switch (pair[0]) {
-                    case "sheetName":
-                        sheetName = pair[1];
-                        break;
-                    case "requestType":
-                        requestType = pair[1];
-                        break;
-                    case "userName":
-                        userName = pair[1];
-                        break;
-                }
-            }
-        }
-
+//        String[] params = sb.toString().split("&");
+//        String sheetName = null;
+//        String requestType = null;
+//        String userName = null;
+//
+//        for (String param : params) {
+//            String[] pair = param.split("=");
+//            if (pair.length == 2) {
+//                switch (pair[0]) {
+//                    case "sheetName":
+//                        sheetName = pair[1];
+//                        break;
+//                    case "requestType":
+//                        requestType = pair[1];
+//                        break;
+//                    case "userName":
+//                        userName = pair[1];
+//                        break;
+//                }
+//            }
+//        }
+        if (sheetName != null && requestType != null && userName != null) {
         synchronized (engineMap.get(sheetName)) {
             if(requestType.equals(READ_PERMISSION)) {
                 engineMap.get(sheetName).askReadingPermission(userName);
@@ -88,5 +88,13 @@ public class PermissionsRequestsServlet extends HttpServlet {
         }
 
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        }
+
+        else {
+            // Handle the case where parameters are missing
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Missing parameters");
+        }
+
     }
 }

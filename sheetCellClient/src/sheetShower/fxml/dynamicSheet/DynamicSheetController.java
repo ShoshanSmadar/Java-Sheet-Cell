@@ -2,6 +2,7 @@ package sheetShower.fxml.dynamicSheet;
 
 import cell.CellDTO;
 import coordinate.CoordinateDTO;
+import javafx.scene.layout.VBox;
 import sheetShower.fxml.labelCreator.CellLabel;
 import sheetShower.fxml.headline.HeadlineController;
 import sheetShower.fxml.labelCreator.header.ColumnLabel;
@@ -33,9 +34,17 @@ public class DynamicSheetController {
     private DynamicSheet dynamicSheetBuilder;
     private HeadlineController headlineController;
     private SheetSettingsController sheetSettingsController;
+    @FXML
+    private VBox dynamicSheetVBox;
 
     public Boolean isDynamicSheetBuilderExist(){
-        return (dynamicSheet != null);
+        return (dynamicSheetVBox != null);
+    }
+
+    public void clearSheet(){
+        if(dynamicSheetVBox != null){
+            dynamicSheetVBox.getChildren().clear();
+        }
     }
 
 
@@ -53,14 +62,15 @@ public class DynamicSheetController {
 //    }
 
     public void initializeSheet(int rowSize, int rowHeight, int colSize, int colHeight) {
-        if (dynamicSheet == null) {
+        if (dynamicSheetVBox == null) {
             System.out.println("FlowPane is null!");
         } else {
             if(isDynamicSheetBuilderExist()){
-                mainController.clearDynamicSheet();
+                //mainController.clearDynamicSheet();
+                clearSheet();
             }
             dynamicSheetBuilder = new DynamicSheet(rowSize,  rowHeight,  colSize,  colHeight, this);
-            dynamicSheet.getChildren().add((dynamicSheetBuilder.getGridPane()));
+            dynamicSheetVBox.getChildren().add((dynamicSheetBuilder.getGridPane()));
         }
         if(headlineController.makeAnimation()){
             makeGridPaneFirework();
@@ -116,7 +126,7 @@ public class DynamicSheetController {
     }
 
     private void setCell(CellDTO cell) {
-        Node node = dynamicSheet.lookup("#cell"+ cell.getCoordinate());
+        Node node = dynamicSheetVBox.lookup("#cell"+ cell.getCoordinate());
         if (node != null && node instanceof Label) {
             CellLabel label = (CellLabel) node;
             label.setText(getStringValue(cell));

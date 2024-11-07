@@ -208,7 +208,7 @@ public class sheetVersionShowerController {
 
     public void setNumberOfVersions(int NumberOfVersions) {
         numberOfVersions = NumberOfVersions;
-        for (int i = 0; i < numberOfVersions; i++) {
+        for (int i = 0; i < numberOfVersions - 1; i++) {
             versionChooser.getItems().add(i + 1);
         }
 

@@ -197,7 +197,7 @@ public class HeadlineController {
         }
         if(cell != null){
             OriginalValueLbl.setText(ORIGINAL_VALUE + cell.getOriginalValue());
-            cellVersionLbl.setText(LAST_UPDATED_VERSION + cell.getLastVersionChanged());
+            cellVersionLbl.setText("Updated by " + cell.getUserName() + " version " + cell.getLastVersionChanged());
         }
         if(animationCheckBox.isSelected()){
             dynamicSheetController.animateLabelPopOut();

@@ -50,7 +50,7 @@
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label fx:id="cellVersionLbl" alignment="CENTER" layoutX="210.0" layoutY="72.0" prefHeight="48.0" text="Last updated version:" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="9" GridPane.rowIndex="1">
+      <Label alignment="CENTER" layoutX="210.0" layoutY="72.0" prefHeight="48.0" text="Last updated version:" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="9" GridPane.rowIndex="1">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -72,7 +72,7 @@
          </tooltip>
       </Label>
       <CheckBox fx:id="animationCheckBox" mnemonicParsing="false" text="Animation" GridPane.columnIndex="10" GridPane.rowIndex="1" />
-      <Label fx:id="userUpdatingName" alignment="CENTER" prefHeight="48.0" text="Updated by user:" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="9" GridPane.rowIndex="2">
+      <Label fx:id="cellVersionLbl" alignment="CENTER" prefHeight="48.0" text="Updated by user:" textOverrun="LEADING_ELLIPSIS" GridPane.columnIndex="9" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font>

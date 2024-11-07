@@ -11,6 +11,8 @@ import com.google.gson.JsonSyntaxException;
 import coordinate.CoordinateDTO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import okhttp3.*;
 import range.RangeDTO;
 import sheetShower.fxml.dynamicSheet.DynamicSheetController;
@@ -27,6 +29,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import sheet.SheetDTO;
 
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -40,8 +43,14 @@ import static http.HttpClientUtil.HTTP_CLIENT;
 public class appController {
     SheetDTO currentSheet;
     String sheetName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    String userName;
     boolean writingPermission;
-    int currentSheetVersion;
+    int currentSheetVersion = 1;
     @FXML private ScrollPane scrollPane;
     @FXML private GridPane headline;
     @FXML private HeadlineController headlineController;
@@ -55,8 +64,25 @@ public class appController {
     @FXML private AnchorPane popUpSorter;
     @FXML private PopUpSorterController popUpSorterController;
 
-    public void setData(String newSheetName, boolean writingPermission) {
+    private Stage stage;
+
+    // This method will be called by the main application to pass the stage
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        configureCloseOperation();
+    }
+
+    private void configureCloseOperation() {
+        // Set up what happens when the user clicks the close (X) button
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            stopListening();
+        });
+    }
+
+
+    public void setData(String newSheetName,String userName, boolean writingPermission) {
         sheetName = newSheetName;
+        this.userName = userName;
         this.writingPermission = writingPermission;
 
 
@@ -133,7 +159,7 @@ public class appController {
 
                 try {
                     currentSheet = gson.fromJson(jsonResponse, SheetDTO.class);
-                    currentSheetVersion = currentSheet.getSheetVersion() - 1;
+                    currentSheetVersion = currentSheet.getAcurateSheetVersion();
                 } catch (JsonSyntaxException e) {
                     System.err.println("Failed to parse JSON: " + jsonResponse);
                     e.printStackTrace();
@@ -159,7 +185,6 @@ public class appController {
     public void updateCellValue(CoordinateDTO coordinateDTO, String value) throws Exception {
         if (writingPermission) {
 
-
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(CoordinateDTO.class, new CoordinateDTOAdapter())
                 .registerTypeAdapter(CellDTO.class, new CellDTOAdapter())
@@ -167,7 +192,7 @@ public class appController {
                 .registerTypeAdapter(SheetDTO.class, new SheetDTOAdapter())
                 .create();
 
-        CellDTO cell = new CellDTO(coordinateDTO, value, sheetName);
+        CellDTO cell = new CellDTO(coordinateDTO, value, sheetName, userName);
 
         RequestBody body = RequestBody.create(gson.toJson(cell), MediaType.get("application/json; charset=utf-8"));
 
@@ -180,6 +205,7 @@ public class appController {
             if(response.isSuccessful() && response.body() != null){
                 String jsonResponse = response.body().string();
                 currentSheet = gson.fromJson(jsonResponse, SheetDTO.class);
+                currentSheetVersion++;
                 updateSheet();
             }
             else{
@@ -217,6 +243,7 @@ public class appController {
     public void showSheet(SheetDTO sheetDTO){
         dynamicSheetController.setSheetCells(sheetDTO);
         headlineController.setSheetVersionLblText(sheetDTO.getSheetVersion() - 1);
+        currentSheetVersion = sheetDTO.getAcurateSheetVersion();
     }
 
     public void showErrorPopup(Exception ex) {
@@ -315,7 +342,7 @@ public class appController {
         return currentSheet;
     }
 
-    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public void startListening() {
         scheduler.scheduleAtFixedRate(() -> sendGetRequest(sheetName), 0, 1, TimeUnit.SECONDS);
@@ -343,6 +370,9 @@ public class appController {
                     if (number != currentSheetVersion){
                         Platform.runLater(() -> sheetIsOutDated());
                     }
+                    else{
+                        Platform.runLater(() -> sheetIsDated());
+                    }
                 } else {
                     System.err.println("Server returned error: " + response.code());
                 }
@@ -352,6 +382,10 @@ public class appController {
 
     public void sheetIsOutDated(){
         headlineController.sheetIsOutOfDate();
+    }
+
+    public void sheetIsDated(){
+        headlineController.sheetIsUpToDate();
     }
 
     public void stopListening() {

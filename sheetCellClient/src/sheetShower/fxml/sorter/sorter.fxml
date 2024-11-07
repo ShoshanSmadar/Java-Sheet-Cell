@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="78.0" prefWidth="115.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sheetShower.fxml.sorter.PopUpSorterController">
    <children>
-      <GridPane layoutY="1.0" prefHeight="75.0" prefWidth="100.0">
+      <GridPane layoutY="1.0" prefHeight="75.0" prefWidth="115.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -18,9 +18,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="sortLineBtn" mnemonicParsing="false" onAction="#handleSortLinePressed" prefHeight="25.0" prefWidth="104.0" text="Sort Lines" />
-            <Button fx:id="filtterLineBtn" mnemonicParsing="false" onAction="#HandleFiltterLinePressed" prefHeight="25.0" prefWidth="106.0" text="Filtter Lines" GridPane.rowIndex="1" />
-            <Button fx:id="makeGraphBtn" mnemonicParsing="false" onAction="#HandleMakeGraphBtnPressed" prefHeight="25.0" prefWidth="106.0" text="Make Graph" GridPane.rowIndex="2" />
+            <Button fx:id="sortLineBtn" mnemonicParsing="false" onAction="#handleSortLinePressed" prefHeight="25.0" prefWidth="150.0" text="Sort Lines" />
+            <Button fx:id="filtterLineBtn" mnemonicParsing="false" onAction="#HandleFiltterLinePressed" prefHeight="25.0" prefWidth="150.0" text="Filtter Lines" GridPane.rowIndex="1" />
+            <Button fx:id="dynamicAnalysisBtn" mnemonicParsing="false" onAction="#HandleDynamicAnalysisBtnPressed" prefHeight="25.0" prefWidth="150.0" text="Dynamic Analysis" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

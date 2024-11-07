@@ -34,6 +34,7 @@ public class CellDTOAdapter extends TypeAdapter<CellDTO> {
         } else {
             out.nullValue();
         }
+        out.name("changersName").value(cell.getUserName());
         out.name("affecting");
         if (cell.getAffecting() != null) {
             gson.toJson(cell.getAffecting(), List.class, out);

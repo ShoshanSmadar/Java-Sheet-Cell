@@ -1,5 +1,6 @@
 package sheetShower.fxml.sorter;
 
+import sheetShower.fxml.dynamicAnalysis.DynamicAnalysisController;
 import sheetShower.fxml.dynamicSheet.DynamicSheetController;
 import sheetShower.fxml.popUpFiltter.FilterContoller;
 import sheetShower.fxml.popUpLineSort.LineSortController;
@@ -24,19 +25,36 @@ import java.io.IOException;
 
 public class PopUpSorterController {
     @FXML
+    private Button dynamicAnalysisBtn;
+
+    @FXML
     private Button filtterLineBtn;
+
     @FXML
     private Button sortLineBtn;
-    @FXML
-    private Button makeGraphBtn;
+
     @FXML
     private sheetShower.appController.appController mainController;
     private DynamicSheetController dynamicSheetController;
 
 
     @FXML
-    void HandleMakeGraphBtnPressed(ActionEvent event) {
-        showGraphDialog();
+    void HandleDynamicAnalysisBtnPressed(ActionEvent event) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/sheetShower/fxml/dynamicAnalysis/dynamicAnalysis.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller and pass the list of CellDTOs
+                DynamicAnalysisController controller = loader.getController();
+                controller.initializeCellOptions(mainController.getSheetDTO(), mainController.getUserName());
+
+                // Show this FXML in a new window or set it in your main scene
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     public void addDynamicSheetController(DynamicSheetController dynamicSheetController) {
@@ -47,7 +65,7 @@ public class PopUpSorterController {
     public void initialize() {
         sortLineBtn.setDisable(true);
         filtterLineBtn.setDisable(true);
-        makeGraphBtn.setDisable(true);
+        dynamicAnalysisBtn.setDisable(true);
     }
 
     public void setMainController(sheetShower.appController.appController mainController) {
@@ -57,7 +75,7 @@ public class PopUpSorterController {
     public void enableButtons(){
         sortLineBtn.setDisable(false);
         filtterLineBtn.setDisable(false);
-        makeGraphBtn.setDisable(false);
+        dynamicAnalysisBtn.setDisable(false);
     }
 
     @FXML

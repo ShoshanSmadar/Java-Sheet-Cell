@@ -9,15 +9,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import coordinate.CoordinateDTO;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import okhttp3.*;
 import range.RangeDTO;
 import sheet.SheetDTO;
@@ -41,13 +42,12 @@ public class DynamicAnalysisController {
     @FXML
     private GridPane showCellOptionsGridPane;
     @FXML
-    private AnchorPane sheetAnchorPane;
+    private ScrollPane sheetScrollPane;
+    @FXML
+    private VBox sheetVbox;
     @FXML
     private Button startFilterBtn;
-    @FXML
-    void FilterRange(ActionEvent event) {
 
-    }
     private GridPane gridPane;
 
     private final Gson gson = new GsonBuilder()
@@ -61,6 +61,46 @@ public class DynamicAnalysisController {
     //private DynamicSheetController DynamicSheetController;
     private SheetDTO sheet;
     private String userName;
+
+    @FXML
+    void FilterRange(ActionEvent event) {
+        String cellsJson = gson.toJson(cellDTOList);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("cells", cellsJson)
+                .addFormDataPart("userName", userName)
+                .addFormDataPart("sheetName", sheet.getSheetName())
+                .build();
+
+        Request request = new Request.Builder()
+                .url(DO_DYNAMIC_ANALYSIS_PATH)
+                .post(requestBody)
+                .build();
+
+        HTTP_CLIENT.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Parse the response JSON into SheetDTO
+                    sheet = gson.fromJson(response.body().string(), SheetDTO.class);
+                    Platform.runLater(() -> reEnterSheet());
+                } else {
+                    System.err.println("Request failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    private void reEnterSheet(){
+        sheetVbox.getChildren().clear();
+        addSheet();
+    }
 
     public void initializeCellOptions(SheetDTO sheet, String userName) {
         this.sheet = sheet;
@@ -113,11 +153,16 @@ public class DynamicAnalysisController {
     private void populateGridPane() {
         showCellOptionsGridPane.getChildren().clear(); // Clear existing cells if needed
 
+        // Set row and column spacing
+        showCellOptionsGridPane.setVgap(10);  // Adjust vertical gap between rows
+        showCellOptionsGridPane.setPadding(new Insets(10, 0, 0, 0)); // Extra space at the top
+
         for (int i = 0; i < cellDTOList.size(); i++) {
             CellDTO cell = cellDTOList.get(i);
 
-            // Create a label with the cell name
+            // Create a label with the cell name, and make it bold
             Label cellLabel = new Label(cell.getCoordinate().toString());
+            cellLabel.setStyle("-fx-font-weight: bold;");  // Make the coordinate bold
             GridPane.setConstraints(cellLabel, 0, i);
 
             // Create a slider with the cell value as the center
@@ -134,13 +179,18 @@ public class DynamicAnalysisController {
 
             // Update CellDTO value when slider is moved
             cellSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
-                cell.originalValue(String.valueOf(newValue.doubleValue()));
+                cell.setOriginalValue(String.valueOf(newValue.doubleValue()));
+                startFilterBtn.setDisable(false);
             });
 
             // Add label and slider to the grid pane
             showCellOptionsGridPane.getChildren().addAll(cellLabel, cellSlider);
         }
     }
+
+
+
+
 
     private void setLabelText(Node node, String text) {
         if (node != null && node instanceof Label) {
@@ -223,7 +273,7 @@ public class DynamicAnalysisController {
         for(CellDTO cell : sheet.getCellMap().values()){
             setCell(cell);
         }
-        sheetAnchorPane.getChildren().add(gridPane);
+        sheetVbox.getChildren().add(gridPane);
     }
 
     private void setCell(CellDTO cell) {

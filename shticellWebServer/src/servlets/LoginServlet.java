@@ -80,7 +80,9 @@ public class LoginServlet extends HttpServlet {
                         // see this link for more details:
                         // http://timjansen.github.io/jarfiller/guide/servlet25/requestdispatcher.xhtml
                         request.setAttribute("username_error", errorMessage);
-                        getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
+                        //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
+                        response.setStatus(400);
+                        response.getWriter().write("{\"message\": \"errorMessage\"}");
                     }
                     else {
                         //add the new user to the users list
@@ -98,6 +100,7 @@ public class LoginServlet extends HttpServlet {
                                 engine.addNewUser(usernameFromParameter);
                             }
                         }
+                        response.setStatus(200);
                     }
                 }
             }

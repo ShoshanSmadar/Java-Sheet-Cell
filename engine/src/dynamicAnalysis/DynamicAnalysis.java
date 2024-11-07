@@ -4,6 +4,7 @@ import cell.Cell;
 import cell.CellDTO;
 import sheet.Sheet;
 import sheet.SheetDTO;
+import sheet.SheetImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +12,20 @@ import java.util.List;
 
 public class DynamicAnalysis {
     SheetDTO sheetDTO;
+    Sheet sheet;
     List<CellDTO> cellsThatCanChange;
 
 
 
-    public DynamicAnalysis(SheetDTO sheet){
-        this.sheetDTO = sheet;
+    public DynamicAnalysis(SheetDTO sheetDTO, Sheet sheet){
+        this.sheetDTO = sheetDTO;
+        this.sheet = sheet;
         this.cellsThatCanChange = checkPossibleCells();
     }
 
-    public void updateVersion(SheetDTO newSheet){
-        sheetDTO = newSheet;
+    public void updateVersion(SheetDTO newSheetDTO, Sheet newSheet){
+        sheetDTO = newSheetDTO;
+        sheet = newSheet;
         this.cellsThatCanChange = checkPossibleCells();
     }
 
@@ -49,13 +53,13 @@ public class DynamicAnalysis {
     }
 
     public SheetDTO changeCellsAndGetSheet(List<CellDTO> cells){
-        Sheet sheet =  sheetDTO.createSheetFromDTO();
         for(CellDTO cell : cells){
             try {
-                sheet.UpdateCellValueAndSheet(cell.getCoordinate().getRow()
+                sheet = sheet.UpdateCellValueAndSheetForDynamicAnalysis(cell.getCoordinate().getRow()
                         , cell.getCoordinate().getCol()
                         , cell.getOriginalValue()
-                        , cell.getUserName());
+                        , cell.getUserName()
+                        , sheet);
             }
             catch (Exception ignored){
             }

@@ -2,6 +2,7 @@ package loginManager.login;
 
 
 import constants.Constants;
+import java.io.BufferedReader;
 import http.HttpClientUtil;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import permissionManger.fxml.PermissionManagerController;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class LoginController {
 
@@ -67,9 +69,8 @@ public class LoginController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.code() != 200) {
-                    String responseBody = response.body().string();
                     Platform.runLater(() ->
-                            errorMessageProperty.set("Something went wrong: " + responseBody)
+                            errorMessageProperty.set("User name already exists, please try another one")
                     );
                 } else {
                     Platform.runLater(() -> {
@@ -84,11 +85,6 @@ public class LoginController {
     @FXML
     private void userNameKeyTyped(KeyEvent event) {
         errorMessageProperty.set("");
-    }
-
-    @FXML
-    private void quitButtonClicked(ActionEvent e) {
-        Platform.exit();
     }
 
     public void setPermissionManagerController(PermissionManagerController permissionManagerController) {

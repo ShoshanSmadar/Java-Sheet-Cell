@@ -18,9 +18,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="sortLineBtn" mnemonicParsing="false" onAction="#handleSortLinePressed" prefHeight="25.0" prefWidth="150.0" text="Sort Lines" />
-            <Button fx:id="filtterLineBtn" mnemonicParsing="false" onAction="#HandleFiltterLinePressed" prefHeight="25.0" prefWidth="150.0" text="Filtter Lines" GridPane.rowIndex="1" />
-            <Button fx:id="dynamicAnalysisBtn" mnemonicParsing="false" onAction="#HandleDynamicAnalysisBtnPressed" prefHeight="25.0" prefWidth="150.0" text="Dynamic Analysis" GridPane.rowIndex="2" />
+            <Button fx:id="sortLineBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Sort Lines" visible="false" />
+            <Button fx:id="filtterLineBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Filtter Lines" visible="false" GridPane.rowIndex="2" />
+            <Button fx:id="dynamicAnalysisBtn" mnemonicParsing="false" onAction="#HandleDynamicAnalysisBtnPressed" prefHeight="25.0" prefWidth="150.0" text="Dynamic Analysis" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

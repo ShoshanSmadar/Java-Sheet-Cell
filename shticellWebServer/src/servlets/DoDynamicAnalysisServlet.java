@@ -7,6 +7,7 @@ import adapter.SheetDTOAdapter;
 import cell.CellDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import coordinate.CoordinateDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -21,6 +22,7 @@ import utils.EngineInformation;
 
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,8 +46,11 @@ public class DoDynamicAnalysisServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             Part cellsPart = request.getPart("cells");
-            List<CellDTO> cells = gson.fromJson(new String(cellsPart.getInputStream().readAllBytes()), List.class);
-            Part userNamePart = request.getPart("userName");
+        String cellsJson = new String(cellsPart.getInputStream().readAllBytes());
+
+        // Use TypeToken to deserialize the list of CellDTOs
+            Type listType = new TypeToken<List<CellDTO>>(){}.getType();
+            List<CellDTO> cells = gson.fromJson(cellsJson, listType);            Part userNamePart = request.getPart("userName");
             String userName = new String(userNamePart.getInputStream().readAllBytes());
             Part sheetNamePart = request.getPart("sheetName");
             String sheetName = new String(sheetNamePart.getInputStream().readAllBytes());
@@ -54,8 +59,5 @@ public class DoDynamicAnalysisServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(gson.toJson(responseSheet));
-
     }
-
-
 }

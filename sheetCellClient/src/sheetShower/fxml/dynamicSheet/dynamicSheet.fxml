@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<FlowPane fx:id="dynamicSheet" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="909.0" stylesheets="@dynamic-sheet-style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sheetShower.fxml.dynamicSheet.DynamicSheetController">
+<FlowPane fx:id="dynamicSheet" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="909.0" stylesheets="@dynamic-sheet-style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sheetShower.fxml.dynamicSheet.DynamicSheetController">
    <children>
-      <ScrollPane prefHeight="613.0" prefWidth="934.0">
+      <ScrollPane prefHeight="510.0" prefWidth="910.0">
          <content>
-            <VBox fx:id="dynamicSheetVBox" prefHeight="610.0" prefWidth="932.0">
+            <VBox fx:id="dynamicSheetVBox" prefHeight="498.0" prefWidth="908.0">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor>

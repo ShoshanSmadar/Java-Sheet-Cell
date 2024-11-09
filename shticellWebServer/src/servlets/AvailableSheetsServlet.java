@@ -58,11 +58,8 @@ public class AvailableSheetsServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             if (engineMap == null || engineMap.isEmpty()) {
-                System.out.println("Engine map is empty or null.");
                 response.getWriter().write("[]"); // Send an empty JSON array to the client
                 return;
-            } else {
-                System.out.println("Engine map has entries: " + engineMap.size());
             }
             if (engineMap == null || engineMap.isEmpty()) {
                 // Send an empty JSON array if engineMap is null or empty
